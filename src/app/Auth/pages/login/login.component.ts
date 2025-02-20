@@ -5,6 +5,8 @@ import { SetLogin } from '../../interfaces/set-login';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { log } from 'console';
+import * as CryptoJS from 'crypto-js';
+
 
 @Component({
   selector: 'app-login',
@@ -57,21 +59,19 @@ export default class LoginComponent implements OnInit{
     iniciarSesion(data: SetLogin):void{
         this.httpLogin.login(data).subscribe(login  => {
             if (login.accessToken) {
-                this.sweet.alertaLogin(login.mensaje);
+                /* this.sweet.alertaLogin(login.mensaje); */
+
                 this.router.navigateByUrl('/main');
+                /* window.location.reload(); */
+
             }
 
         });
     }
 
-    cerrarSessiones():void{
-        const token = this.httpLogin.getToken();
-
-        if (token && token.trim() !== '') {
-            this.httpLogin.cerrarSesion().subscribe(cerrar => {
-                this.httpLogin.limpiarSesion();
-            })
-        }
+    cerrarSessiones(): void {
+        this.httpLogin.limpiarSesion();
     }
+
 
 }

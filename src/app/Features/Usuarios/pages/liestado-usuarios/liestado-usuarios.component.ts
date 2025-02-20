@@ -48,7 +48,6 @@ export default class LiestadoUsuariosComponent implements OnInit{
     constructor(private httpUsuarios: UsuariosServicesService){}
 
     ngOnInit(): void {
-
         this.listadoUsuarios();
     }
 

@@ -13,9 +13,6 @@ export default class HeaderComponent {
   constructor(private httpAuth: LoginService, private router: Router){}
 
   cerrarSesion():void{
-      this.httpAuth.cerrarSesion().subscribe(cirre =>{
-          this.httpAuth.limpiarSesion();
-          this.router.navigateByUrl('/login');
-      });
+      this.httpAuth.cerrarSesion().subscribe(cierre =>{});
   }
 }

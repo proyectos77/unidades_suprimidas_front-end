@@ -41,7 +41,11 @@ export class LoginService {
     }
 
     cerrarSesion():Observable<SetLogout>{
-        return this.loginHttp.get<SetLogout>(this.urlLogout);
+        return this.loginHttp.get<SetLogout>(this.urlLogout).pipe(
+            tap(() => {
+                this.limpiarSesion();
+            })
+        );
     }
 
     limpiarSesion():void{
