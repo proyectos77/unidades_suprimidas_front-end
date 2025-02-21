@@ -22,4 +22,14 @@ export class SweetAlertService {
             draggable: true
         });
     }
+
+    alertaLogin2(){
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Bienvenido",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 }

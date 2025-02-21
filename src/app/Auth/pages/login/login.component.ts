@@ -4,8 +4,7 @@ import { SweetAlertService } from '../../../Core/services/sweet-alert.service';
 import { SetLogin } from '../../interfaces/set-login';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
-import { log } from 'console';
-import * as CryptoJS from 'crypto-js';
+
 
 
 @Component({
@@ -59,18 +58,24 @@ export default class LoginComponent implements OnInit{
     iniciarSesion(data: SetLogin):void{
         this.httpLogin.login(data).subscribe(login  => {
             if (login.accessToken) {
-                /* this.sweet.alertaLogin(login.mensaje); */
+                this.sweet.alertaLogin2();
+                setTimeout(() => {
+                    this.router.navigateByUrl('/main');
+                }, 1500);
 
-                this.router.navigateByUrl('/main');
                 /* window.location.reload(); */
-
+            }else{
+                this.sweet.alertaGeneral('error', 'Error', login.mensaje);
             }
 
         });
     }
 
     cerrarSessiones(): void {
-        this.httpLogin.limpiarSesion();
+        if (this.httpLogin.getToken()) {
+            this.httpLogin.limpiarSesion();
+        }
+
     }
 
 

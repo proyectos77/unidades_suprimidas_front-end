@@ -40,6 +40,19 @@
               </tbody>
           </table>
       </div>
+      <nav aria-label="..." *ngIf="pagina > 0">
+          <ul class="pagination">
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === 1" (click)="cambiarPagina(datos.infoPagination.pagina - 1)">Anterior</a>
+              </li>
+
+              <li *ngFor="let pagina of [].constructor(datos.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="datos.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === datos.infoPagination.totalPaginas" (click)="cambiarPagina(datos.infoPagination.pagina + 1)">Siguiente</a>
+              </li>
+          </ul>
+      </nav>
   </div>
 </div>
 

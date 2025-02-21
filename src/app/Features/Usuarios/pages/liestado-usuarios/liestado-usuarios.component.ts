@@ -5,6 +5,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { ModalEditarUsuarioComponent } from "../../components/modal-editar-usuario/modal-editar-usuario.component";
+import { log } from 'console';
 
 declare var bootstrap: any;
 
@@ -22,7 +23,13 @@ export default class LiestadoUsuariosComponent implements OnInit{
         "titulo": '',
         "mensaje": '',
         "icono": '',
-        "data": []
+        "data": [],
+        "infoPagination": {
+            'pagina': 0,
+            'totalRegistro': 0,
+            'totalRegistrosPorPagina': 0,
+            'totalPaginas': 0
+        }
     }
 
     public tipoUsuario: GetAllTiposUsuarios = {
@@ -45,15 +52,22 @@ export default class LiestadoUsuariosComponent implements OnInit{
         'estado': ''
     }
 
+    public pagina:number = 1;
+    public totalRegistros:number = 0;
+    public registrosPorPagina:number = 0;
+    public totalPaginas:number = 0;
+
     constructor(private httpUsuarios: UsuariosServicesService){}
 
     ngOnInit(): void {
-        this.listadoUsuarios();
+        this.listadoUsuarios(1);
     }
 
-    listadoUsuarios():void{
-        this.httpUsuarios.consultaListaUsuarios().subscribe(usuarios => {
+    listadoUsuarios(pagina: number ):void{
+        this.httpUsuarios.consultaListaUsuarios(pagina).subscribe(usuarios => {
             if (usuarios.statusCode == 200) {
+                console.log(usuarios.infoPagination.pagina);
+
                 this.datos = usuarios;
             }
         })
@@ -65,6 +79,12 @@ export default class LiestadoUsuariosComponent implements OnInit{
 
         this.usuario = usuario;
         this.bootstrapModal.show();
+    }
+
+    cambiarPagina(pagina: number):void{
+        if (pagina >= 1 && pagina <= this.datos.infoPagination.totalPaginas) {
+            this.listadoUsuarios(pagina);
+        }
     }
 
 
