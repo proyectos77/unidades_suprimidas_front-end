@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LoginService } from '../../../Auth/services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export default class HeaderComponent {
 
+  constructor(private httpAuth: LoginService, private router: Router){}
+
+  cerrarSesion():void{
+      this.httpAuth.cerrarSesion().subscribe(cierre =>{});
+  }
 }

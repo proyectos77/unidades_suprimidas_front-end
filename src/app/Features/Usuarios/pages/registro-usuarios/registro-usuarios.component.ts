@@ -85,8 +85,6 @@ export default class RegistroUsuariosComponent implements OnInit{
     }
 
     validarFormulario():void{
-        console.log(this.formulario.value);
-
         if (this.formulario.invalid) {
             this.sweet.alertaGeneral('error', 'Error', 'Porfavor llenar los campos obligatorios');
 

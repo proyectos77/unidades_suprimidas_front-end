@@ -15,8 +15,9 @@ export class UsuariosServicesService {
 
     constructor(private httpUsuarios: HttpClient) { }
 
-    consultaListaUsuarios():Observable<GetAllUsuarios>{
-        return this.httpUsuarios.get<GetAllUsuarios>(this.url);
+    consultaListaUsuarios(pagina:number):Observable<GetAllUsuarios>{
+        let urlFinal = this.url + '?page=' + pagina;
+        return this.httpUsuarios.get<GetAllUsuarios>(urlFinal);
     }
 
     registrarUsuario(data: StoreUsuarios):Observable<RespuestaRegistroUsuario>{

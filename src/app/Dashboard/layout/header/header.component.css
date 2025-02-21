@@ -1,6 +1,7 @@
 .header{
-    background-image: url(../../../../../public/imagenes/pagina/fondoLogin.png);
-    height: 20rem;
+    /* background-image: url(../../../../../public/imagenes/pagina/fondoLogin.png); */
+    background-color: var(--negro);
+    height: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -10,8 +11,12 @@
     padding: 0 3rem;
 }
 
-.header__texto{
+.header__texto {
+    width: 40%;
+}
 
+.header__texto img{
+    width: 100%;
 }
 
 .header__opcion{

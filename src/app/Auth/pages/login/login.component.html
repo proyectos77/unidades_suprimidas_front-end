@@ -1,31 +1,45 @@
 <div class="contenedorFormularioLogin">
 
-    <div class="container content-form">
-        <form class="formulario">
+    <div class="content-banner-login">
+        <img src="imagenes/pagina/EJC-BLANCO-ALTA2.png" alt="">
+    </div>
 
-            <div class="formulario__icono">
-                <img src="imagenes/pagina/icono_login.png" alt="">
+    <div class="content-form">
+        <form class="formulario" [formGroup]="loginForm">
+
+            <div class="formulario__titulo">
+                <h2>UNIDADES SUPRIMIDAS</h2>
             </div>
 
-            <div class="input-group mb-5">
-                <span class="input-group-text" id="basic-addon1"><i class="fas fa-user fa-3x fa-fw"></i></span>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
+            <div class="formulario__input">
+                <input type="text" class="form-control" placeholder="Usuario" formControlName="user_usuario">
 
-            <div class="input-group mb-5">
-                <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock fa-3x fa-fw"></i></span>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-
-            <div class="formulario__restablecerPass d-flex justify-content-end mb-4">
-                <a href="#">Olvide mi contraseña</a>
-            </div>
-
-            <div class="formulario__boton">
-                <button type="button" class="btn btn-primary">Inicier Sesion</button>
+                @if (this.loginForm.get('user_usuario')?.touched && this.loginForm.get('user_usuario')?.errors?.['required']) {
+                    <div class="invalid-feeback" style="display: block;">
+                        <small class="text-danger">El campo usuario es obligatorio.</small>
+                    </div>
+                }
 
             </div>
 
+            <div class="formulario__input">
+                <input type="password" class="form-control" placeholder="Contraseña" formControlName="password_usuario">
+
+                @if (this.loginForm.get('password_usuario')?.touched && this.loginForm.get('password_usuario')?.errors?.['required']) {
+                    <div class="invalid-feeback" style="display: block;">
+                        <small class="text-danger">El campo contraseña es obligatorio.</small>
+                    </div>
+                }
+
+            </div>
+
+            <div class="formulario__restarurar-pass d-flex justify-content-end mb-5">
+                <a href="#">Restaurar contraseña</a>
+            </div>
+
+            <div class="formulario__btn d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" (click)="validarForm()">Iniciar Sesion</button>
+            </div>
         </form>
     </div>
 

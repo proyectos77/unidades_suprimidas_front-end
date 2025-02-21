@@ -34,8 +34,10 @@ body{
     --gris: #969696;
     --blanco: #ffffff;
     --negro: #000000;
-    --verdePrincipal: #6b8e23;
+    --verdePrincipal: #1c5e1c;
     --verdePrincipalOscuro: #3e5315;
+    --negroTrasparente: #00000065;
+    --titulos: "Kanit", serif;
 }
 
 /***********************************************************
@@ -46,12 +48,15 @@ body{
 
 h1{
     font-size: 4.8rem;
-    font-weight: 700;
+    font-family: var(--titulos);
+    font-weight: 900;
     margin-bottom: 2rem;
 }
 
 h2{
     font-size: 4.4rem;
+    font-family: var(--titulos);
+    font-weight: 900;
     font-weight: 700;
     margin-bottom: 2rem;
 }
@@ -117,11 +122,12 @@ ul{
 }
 
 .swal2-title{
-    font-size: 3.4rem;
+    font-size: 2.8rem;
+    font-family: unset !important;
 }
 
 .swal2-modal{
-    width: 35%;
+    width: 30%;
 }
 
 .swal2-styled{
@@ -132,13 +138,18 @@ ul{
     font-size: 1.2rem;
 }
 
+.dropdown-item{
+    font-size: 1rem;
+}
+
 /***********************************************************
 
         ************ ESTILOS PARA LAS CARD DE CADA PAGINA **********
 
 ************************************************************/
 .cardContenido{
-    height: 55rem;
+    height: 100%;
+    /* border-radius: 1rem; */
 }
 
 .card-header-paddin{
@@ -146,5 +157,5 @@ ul{
 }
 
 .card-body-page{
-   padding: 6rem 4rem;
+   padding: 2rem 4rem;
 }

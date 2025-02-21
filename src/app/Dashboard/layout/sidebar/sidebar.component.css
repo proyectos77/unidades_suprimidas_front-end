@@ -7,9 +7,7 @@
     align-items: center;
     row-gap: 2rem;
     box-shadow: var(--shadow);
-    border-radius: 1rem;
-    margin-left: 1rem;
-
+    /* border-radius: 1rem; */
 }
 
 .icono-sidebar{
