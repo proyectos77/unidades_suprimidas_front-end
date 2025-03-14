@@ -1,15 +1,18 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { DatumUsuario } from '../../interfaces/get-all-usuarios';
 import { CargosService } from '../../services/cargos.service';
 import { GetAllCargos } from '../../interfaces/get-all-cargos';
 import { NgFor } from '@angular/common';
 import { TiposUsuariosService } from '../../services/tipos-usuarios.service';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ValidadoresPersonalizados } from '../../../../Core/Validators/cunstom-validators';
 import { log } from 'console';
 
 @Component({
   selector: 'app-modal-editar-usuario',
-  imports: [NgFor],
+  imports: [NgFor, ReactiveFormsModule],
   templateUrl: './modal-editar-usuario.component.html',
   styleUrl: './modal-editar-usuario.component.css',
 
@@ -33,11 +36,19 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         'data': []
     }
 
-    constructor(private httpCargos: CargosService, private httpTipoUsuario: TiposUsuariosService){}
+    public formularioEdit!: FormGroup;
+
+    constructor(
+        private httpCargos: CargosService,
+        private httpTipoUsuario: TiposUsuariosService,
+        private form: FormBuilder
+    ){}
 
     ngOnInit(): void {
         this.listadoCargos();
         this.listaTipoUsuario();
+        this.formularioEdit = this.formularioEditUsaurio();
+
     }
 
     listadoCargos():void{
@@ -52,4 +63,31 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         });
     }
 
+    formularioEditUsaurio():FormGroup{
+        return this.form.group({
+            'nombre': ['', [Validators.required, ValidadoresPersonalizados.validarSoloLetras]],
+            'identificacion': ['', [Validators.required, ValidadoresPersonalizados.validarSoloNumeros]],
+            'user': ['', [Validators.required]],
+            'emailUsuario': ['', [Validators.required, Validators.email]],
+            'cargo': ['', [Validators.required]],
+            'tipoUsuario': ['', [Validators.required]]
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+      if (changes['usuario'] && this.usuario && this.usuario.id != 0) {
+          this.cargarDatosFormulario(this.usuario);
+      }
+    }
+
+    cargarDatosFormulario(usuario: DatumUsuario) {
+        this.formularioEdit.patchValue({
+          'nombre': usuario.nombre,
+          'identificacion': usuario.identificacion,
+          'user': usuario.usuario,
+          'emailUsuario': usuario.email,
+          'cargo': usuario.cargo ,
+          'tipoUsuario': usuario.tipoUsuario
+        });
+    }
 }
