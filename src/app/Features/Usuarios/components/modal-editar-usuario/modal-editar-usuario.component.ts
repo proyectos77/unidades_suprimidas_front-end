@@ -9,6 +9,8 @@ import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ValidadoresPersonalizados } from '../../../../Core/Validators/cunstom-validators';
 import { log } from 'console';
+import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
+import { StoreUsuarios } from '../../interfaces/store-usuarios';
 
 @Component({
   selector: 'app-modal-editar-usuario',
@@ -41,7 +43,8 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     constructor(
         private httpCargos: CargosService,
         private httpTipoUsuario: TiposUsuariosService,
-        private form: FormBuilder
+        private form: FormBuilder,
+        private sweet: SweetAlertService
     ){}
 
     ngOnInit(): void {
@@ -75,19 +78,44 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     }
 
     ngOnChanges(changes: SimpleChanges) {
-      if (changes['usuario'] && this.usuario && this.usuario.id != 0) {
-          this.cargarDatosFormulario(this.usuario);
-      }
+        if (changes['usuario'] && this.usuario && this.usuario.id != 0) {
+            this.cargarDatosFormulario(this.usuario);
+        }
     }
 
     cargarDatosFormulario(usuario: DatumUsuario) {
+        console.log(usuario);
+
         this.formularioEdit.patchValue({
           'nombre': usuario.nombre,
           'identificacion': usuario.identificacion,
           'user': usuario.usuario,
           'emailUsuario': usuario.email,
-          'cargo': usuario.cargo ,
-          'tipoUsuario': usuario.tipoUsuario
+          'cargo': usuario.idCargo ,
+          'tipoUsuario': usuario.idTipoUsuario
         });
+    }
+
+    validarFormulario():void{
+        if (this.formularioEdit.invalid) {
+            this.sweet.alertaGeneral('error', 'Error', 'Porfavor llenar los campos obligatorios');
+            return Object.values(this.formularioEdit.controls).forEach(controls => {
+                controls.markAllAsTouched();
+            });
+        }else{
+            let dataForm = this.crearDataFormulario();
+            this.editarUsuario(dataForm);
+        }
+    }
+
+    crearDataFormulario():StoreUsuarios{
+        const data: StoreUsuarios = {
+            ...this.formularioEdit.value
+        }
+        return data;
+    }
+
+    editarUsuario(data: StoreUsuarios):void{
+        
     }
 }

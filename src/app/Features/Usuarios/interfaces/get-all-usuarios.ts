@@ -14,8 +14,10 @@ export interface DatumUsuario {
   email:          string;
   usuario:        string;
   estado:         string;
-  cargo:          number;
-  tipoUsuario:    number;
+  cargo:          string;
+  idCargo:        number;
+  tipoUsuario:    string;
+  idTipoUsuario:  number;
 }
 
 export interface InfoPagination {

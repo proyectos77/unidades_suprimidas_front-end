@@ -24,4 +24,6 @@ export class UsuariosServicesService {
         return this.httpUsuarios.post<RespuestaRegistroUsuario>(this.url, data);
     }
 
+    /* updateUsuario(data: StoreUsuarios):Observable */
+
 }
