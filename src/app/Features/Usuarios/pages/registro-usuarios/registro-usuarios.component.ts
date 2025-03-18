@@ -6,7 +6,7 @@ import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { NgFor } from '@angular/common';
 import { CargosService } from '../../services/cargos.service';
 import { GetAllCargos } from '../../interfaces/get-all-cargos';
-import { ValidadoresPersonalizados } from '../../../../Core/Validators/cunstom-validators';
+import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom-validators';
 import Swal from 'sweetalert2';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { error } from 'console';
@@ -55,6 +55,12 @@ export default class RegistroUsuariosComponent implements OnInit{
         this.listarCargos();
 
         this.formulario = this.formularioRegistro();
+
+        this.formulario.get('nombre')?.valueChanges.subscribe(valor => {
+            if (valor) {
+                this.formulario.patchValue({ nombre: valor.toUpperCase() }, { emitEvent: false });
+            }
+        });
     }
 
     formularioRegistro():FormGroup{

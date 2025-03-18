@@ -8,21 +8,22 @@ import { NgFor } from '@angular/common';
 import { TiposUsuariosService } from '../../services/tipos-usuarios.service';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ValidadoresPersonalizados } from '../../../../Core/Validators/cunstom-validators';
+import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom-validators';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
-declare var bootstrap: any;
+import { MayusculasPipe } from '../../../../Shared/Pipes/mayusculas.pipe';
+
 @Component({
   selector: 'app-modal-editar-usuario',
-  imports: [NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule, MayusculasPipe],
   templateUrl: './modal-editar-usuario.component.html',
   styleUrl: './modal-editar-usuario.component.css',
 
 })
 export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnChanges
 
-    public bootstrapModal: any;
+    @ViewChild('cerrarModal') cerrarModal!: ElementRef;
 
     @Input() usuario!: DatumUsuario;
     public cargos: GetAllCargos = {
@@ -57,6 +58,12 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         this.listaTipoUsuario();
         this.formularioEdit = this.formularioEditUsaurio();
 
+        this.formularioEdit.get('nombre')?.valueChanges.subscribe(valor => {
+            if (valor) {
+                this.formularioEdit.patchValue({ nombre: valor.toUpperCase() }, { emitEvent: false });
+            }
+        });
+
     }
 
     listadoCargos():void{
@@ -89,8 +96,6 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     }
 
     cargarDatosFormulario(usuario: DatumUsuario) {
-        console.log(usuario);
-
         this.formularioEdit.patchValue({
           'nombre': usuario.nombre,
           'identificacion': usuario.identificacion,
@@ -123,16 +128,13 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     editarUsuario(data: StoreUsuarios):void{
         this.httUsuario.updateUsuarios(data, this.usuario.id).subscribe(updateUsuario => {
             if (updateUsuario.statusCode == 200) {
-                this.sweet.alertaGeneral(updateUsuario.icono, updateUsuario.titulo, updateUsuario.mensaje);
-                /* this.cerrarModales(); */
+                this.cerrarModales();
             }
+            this.sweet.alertaGeneral(updateUsuario.icono, updateUsuario.titulo, updateUsuario.mensaje);
         });
     }
 
-    /* cerrarModales(){
-      alert('hola');
-      const modal = document.getElementById('modalUsuario');
-      this.bootstrapModal = new bootstrap.Modal(modal);
-      this.bootstrapModal.hide();
-    } */
+    cerrarModales() {
+        this.cerrarModal.nativeElement.click();
+    }
 }
