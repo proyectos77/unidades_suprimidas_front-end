@@ -12,11 +12,11 @@ import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
-import { MayusculasPipe } from '../../../../Shared/Pipes/mayusculas.pipe';
+
 
 @Component({
   selector: 'app-modal-editar-usuario',
-  imports: [NgFor, ReactiveFormsModule, MayusculasPipe],
+  imports: [NgFor, ReactiveFormsModule],
   templateUrl: './modal-editar-usuario.component.html',
   styleUrl: './modal-editar-usuario.component.css',
 

@@ -6,7 +6,7 @@ export const routes: Routes = [
 
     { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},
 
-
+    {path: 'listadoUsuarios', redirectTo: '', pathMatch:'full'}
 
 ];
 
