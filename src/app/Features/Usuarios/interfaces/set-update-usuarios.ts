@@ -7,3 +7,4 @@ export interface SetUpdateUsuarios {
     "cargo"?: number,
     "estado"?: number
 }
+

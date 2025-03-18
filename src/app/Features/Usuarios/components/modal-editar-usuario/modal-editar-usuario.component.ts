@@ -1,5 +1,6 @@
+
 import { ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import { DatumUsuario } from '../../interfaces/get-all-usuarios';
 import { CargosService } from '../../services/cargos.service';
 import { GetAllCargos } from '../../interfaces/get-all-cargos';
@@ -8,10 +9,10 @@ import { TiposUsuariosService } from '../../services/tipos-usuarios.service';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ValidadoresPersonalizados } from '../../../../Core/Validators/cunstom-validators';
-import { log } from 'console';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
-
+import { UsuariosServicesService } from '../../services/usuarios-services.service';
+declare var bootstrap: any;
 @Component({
   selector: 'app-modal-editar-usuario',
   imports: [NgFor, ReactiveFormsModule],
@@ -20,6 +21,8 @@ import { StoreUsuarios } from '../../interfaces/store-usuarios';
 
 })
 export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnChanges
+
+    public bootstrapModal: any;
 
     @Input() usuario!: DatumUsuario;
     public cargos: GetAllCargos = {
@@ -44,7 +47,9 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         private httpCargos: CargosService,
         private httpTipoUsuario: TiposUsuariosService,
         private form: FormBuilder,
-        private sweet: SweetAlertService
+        private sweet: SweetAlertService,
+        private httUsuario: UsuariosServicesService,
+
     ){}
 
     ngOnInit(): void {
@@ -116,6 +121,18 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     }
 
     editarUsuario(data: StoreUsuarios):void{
-        
+        this.httUsuario.updateUsuarios(data, this.usuario.id).subscribe(updateUsuario => {
+            if (updateUsuario.statusCode == 200) {
+                this.sweet.alertaGeneral(updateUsuario.icono, updateUsuario.titulo, updateUsuario.mensaje);
+                /* this.cerrarModales(); */
+            }
+        });
     }
+
+    /* cerrarModales(){
+      alert('hola');
+      const modal = document.getElementById('modalUsuario');
+      this.bootstrapModal = new bootstrap.Modal(modal);
+      this.bootstrapModal.hide();
+    } */
 }
