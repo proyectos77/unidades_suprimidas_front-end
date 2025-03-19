@@ -1,15 +1,21 @@
 <div class="main-sidebar">
 
-    <div class="icono-sidebar">
-       <img src="imagenes/pagina/escudo_ejercito.png" alt="">
-    </div>
+  <div class="icono-sidebar">
+     <img src="imagenes/pagina/escudo_ejercito.png" alt="">
+  </div>
 
-    <nav class="menu">
-        <ul class="menu__content">
-            <li class="menu__item" [routerLink]="['/main/usuarios']">Usuarios</li>
-            <li class="menu__item" [routerLink]="['/main/']" >Unidad</li>
-            <li class="menu__item">Detalle unidad</li>
-            <li class="menu__item">Listado unidad</li>
-        </ul>
-    </nav>
+  <nav class="menu">
+      <ul class="menu__content">
+          <li class="menu__item" [routerLink]="['/main/usuarios']" routerLinkActive="active">Usuarios</li>
+          <li class="menu__item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
+              <a >Unidades</a>
+              <ul class="submenu">
+                  <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="active">Listado de unidades</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="active">Registro de unidades</li>
+              </ul>
+          </li>
+          <li class="menu__item">Detalle unidad</li>
+          <li class="menu__item">Listado unidad</li>
+      </ul>
+  </nav>
 </div>

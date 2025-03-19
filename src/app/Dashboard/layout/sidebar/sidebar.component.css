@@ -46,6 +46,30 @@
     text-align: center;
     border-radius: 1rem;
     color: var(--blanco);
+    position: relative;
+}
+
+.submenu{
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+.submenu__item{
+  margin-bottom: 0.2rem;
+  background-color: black;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-decoration: underline;
+}
+
+.submenu__item:hover{
+  background-color: var(--verdePrincipalOscuro);
 }
 
 .menu__item:hover{
@@ -53,6 +77,14 @@
     cursor: pointer;
 }
 
+.menu__item:hover .submenu{
+    opacity: 1;
+    visibility: visible;
+}
 
 
-
+.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}

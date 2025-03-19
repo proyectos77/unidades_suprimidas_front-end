@@ -1,1 +1,60 @@
-<p>listado-unidades works!</p>
+
+<div class="card cardContenido" >
+  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+      <h3>Listado de unidades</h3>
+  </div>
+  <div class="card-body card-body-page">
+      <div class="table-usuarios">
+          <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
+              <thead class="text-center table-dark">
+                  <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Sigla</th>
+                      <th>Unidad Padre</th>
+                      <th>Departamento</th>
+                      <th>Municipio</th>
+                      <th>Estado</th>
+                      <th>OP</th>
+                  </tr>
+              </thead>
+              <tbody class="text-center">
+                  <!-- <tr *ngFor = "let usuarios of datos.data">
+                      <td>{{ usuarios.id }}</td>
+                      <td>{{ usuarios.nombre }}</td>
+                      <td>{{ usuarios.identificacion }}</td>
+                      <td>{{ usuarios.usuario }}</td>
+                      <td>{{ usuarios.email }}</td>
+                      <td>{{ usuarios.cargo }}</td>
+                      <td>{{ usuarios.tipoUsuario }}</td>
+                      <td>{{ usuarios.estado }}</td>
+                      <td>
+                        <button type="button" class="btn btn-primary" style="margin-right: 1rem;" > <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                        <button type="button" class="btn btn-secondary"> <i class="fas fa-minus-circle fa-lg fa-fw"></i> </button>
+                      </td>
+                  </tr> -->
+              </tbody>
+              <!-- (click)="openModal(usuarios)" -->
+          </table>
+      </div>
+      <!-- <nav aria-label="..." *ngIf="pagina > 0">
+          <ul class="pagination">
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === 1" (click)="cambiarPagina(datos.infoPagination.pagina - 1)">Anterior</a>
+              </li>
+
+              <li *ngFor="let pagina of [].constructor(datos.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="datos.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === datos.infoPagination.totalPaginas" (click)="cambiarPagina(datos.infoPagination.pagina + 1)">Siguiente</a>
+              </li>
+          </ul>
+      </nav> -->
+  </div>
+</div>
+
+
+
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+
