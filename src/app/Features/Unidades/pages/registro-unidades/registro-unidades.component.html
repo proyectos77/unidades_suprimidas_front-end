@@ -1,13 +1,45 @@
 <div class="card cardContenido" >
-  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+  <div class="d-flex card-header card-header-paddin align-items-center justify-content-between">
       <h3>Registro Unidades</h3>
-      <div class="content-button d-flex justify-content-end align-items-center">
+      <div class="d-flex align-items-center justify-content-end content-button">
 
       </div>
   </div>
   <div class="card-body card-body-page">
+      <form class="content-form">
+          <div class="row">
+              <div class="col-md-5 form-group">
+                  <input class="form-control" type="text" name="" id="" placeholder="Nombre unidad">
+              </div>
 
+              <div class="col-md-2 form-group">
+                  <input class="form-control" type="text" name="" id="" placeholder="Sigle unidad">
+              </div>
+              <div class="col-md-5 form-group">
+                  <input class="form-control" type="text" name="" id="" placeholder="Padre unidad">
+              </div>
+          </div>
+
+          <div class="row mt-4">
+              <div class="col-md-6 form-group">
+                  <select class="form-select" name="" id="">
+                      <option value="">Departamentos</option>
+                      <option *ngFor="let departamento of departamentos.data" value="{{ departamento.id }}">{{ departamento.nombre }}</option>
+                  </select>
+              </div>
+
+              <div class="col-md-6 form-group">
+                  <select class="form-select" name="" id="">
+                      <option value="">Municipios</option>
+                  </select>
+              </div>
+          </div>
+
+          <div class="content-from__btn mt-5">
+              <button type="submit" class="btn btn-primary">Registrar</button>
+              <button type="submit" class="btn btn-secondary">Limpiar</button>
+          </div>
+      </form>
   </div>
 </div>
-
 
