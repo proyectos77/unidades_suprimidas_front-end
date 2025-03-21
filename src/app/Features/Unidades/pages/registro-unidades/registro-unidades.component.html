@@ -6,31 +6,36 @@
       </div>
   </div>
   <div class="card-body card-body-page">
-      <form class="content-form">
+      <form class="content-form" [formGroup]="formularioUnidad" (ngSubmit)="validarFormulario()">
           <div class="row">
               <div class="col-md-5 form-group">
-                  <input class="form-control" type="text" name="" id="" placeholder="Nombre unidad">
+                  <input class="form-control" type="text" formControlName="nombre" placeholder="* Nombre unidad">
+                  @if (this.formularioUnidad.get('nombre')?.touched && formularioUnidad.get('nombre')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo nombre</small>
+                      </div>
+                  }
               </div>
 
               <div class="col-md-2 form-group">
-                  <input class="form-control" type="text" name="" id="" placeholder="Sigle unidad">
+                  <input class="form-control" type="text" formControlName="sigla" placeholder="* Sigle unidad">
               </div>
               <div class="col-md-5 form-group">
-                  <input class="form-control" type="text" name="" id="" placeholder="Padre unidad">
+                  <input class="form-control" type="text" formControlName="padreUnidad" placeholder="* Padre unidad">
               </div>
           </div>
 
           <div class="row mt-4">
               <div class="col-md-6 form-group">
-                  <select class="form-select" name="" id="">
-                      <option value="">Departamentos</option>
+                  <select class="form-select" name="" id="" formControlName="departamentos">
+                      <option value="">* Departamentos</option>
                       <option *ngFor="let departamento of departamentos.data" value="{{ departamento.id }}">{{ departamento.nombre }}</option>
                   </select>
               </div>
 
               <div class="col-md-6 form-group">
-                  <select class="form-select" name="" id="">
-                      <option value="">Municipios</option>
+                  <select class="form-select" formControlName="municipios">
+                      <option value="">* Municipios</option>
                   </select>
               </div>
           </div>
@@ -39,8 +44,6 @@
               <button type="submit" class="btn btn-primary">Registrar</button>
               <button type="submit" class="btn btn-secondary">Limpiar</button>
           </div>
-
-          <h1>prueba</h1>
       </form>
   </div>
 </div>

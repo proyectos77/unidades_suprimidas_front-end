@@ -32,4 +32,12 @@ export class SweetAlertService {
             timer: 1500
         });
     }
+
+    alertaCamposInvalidosFormularios(){
+      Swal.fire({
+          icon: "warning",
+          title: "Error de campos",
+          text:   'Favor diligenciar todos los campos del formulario'
+      });
+  }
 }
