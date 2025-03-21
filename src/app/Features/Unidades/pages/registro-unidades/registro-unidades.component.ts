@@ -5,6 +5,7 @@ import { GetAllDepartamentos } from '../../../../Core/interfaces/get-all-departa
 import { NgFor } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
+import { StoreUnidades } from '../../interfaces/store-unidades';
 
 @Component({
   selector: 'app-registro-unidades',
@@ -62,10 +63,21 @@ export default class RegistroUnidadesComponent implements OnInit{
                 controlls.markAllAsTouched();
             });
         }else{
-
+            let dataForm = this.crearDataFormulario();
+            this.registrarUnidad(dataForm);
         }
     }
 
-    crearDataFormulario():
+    crearDataFormulario():StoreUnidades{
+        const data = {
+            ...this.formularioUnidad.value
+        }
+
+        return data;
+    }
+
+    registrarUnidad(data: StoreUnidades):void{
+        
+    }
 
 }
