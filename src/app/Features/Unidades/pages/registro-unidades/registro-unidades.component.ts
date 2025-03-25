@@ -35,6 +35,9 @@ export default class RegistroUnidadesComponent implements OnInit{
     ngOnInit(): void {
         this.listadoDepartamentos();
         this.formularioUnidad = this.formularioUnidades();
+        this.formularioUnidad.get('departamentos')?.valueChanges.subscribe(idDepartamento => {
+            this.listarMunicipios(idDepartamento);
+        });
     }
 
     formularioUnidades():FormGroup{
@@ -53,6 +56,12 @@ export default class RegistroUnidadesComponent implements OnInit{
                 this.departamentos.data = departamentos.data;
             }
         });
+    }
+
+    listarMunicipios(id: number):void{
+        if (id) {
+            
+        }
     }
 
     validarFormulario():void{
@@ -77,7 +86,7 @@ export default class RegistroUnidadesComponent implements OnInit{
     }
 
     registrarUnidad(data: StoreUnidades):void{
-        
+
     }
 
 }

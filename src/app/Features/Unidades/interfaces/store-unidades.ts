@@ -1,6 +1,6 @@
 export interface StoreUnidades {
     nombre:       String,
-    siga:         String,
+    sigla:         String,
     padreUnidad:  String,
     idMunicipio:  number,
 }

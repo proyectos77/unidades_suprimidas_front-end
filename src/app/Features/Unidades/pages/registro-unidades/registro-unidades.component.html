@@ -37,9 +37,9 @@
 
           <div class="row mt-4">
               <div class="col-md-6 form-group">
-                  <select class="form-select" name="" id="" formControlName="departamentos">
+                  <select class="form-select" name="" id="" formControlName="departamentos" (ngModelChange)="listarMunicipios($event)">
                       <option value="">* Departamentos</option>
-                      <option *ngFor="let departamento of departamentos.data" value="{{ departamento.id }}">{{ departamento.nombre }}</option>
+                      <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">{{ departamento.nombre }}</option>
                   </select>
 
                   @if (this.formularioUnidad.get('departamentos')?.touched && formularioUnidad.get('departamentos')?.errors?.['required']){

@@ -101,7 +101,7 @@ export default class RegistroUsuariosComponent implements OnInit{
 
             let dataForm = this.crearDataFormulario();
             this.crearUsuario(dataForm);
-
+            
         }
 
     }
