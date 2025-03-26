@@ -8,7 +8,7 @@
   <div class="card-body card-body-page">
       <form class="content-form" [formGroup]="formularioUnidad" (ngSubmit)="validarFormulario()">
           <div class="row">
-              <div class="col-md-5 form-group">
+              <div class="col-md-6 form-group">
                   <input class="form-control" type="text" formControlName="nombre" placeholder="* Nombre unidad">
                   @if (this.formularioUnidad.get('nombre')?.touched && formularioUnidad.get('nombre')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
@@ -17,15 +17,7 @@
                   }
               </div>
 
-              <div class="col-md-2 form-group">
-                  <input class="form-control" type="text" formControlName="sigla" placeholder="* Sigla unidad">
-                  @if (this.formularioUnidad.get('sigla')?.touched && formularioUnidad.get('sigla')?.errors?.['required']){
-                      <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo sigla</small>
-                      </div>
-                  }
-              </div>
-              <div class="col-md-5 form-group">
+              <div class="col-md-6 form-group">
                   <input class="form-control" type="text" formControlName="padreUnidad" placeholder="* Padre unidad">
                   @if (this.formularioUnidad.get('padreUnidad')?.touched && formularioUnidad.get('padreUnidad')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
@@ -35,9 +27,18 @@
               </div>
           </div>
 
-          <div class="row mt-4">
+          <div class="row mt-5">
               <div class="col-md-6 form-group">
-                  <select class="form-select" name="" id="" formControlName="departamentos" (ngModelChange)="listarMunicipios($event)">
+                  <input class="form-control" type="text" formControlName="sigla" placeholder="* Sigla unidad">
+                  @if (this.formularioUnidad.get('sigla')?.touched && formularioUnidad.get('sigla')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo sigla</small>
+                      </div>
+                  }
+              </div>
+
+              <div class="col-md-6 form-group">
+                  <select class="form-select" name="" id="" formControlName="departamentos">
                       <option value="">* Departamentos</option>
                       <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">{{ departamento.nombre }}</option>
                   </select>
@@ -48,22 +49,25 @@
                       </div>
                   }
               </div>
+          </div>
 
+          <div class="row mt-5">
               <div class="col-md-6 form-group">
-                  <select class="form-select" formControlName="municipios">
+                  <select class="form-select" formControlName="idMunicipio">
                       <option value="">* Municipios</option>
+                      <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
                   </select>
-                  @if (this.formularioUnidad.get('municipios')?.touched && formularioUnidad.get('municipios')?.errors?.['required']){
+                  @if (this.formularioUnidad.get('idMunicipio')?.touched && formularioUnidad.get('idMunicipio')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
                           <small class="text-danger">Es necesario el campo municipios</small>
                       </div>
                   }
               </div>
-          </div>
 
-          <div class="content-from__btn mt-5">
-              <button type="submit" class="btn btn-primary">Registrar</button>
-              <button type="" class="btn btn-secondary">Limpiar</button>
+              <div class="content-from__btn col-md-6">
+                  <button type="submit" class="btn btn-primary">Registrar</button>
+                  <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
+              </div>
           </div>
       </form>
   </div>

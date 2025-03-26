@@ -1,6 +1,6 @@
 
 import { ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild, Output, EventEmitter} from '@angular/core';
 import { DatumUsuario } from '../../interfaces/get-all-usuarios';
 import { CargosService } from '../../services/cargos.service';
 import { GetAllCargos } from '../../interfaces/get-all-cargos';
@@ -12,6 +12,7 @@ import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
+
 
 
 @Component({
@@ -26,6 +27,8 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
     @ViewChild('cerrarModal') cerrarModal!: ElementRef;
 
     @Input() usuario!: DatumUsuario;
+    @Output() usuarioEditado: EventEmitter<void> = new EventEmitter();
+
     public cargos: GetAllCargos = {
         'statusCode': 0,
         'titulo': '',
@@ -136,5 +139,6 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
 
     cerrarModales() {
         this.cerrarModal.nativeElement.click();
+        this.usuarioEditado.emit();
     }
 }

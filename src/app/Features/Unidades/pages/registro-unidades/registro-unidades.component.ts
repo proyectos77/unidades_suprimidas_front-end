@@ -6,6 +6,10 @@ import { NgFor } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUnidades } from '../../interfaces/store-unidades';
+import { MunicipiosService } from '../../../../Core/services/municipios.service';
+import { log } from 'console';
+import { GetAllMunicipiosPorDepartamento } from '../../../../Core/interfaces/get-all-municipios-por-departamento';
+import { UnidadesService } from '../../services/unidades.service';
 
 @Component({
   selector: 'app-registro-unidades',
@@ -20,7 +24,9 @@ export default class RegistroUnidadesComponent implements OnInit{
     constructor(
         private httDepartamentos: DepartamentosService,
         private form: FormBuilder,
-        private seet: SweetAlertService
+        private sweet: SweetAlertService,
+        private httMunicipios: MunicipiosService,
+        private httUnidades: UnidadesService
     ) {}
 
     public departamentos:GetAllDepartamentos = {
@@ -29,8 +35,15 @@ export default class RegistroUnidadesComponent implements OnInit{
         'statusCode': 0,
         'titulo': '',
         'data': []
-
     };
+
+    public municipios: GetAllMunicipiosPorDepartamento = {
+        'titulo': '',
+        'mensaje': '',
+        'icono': '',
+        'statusCode': 0,
+        'data': []
+    }
 
     ngOnInit(): void {
         this.listadoDepartamentos();
@@ -46,7 +59,7 @@ export default class RegistroUnidadesComponent implements OnInit{
             sigla: ['', [Validators.required]],
             padreUnidad: ['', [Validators.required]],
             departamentos: ['', [Validators.required]],
-            municipios: ['', [Validators.required]]
+            idMunicipio: ['', [Validators.required]]
         });
     }
 
@@ -60,13 +73,23 @@ export default class RegistroUnidadesComponent implements OnInit{
 
     listarMunicipios(id: number):void{
         if (id) {
-            
+            this.httMunicipios.getAllMunicipiosPorDepartamento(id).subscribe(municipios => {
+                this.municipios = municipios;
+            })
+        }else{
+            this.municipios = {
+                'titulo': '',
+                'mensaje': '',
+                'icono': '',
+                'statusCode': 0,
+                'data': []
+            }
         }
     }
 
     validarFormulario():void{
         if (this.formularioUnidad.invalid) {
-            this.seet.alertaCamposInvalidosFormularios();
+            this.sweet.alertaCamposInvalidosFormularios();
 
             return Object.values(this.formularioUnidad.controls).forEach(controlls =>{
                 controlls.markAllAsTouched();
@@ -86,7 +109,19 @@ export default class RegistroUnidadesComponent implements OnInit{
     }
 
     registrarUnidad(data: StoreUnidades):void{
+        this.httUnidades.storeUnidad(data).subscribe(unidad =>{
+            this.sweet.alertaGeneral(unidad.icono, unidad.titulo, unidad.mensaje);
 
+            if (unidad.statusCode == 200) {
+                this.limpiarForm();
+            }
+        })
+    }
+
+    limpiarForm(){
+        this.formularioUnidad.reset();
+        this.formularioUnidad.get('departamentos')?.setValue('');
+        this.formularioUnidad.get('idMunicipio')?.setValue('');
     }
 
 }

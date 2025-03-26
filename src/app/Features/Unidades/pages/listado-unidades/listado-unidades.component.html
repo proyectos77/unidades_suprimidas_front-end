@@ -19,6 +19,18 @@
                   </tr>
               </thead>
               <tbody class="text-center">
+                  <tr *ngFor="let unidad of listaUnidades.data">
+                      <td>{{ unidad.id_unidad }}</td>
+                      <td>{{ unidad.nombre }}</td>
+                      <td>{{ unidad.sigla }}</td>
+                      <td>{{ unidad.padre }}</td>
+                      <td>{{ unidad.departamento }}</td>
+                      <td>{{ unidad.municipio }}</td>
+                      <td>{{ unidad.estado }}</td><td>
+                          <button type="button" class="btn btn-primary" style="margin-right: 1rem;" > <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                          <button type="button" class="btn btn-secondary"> <i class="fas fa-minus-circle fa-lg fa-fw"></i> </button>
+                      </td>
+                  </tr>
                   <!-- <tr *ngFor = "let usuarios of datos.data">
                       <td>{{ usuarios.id }}</td>
                       <td>{{ usuarios.nombre }}</td>
@@ -37,19 +49,19 @@
               <!-- (click)="openModal(usuarios)" -->
           </table>
       </div>
-      <!-- <nav aria-label="..." *ngIf="pagina > 0">
+      <nav aria-label="..." *ngIf="pagina > 0">
           <ul class="pagination">
               <li class="page-item">
-                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === 1" (click)="cambiarPagina(datos.infoPagination.pagina - 1)">Anterior</a>
+                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>
               </li>
 
-              <li *ngFor="let pagina of [].constructor(datos.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="datos.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+              <li *ngFor="let pagina of [].constructor(listaUnidades.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="listaUnidades.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
 
               <li class="page-item">
-                  <a class="page-link" [class.disabled]="datos.infoPagination.pagina === datos.infoPagination.totalPaginas" (click)="cambiarPagina(datos.infoPagination.pagina + 1)">Siguiente</a>
+                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === listaUnidades.infoPagination.totalPaginas" (click)="cambiarPagina(listaUnidades.infoPagination.pagina + 1)">Siguiente</a>
               </li>
           </ul>
-      </nav> -->
+      </nav>
   </div>
 </div>
 
