@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../Auth/services/login.service';
 import { Router } from '@angular/router';
 
@@ -8,11 +8,26 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export default class HeaderComponent {
+export default class HeaderComponent implements OnInit {
 
-  constructor(private httpAuth: LoginService, private router: Router){}
+    public nombreUsuario: string = '';
+    public rol: string = '';
+    constructor(private httpAuth: LoginService, private router: Router){}
 
-  cerrarSesion():void{
-      this.httpAuth.cerrarSesion().subscribe(cierre =>{});
-  }
+    ngOnInit(): void {
+        this.usuario();
+    }
+
+    cerrarSesion():void{
+        this.httpAuth.cerrarSesion().subscribe(cierre =>{});
+    }
+
+    usuario():void{
+
+        let prueba = this.httpAuth.datosSesion();
+        this.nombreUsuario = prueba.nombre;
+        this.rol = prueba.rol;
+        console.log(prueba);
+
+    }
 }
