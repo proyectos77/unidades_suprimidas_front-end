@@ -71,14 +71,15 @@
 
 .submenu__item{
   margin-bottom: 0.2rem;
-  background-color: var(--negro);
+  background-color: var(--blanco);
   padding: 1rem;
   border-radius: 1rem;
   text-decoration: underline;
+  color: var(--negro);
 }
 
 .submenu__item:hover{
-  background-color: var(--blanco);
+  background-color: var(--gris);
   color: var(--negro);
 }
 

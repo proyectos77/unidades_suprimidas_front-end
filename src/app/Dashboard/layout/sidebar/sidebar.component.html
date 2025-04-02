@@ -6,7 +6,13 @@
 
   <nav class="menu">
       <ul class="menu__content">
-          <li class="menu__item" [routerLink]="['/main/usuarios']" routerLinkActive="active">Usuarios</li>
+          <li class="menu__item" routerLinkActive="active">
+              <a>Usuarios</a>
+              <ul class="submenu">
+                  <li class="submenu__item" [routerLink]="['/main/usuarios']" routerLinkActive="Active">Listado de usuarios</li>
+                  <li class="submenu__item" [routerLink]="['/main/usuarios/registroUsuarios']" routerLinkActive="Active">Registro de usuarios</li>
+              </ul>
+          </li>
           <li class="menu__item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
               <a >Unidades</a>
               <ul class="submenu">
