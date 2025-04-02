@@ -8,6 +8,11 @@
   <div class="card-body card-body-page">
       <form class="content-form" [formGroup]="formularioUnidad" (ngSubmit)="validarFormulario()">
           <div class="row">
+              <div class="col-md-12 formulario__texto">
+                  <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red;">*</span></p>
+              </div>
+          </div>
+          <div class="row">
               <div class="col-md-6 form-group">
                   <input class="form-control" type="text" formControlName="nombre" placeholder="* Nombre unidad">
                   @if (this.formularioUnidad.get('nombre')?.touched && formularioUnidad.get('nombre')?.errors?.['required']){

@@ -39,7 +39,11 @@ export default class ListadoUnidadesComponent implements OnInit{
 
     getAllUnidades(pagina: number):void{
         this.httUnidades.getAllUnidades(pagina).subscribe(unidades =>{
-            this.listaUnidades = unidades
+            if (unidades.data.length == 0) {
+              this.pagina = 0
+            }else{
+                this.listaUnidades = unidades
+            }
         });
     }
 
