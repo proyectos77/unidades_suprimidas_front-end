@@ -3,18 +3,21 @@ export interface GetAllUnidades {
   titulo:         string;
   mensaje:        string;
   icono:          string;
-  data:           Datum[];
+  data:           DatumUnidad[];
   infoPagination: InfoPagination;
 }
 
-export interface Datum {
-  id_unidad:    number;
-  nombre:       string;
-  sigla:        string;
-  padre:        string;
-  departamento: string;
-  municipio:    string;
-  estado:       string;
+export interface DatumUnidad {
+  id_unidad:        number;
+  nombre:           string;
+  sigla:            string;
+  padre:            string;
+  departamento:     string;
+  idDepartamento:   number;
+  municipio:        string;
+  idMunicipio:      number;
+  estado:           string;
+  idEstado:         number;
 }
 
 export interface InfoPagination {

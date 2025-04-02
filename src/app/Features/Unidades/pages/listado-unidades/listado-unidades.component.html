@@ -26,9 +26,9 @@
                       <td>{{ unidad.padre }}</td>
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
-                      <td>{{ unidad.estado }}</td><td>
-                          <button type="button" class="btn btn-primary" style="margin-right: 1rem;" > <i class="fas fa-pen fa-lg fa-fw"></i> </button>
-                          <button type="button" class="btn btn-secondary"> <i class="fas fa-minus-circle fa-lg fa-fw"></i> </button>
+                      <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
+                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
                       </td>
                   </tr>
               </tbody>
@@ -51,6 +51,7 @@
 </div>
 
 
+<app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad>
 
   <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
 

@@ -3,10 +3,10 @@ export interface RespuestaRegistroUnidad {
   titulo:     string;
   mensaje:    string;
   icono:      string;
-  data:       Data;
+  data:       DataUnidad;
 }
 
-export interface Data {
+export interface DataUnidad {
   nombre_unidad: string;
   sigla_unidad:  string;
   padre_unidad:  string;

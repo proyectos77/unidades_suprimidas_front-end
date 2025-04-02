@@ -37,7 +37,10 @@ body{
     --verdePrincipal: #1c5e1c;
     --verdePrincipalOscuro: #3e5315;
     --negroTrasparente: #00000065;
+    --rojo: rgb(148, 6, 6);
+
     --titulos: "Kanit", serif;
+
 }
 
 /***********************************************************
@@ -154,6 +157,11 @@ ul{
     justify-content: end;
     gap: 2rem;
 }
+
+
+
+
+
 /***********************************************************
 
         ************ ESTILOS PARA LAS CARD DE CADA PAGINA **********

@@ -10,10 +10,11 @@ import { MunicipiosService } from '../../../../Core/services/municipios.service'
 import { log } from 'console';
 import { GetAllMunicipiosPorDepartamento } from '../../../../Core/interfaces/get-all-municipios-por-departamento';
 import { UnidadesService } from '../../services/unidades.service';
+import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
 
 @Component({
   selector: 'app-registro-unidades',
-  imports: [NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule, ModalEditarUnidadComponent],
   templateUrl: './registro-unidades.component.html',
   styleUrl: './registro-unidades.component.css'
 })

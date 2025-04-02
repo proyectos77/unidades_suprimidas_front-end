@@ -1,23 +1,19 @@
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { TiposUsuariosService } from '../../services/tipos-usuarios.service';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { NgFor } from '@angular/common';
 import { CargosService } from '../../services/cargos.service';
 import { GetAllCargos } from '../../interfaces/get-all-cargos';
 import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom-validators';
-import Swal from 'sweetalert2';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
-import { error } from 'console';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
-import { exit } from 'process';
 
 
 @Component({
   selector: 'app-registro-usuarios',
-  imports: [RouterLink, NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule],
   templateUrl: './registro-usuarios.component.html',
   styleUrl: './registro-usuarios.component.css'
 })
@@ -101,9 +97,8 @@ export default class RegistroUsuariosComponent implements OnInit{
 
             let dataForm = this.crearDataFormulario();
             this.crearUsuario(dataForm);
-            
-        }
 
+        }
     }
 
     crearDataFormulario():StoreUsuarios{

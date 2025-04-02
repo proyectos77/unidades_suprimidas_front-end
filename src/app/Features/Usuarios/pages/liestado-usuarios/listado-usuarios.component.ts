@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { DatumUsuario, GetAllUsuarios } from '../../interfaces/get-all-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
 import { CommonModule, NgFor } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { ModalEditarUsuarioComponent } from "../../components/modal-editar-usuario/modal-editar-usuario.component";
-import { log } from 'console';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-liestado-usuarios',
-  imports: [CommonModule, NgFor, RouterLink, ModalEditarUsuarioComponent],
+  imports: [CommonModule, NgFor, ModalEditarUsuarioComponent],
   templateUrl: './listado-usuarios.component.html',
   styleUrl: './listado-usuarios.component.css'
 })

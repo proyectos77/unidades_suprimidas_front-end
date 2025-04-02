@@ -1,0 +1,89 @@
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditarUnidades" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Actualizar Usuario</h4>
+                <button type="button" #cerrarModal class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <form class="" [formGroup]="formularioEditarUnidad">
+                    <div class="row">
+                        <div class="col-md-12 formulario__texto">
+                          <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red;">*</span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input class="form-control" type="text" formControlName="nombre" placeholder="* Nombre unidad">
+                            @if (this.formularioEditarUnidad.get('nombre')?.touched && formularioEditarUnidad.get('nombre')?.errors?.['required']){
+                                <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo nombre</small>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <input class="form-control" type="text" formControlName="padreUnidad" placeholder="* Padre unidad">
+                            @if (this.formularioEditarUnidad.get('padreUnidad')?.touched && formularioEditarUnidad.get('padreUnidad')?.errors?.['required']){
+                                <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo padre unidad</small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                          <div class="col-md-6 form-group">
+                              <input class="form-control" type="text" formControlName="sigla" placeholder="* Sigla unidad">
+                              @if (this.formularioEditarUnidad.get('sigla')?.touched && formularioEditarUnidad.get('sigla')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo sigla</small>
+                                  </div>
+                              }
+                          </div>
+
+                          <div class="col-md-6 form-group">
+                              <select class="form-select" name="" id="" formControlName="departamentos">
+                                  <option value="">* Departamentos</option>
+                                  <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">{{ departamento.nombre }}</option>
+                              </select>
+
+                              @if (this.formularioEditarUnidad.get('departamentos')?.touched && formularioEditarUnidad.get('departamentos')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo departamento</small>
+                                  </div>
+                              }
+                          </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-md-6 form-group">
+                            <select class="form-select" formControlName="idMunicipio">
+                                <option value="">* Municipios</option>
+                                <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
+                            </select>
+                            @if (this.formularioEditarUnidad.get('idMunicipio')?.touched && formularioEditarUnidad.get('idMunicipio')?.errors?.['required']){
+                                <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo municipios</small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer p-3">
+                <div class="content-from__btn">
+                    <button type="button" class="btn btn-primary" (click)="validarFormulario()">Editar</button>
+                    <button type="button" class="btn btn-secondary" (click)="cerrarModales()">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
