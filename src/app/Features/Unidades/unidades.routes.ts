@@ -4,6 +4,7 @@ export const routes: Routes = [
 
     { path: 'listadoUnidades', loadComponent: () =>  import('./pages/listado-unidades/listado-unidades.component')},
     { path: 'registroUnidades', loadComponent: () =>  import('./pages/registro-unidades/registro-unidades.component')},
+    { path: 'registroDetalleUnidad', loadComponent: () => import('./pages/registro-detalle-unidad/registro-detalle-unidad.component')},
 
     /* { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},
 
