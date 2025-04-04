@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { RespuestaRegistroUnidad } from '../interfaces/respuesta-registro-unidad';
 import { GetAllUnidades } from '../interfaces/get-all-unidades';
 import { RespuestaUpdateUnidad } from '../interfaces/respuesta-update-unidad';
+import { GetListUnidadesSelect } from '../interfaces/get-list-unidades-select';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { RespuestaUpdateUnidad } from '../interfaces/respuesta-update-unidad';
 export class UnidadesService {
 
     private url = environment.apiUrl + '/unidades';
-
+    private urlList = environment.apiUrl;
     constructor(private httpUnidades: HttpClient) { }
 
 
@@ -34,5 +35,10 @@ export class UnidadesService {
     updateEstadoUnidad(estado: number, idUnidad: number):Observable<RespuestaRegistroUnidad>{
         let urlFinal = this.url + '/' + idUnidad;
         return this.httpUnidades.patch<RespuestaUpdateUnidad>(urlFinal, {estado:estado});
+    }
+
+    listUnidadesSelect():Observable<GetListUnidadesSelect>{
+        let urlFinal = this.urlList + '/selectUnidades';
+        return this.httpUnidades.get<GetListUnidadesSelect>(urlFinal);
     }
 }

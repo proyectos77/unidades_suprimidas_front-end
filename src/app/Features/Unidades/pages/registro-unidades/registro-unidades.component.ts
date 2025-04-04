@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DepartamentosService } from '../../../../Core/services/departamentos.service';
 import { GetAllDepartamentos } from '../../../../Core/interfaces/get-all-departamentos';
@@ -7,14 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUnidades } from '../../interfaces/store-unidades';
 import { MunicipiosService } from '../../../../Core/services/municipios.service';
-import { log } from 'console';
 import { GetAllMunicipiosPorDepartamento } from '../../../../Core/interfaces/get-all-municipios-por-departamento';
 import { UnidadesService } from '../../services/unidades.service';
-import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
+
 
 @Component({
   selector: 'app-registro-unidades',
-  imports: [NgFor, ReactiveFormsModule, ModalEditarUnidadComponent],
+  imports: [NgFor, ReactiveFormsModule],
   templateUrl: './registro-unidades.component.html',
   styleUrl: './registro-unidades.component.css'
 })
