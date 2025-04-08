@@ -32,7 +32,6 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     private formulario: FormBuilder,
     private sweet: SweetAlertService,
     private httpDetalleUnidad: DetalleUnidadService
-
   ) {}
 
   ngOnInit(): void {
@@ -98,5 +97,6 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
 
   limpiarForm(): void {
       this.formDetalle.reset();
+      this.formDetalle.get('idUnidad')?.setValue('');
   }
 }
