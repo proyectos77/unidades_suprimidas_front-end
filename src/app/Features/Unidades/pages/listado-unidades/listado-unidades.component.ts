@@ -4,11 +4,13 @@ import { UnidadesService } from '../../services/unidades.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
+import { RouterLink, RouterModule } from '@angular/router';
+
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-listado-unidades',
-  imports: [NgFor, NgIf, NgClass, ModalEditarUnidadComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent],
   templateUrl: './listado-unidades.component.html',
   styleUrl: './listado-unidades.component.css'
 })
