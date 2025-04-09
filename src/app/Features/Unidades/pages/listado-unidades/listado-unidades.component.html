@@ -29,7 +29,7 @@
                       <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
                           <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad']"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
                       </td>
                   </tr>
               </tbody>

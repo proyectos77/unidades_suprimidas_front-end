@@ -7,6 +7,7 @@ import { RespuestaRegistroUnidad } from '../interfaces/respuesta-registro-unidad
 import { GetAllUnidades } from '../interfaces/get-all-unidades';
 import { RespuestaUpdateUnidad } from '../interfaces/respuesta-update-unidad';
 import { GetListUnidadesSelect } from '../interfaces/get-list-unidades-select';
+import { GetInformacionUnidad } from '../interfaces/get-informacion-unidad';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,10 @@ export class UnidadesService {
     listUnidadesSelect():Observable<GetListUnidadesSelect>{
         let urlFinal = this.urlList + '/selectUnidades';
         return this.httpUnidades.get<GetListUnidadesSelect>(urlFinal);
+    }
+
+    getInformacionUnidad($id: number):Observable<GetInformacionUnidad>{
+        let urlFinal = this.url + '/' + $id;
+        return this.httpUnidades.get<GetInformacionUnidad>(urlFinal);
     }
 }

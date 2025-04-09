@@ -2,9 +2,46 @@
 <div class="card cardContenido" >
   <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
       <h3>Informacion de la unidad</h3>
+      <div class="content-btn-regresar">
+          <button type="button" class="btn btn-primary" [routerLink]="['/main/unidades/listadoUnidades']">Regresar</button>
+      </div>
   </div>
   <div class="card-body card-body-page">
-      
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Unidad</button>
+          </li>
+          <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Detalle</button>
+          </li>
+          <li class="nav-item" role="presentation">
+              <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab"  aria-controls="messages" aria-selected="false">Archivos</button>
+          </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+          <div class="tab-pane active item" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              <p class="item__text"><span>Sigla:</span> {{ informacionUnidad.data.sigla_unidad }}</p>
+              <p class="item__text"><span>Padre de la unidad:</span> {{ informacionUnidad.data.padre_unidad }}</p>
+              <p class="item__text"><span>Departamento / Municipio de creación:</span> {{ informacionUnidad.data.municipio.departamentos.nombre_departamento }} / {{ informacionUnidad.data.municipio.nombre_municipio }}</p>
+          </div>
+          <div class="tab-pane item" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              <p class="item__text"><span>Acto administrativo de creación: </span>{{ informacionUnidad.data.detalle_unidad.acto_administrativo_creacion_detalle }}</p>
+              <p class="item__text"><span>Fecha de creación: </span>{{ informacionUnidad.data.detalle_unidad.fecha_creacion_unidad_detalle }}</p>
+              <p class="item__text"><span>Acto administrativo de desactivación: </span>{{ informacionUnidad.data.detalle_unidad.acto_administrativo_desactivacion_detalle }}</p>
+              <p class="item__text"><span>Fecha de desactivación: </span>{{ informacionUnidad.data.detalle_unidad.fecha_desactivacion_unidad_detalle }}</p>
+              <p class="item__text"><span>Puesto de mando adelantado: </span>{{ informacionUnidad.data.detalle_unidad.puesto_mando_adelantado_detalle }}</p>
+              <p class="item__text"><span>Puesto de mando atrasado: </span>{{ informacionUnidad.data.detalle_unidad.puesto_mando_atrasado_detalle }}</p>
+              <p class="item__text"><span>Observación:</span></p>
+              <p class="item__text-observacion">{{ informacionUnidad.data.detalle_unidad.observacion_detalle }}</p>
+          </div>
+          <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">messages</div>
+      </div>
+
   </div>
 </div>
 

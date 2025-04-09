@@ -5,12 +5,13 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { RouterLink, RouterModule } from '@angular/router';
+import VistaDetalleUnidadComponent from "../vista-detalle-unidad/vista-detalle-unidad.component";
 
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-listado-unidades',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, VistaDetalleUnidadComponent],
   templateUrl: './listado-unidades.component.html',
   styleUrl: './listado-unidades.component.css'
 })
