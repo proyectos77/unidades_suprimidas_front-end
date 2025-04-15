@@ -10,6 +10,9 @@ import { StoreUnidades } from '../../interfaces/store-unidades';
 import { NgFor, NgIf } from '@angular/common';
 import { DatumUnidad } from '../../interfaces/get-all-unidades';
 import { GetInformacionUnidad } from '../../interfaces/get-informacion-unidad';
+import { StoreDetalleUnidad } from '../../interfaces/sotre-detalleUnidad';
+import { DetalleUnidadService } from '../../services/detalleUnidad.service';
+import { forkJoin } from 'rxjs';
 
 
 
@@ -19,11 +22,11 @@ import { GetInformacionUnidad } from '../../interfaces/get-informacion-unidad';
   templateUrl: './modal-editar-unidad.component.html',
   styleUrl: './modal-editar-unidad.component.css'
 })
-export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewInit {
+export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* AfterViewInit */
 
       @Input() unidad!: DatumUnidad;
       @Output() unidadEditada: EventEmitter<void> = new EventEmitter();
-      @ViewChild('home') cerrarModal!: ElementRef;
+      @ViewChild('cerrarModal') cerrarModal!: ElementRef;
 
       public formularioEditarUnidad!: FormGroup;
       public formularioEditarDetalleUnidad!: FormGroup;
@@ -98,6 +101,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
           private sweet: SweetAlertService,
           private httMunicipios: MunicipiosService,
           private httpUnidades: UnidadesService,
+          private httpDetalleUnidad: DetalleUnidadService
       ) {}
 
       ngOnInit(): void {
@@ -179,7 +183,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
               next: (informacion) => {
                   if (informacion.statusCode === 200) {
                       this.informacionUnidad = informacion;
-                      this.ngAfterViewInit();
+                     /*  this.ngAfterViewInit(); */
                       this.seccionEditarDetalle = true;
                       this.formularioEditarDetalleUnidad.patchValue({
                           'nombreUnidad': this.informacionUnidad.data.nombre_unidad,
@@ -196,28 +200,61 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
               error: (error) => {
                   console.log(error);
                   this.seccionEditarDetalle = false;
-                  this.ngAfterViewInit();
+                  /* this.ngAfterViewInit(); */
               },
           });
       }
 
       validarFormulario():void{
+
+          let error = false;
+
           if (this.formularioEditarUnidad.invalid) {
               this.sweet.alertaCamposInvalidosFormularios();
               this.tab = 'unidad-tab';
-              this.ngAfterViewInit();
+              /* this.ngAfterViewInit(); */
+              error = true;
               return Object.values(this.formularioEditarUnidad.controls).forEach(controlls =>{
                   controlls.markAllAsTouched();
               });
-
-
-          }else{
-              let dataForm = this.crearDataFormulario();
-              this.editarUnidad(dataForm);
+          }else if (this.formularioEditarDetalleUnidad.invalid) {
+              this.sweet.alertaCamposInvalidosFormularios();
+              this.tab = 'detalle-tab';
+              /* this.ngAfterViewInit(); */
+              error = true;
+              return Object.values(this.formularioEditarDetalleUnidad.controls).forEach(controlls =>{
+                  controlls.markAllAsTouched();
+              });
           }
+
+          const dataFormUnidad = this.crearDataUnidadFormulario();
+          const dataFormDetalleUnidad = this.crearDataDetalleFormulario();
+
+
+
+          forkJoin({
+              unidadEditar: this.httpUnidades.updateUnidad(dataFormUnidad, this.unidad.id_unidad),
+              detalle: this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, dataFormDetalleUnidad)
+          }).subscribe(({ unidadEditar, detalle }) => {
+              if (unidadEditar.statusCode === 200 && detalle.statusCode === 200) {
+                  this.sweet.alertaGeneral('success', 'Actualización exitosa', 'La unidad y su detalle fueron actualizados correctamente.');
+                  this.cerrarModales();
+              } else {
+                  this.sweet.alertaGeneral('error', 'Error al actualizar', 'Ocurrió un error al actualizar los datos.');
+              }
+          }, error => {
+              this.sweet.alertaGeneral('error', 'Error inesperado', 'No se pudo completar la actualización.');
+          });
       }
 
-      crearDataFormulario():StoreUnidades{
+      crearDataDetalleFormulario():StoreDetalleUnidad{
+          const data = {
+              ...this.formularioEditarDetalleUnidad.value
+          }
+          return data;
+      }
+
+      crearDataUnidadFormulario():StoreUnidades{
           const data = {
               ...this.formularioEditarUnidad.value
           }
@@ -233,6 +270,15 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
           })
       }
 
+      editarDetalleUnidad(data: StoreDetalleUnidad):void{
+          this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, data).subscribe(detalle =>{
+              this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
+              if (detalle.statusCode == 200) {
+                  this.cerrarModales();
+              }
+          });
+      }
+
       cerrarModales():void{
           this.formularioEditarDetalleUnidad.reset();
           this.formularioEditarUnidad.reset();
@@ -241,7 +287,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
           this.unidadEditada.emit();
       }
 
-      ngAfterViewInit(): void {
+      /* ngAfterViewInit(): void {
           console.log(this.tab);
 
           // Asegurarse de que la pestaña "home" esté activa después de que la vista se haya inicializado
@@ -249,5 +295,5 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges, AfterViewI
           if (homeTab) {
               homeTab.click();
           }
-      }
+      } */
 }
