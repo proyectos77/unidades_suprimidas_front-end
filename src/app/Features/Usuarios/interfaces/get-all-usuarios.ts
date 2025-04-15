@@ -15,7 +15,9 @@ export interface DatumUsuario {
   usuario:        string;
   estado:         string;
   cargo:          string;
+  idCargo:        number;
   tipoUsuario:    string;
+  idTipoUsuario:  number;
 }
 
 export interface InfoPagination {

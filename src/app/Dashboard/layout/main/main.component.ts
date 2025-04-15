@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import HeaderComponent from "../header/header.component";
 import SidebarComponent from "../sidebar/sidebar.component";
 import { RouterOutlet } from '@angular/router';
-import { LoaderComponent } from "../../../Shared/components/loader/loader.component";
+import { LoaderComponent } from "../../../Shared/Components/loader/loader.component";
 
 @Component({
   selector: 'app-main',

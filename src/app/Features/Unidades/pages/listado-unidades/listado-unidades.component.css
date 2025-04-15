@@ -1,0 +1,10 @@
+.elementoActivo{
+  /* background-color: var(--verdePrincipal); */
+  color: green;
+  font-weight: bold;
+}
+
+.elemnetoInactivo{
+  color: var(--rojo);
+  font-weight: bold;
+}

@@ -2,18 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { DatumUsuario, GetAllUsuarios } from '../../interfaces/get-all-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
 import { CommonModule, NgFor } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { GetAllTiposUsuarios } from '../../interfaces/get-all-tipos-usuarios';
 import { ModalEditarUsuarioComponent } from "../../components/modal-editar-usuario/modal-editar-usuario.component";
-import { log } from 'console';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-liestado-usuarios',
-  imports: [CommonModule, NgFor, RouterLink, ModalEditarUsuarioComponent],
-  templateUrl: './liestado-usuarios.component.html',
-  styleUrl: './liestado-usuarios.component.css'
+  imports: [CommonModule, NgFor, ModalEditarUsuarioComponent],
+  templateUrl: './listado-usuarios.component.html',
+  styleUrl: './listado-usuarios.component.css'
 })
 export default class LiestadoUsuariosComponent implements OnInit{
 
@@ -49,13 +47,16 @@ export default class LiestadoUsuariosComponent implements OnInit{
         'email': '',
         'tipoUsuario': '',
         'cargo': '',
-        'estado': ''
+        'idCargo': 0,
+        'estado': '',
+        'idTipoUsuario': 0
     }
 
     public pagina:number = 1;
     public totalRegistros:number = 0;
     public registrosPorPagina:number = 0;
     public totalPaginas:number = 0;
+    public abrirModal: boolean = false;
 
     constructor(private httpUsuarios: UsuariosServicesService){}
 
@@ -74,6 +75,7 @@ export default class LiestadoUsuariosComponent implements OnInit{
     }
 
     openModal(usuario : DatumUsuario):void{
+
         const modal = document.getElementById('modalUsuario');
         this.bootstrapModal = new bootstrap.Modal(modal);
 
@@ -86,6 +88,4 @@ export default class LiestadoUsuariosComponent implements OnInit{
             this.listadoUsuarios(pagina);
         }
     }
-
-
 }

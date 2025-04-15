@@ -3,54 +3,116 @@
 
 <!-- Modal -->
     <div class="modal fade" id="modalUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="staticBackdropLabel">Actualizar Usuario</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" #cerrarModal class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="formulario-editar-usuario">
+                    <form class="formulario-editar-usuario" [formGroup]="formularioEdit" (ngSubmit)="validarFormulario()">
                         <!-- formulario-editar__texto -->
-                         <div class="formulario-editar__campos">
-                            <div>
-                                <input type="text" class="form-control" value="{{ usuario.nombre }}">
+                        <div class="formulario-editar__campos" >
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">* Nombre</label>
+                                <input type="text" class="form-control" formControlName="nombre">
+
+                                @if (this.formularioEdit.get('nombre')?.touched && this.formularioEdit.get('nombre')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el cmapo Nombre</small>
+                                    </div>
+                                }
+
+                                @if (this.formularioEdit.get('nombre')?.touched && this.formularioEdit.get('nombre')?.errors?.['validarSoloLetras']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">El campos Nombre solo acepta letras</small>
+                                    </div>
+                                }
                             </div>
 
-                            <div>
-                                <input type="text" class="form-control" value="{{ usuario.identificacion }}">
+                            <div class="form-group">
+                                <label for="identificacion" class="form-label">* Identificacion</label>
+                                <input type="text" class="form-control" formControlName="identificacion" >
+
+                                @if ((this.formularioEdit.get('identificacion')?.touched || this.formularioEdit.get('identificacion')?.dirty)&& this.formularioEdit.get('identificacion')?.errors?.['validarSoloNumeros']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">El campos Identificacion solo acepta numeros </small>
+                                    </div>
+                                }
                             </div>
 
-                            <div>
-                                <input type="text" class="form-control" value="{{ usuario.usuario }}">
+                            <div class="form-group">
+                                <label for="" class="form-label">* Usuario</label>
+                                <input type="text" class="form-control" formControlName="user">
+
+                                @if ((this.formularioEdit.get('user')?.touched || this.formularioEdit.get('user')?.dirty)&& this.formularioEdit.get('user')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el cmapo Usuario</small>
+                                    </div>
+                                }
                             </div>
 
-                            <div>
-                                <input type="text" class="form-control" value="{{ usuario.email }}">
+                            <div class="form-group">
+                                <label for="" class="form-label">* Email</label>
+                                <input type="email" class="form-control" formControlName="emailUsuario">
+
+                                @if ((this.formularioEdit.get('emailUsuario')?.touched || this.formularioEdit.get('emailUsuario')?.dirty)&& this.formularioEdit.get('emailUsuario')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el cmapo Email</small>
+                                    </div>
+                                }
+
+                                @if ((this.formularioEdit.get('emailUsuario')?.touched || this.formularioEdit.get('emailUsuario')?.dirty)&& this.formularioEdit.get('emailUsuario')?.errors?.['email']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">El email no tiene el formato adecuado</small>
+                                    </div>
+                                }
+
                             </div>
 
-                            <div>
-                                <select class="form-select">
-                                    <option *ngFor="let cargo of cargos.data" value="{{ cargo.id }}">{{ cargo.nombre }}</option>
+                            <div class="form-group">
+                                <label for="cargo" class="form-label">* Cargo</label>
+                                <select class="form-select" formControlName="cargo">
+                                    <option value="">Seleccione</option>
+                                    <option *ngFor="let cargo of cargos.data" [value]="cargo.id">
+                                        {{ cargo.nombre }}
+                                    </option>
                                 </select>
+
+                                @if (this.formularioEdit.get('cargo')?.touched && this.formularioEdit.get('cargo')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el cmapo cargo</small>
+                                    </div>
+                                }
                             </div>
 
-                            <div>
-                                <select class="form-select">
+                            <div class="form-group">
+                                <label for="" class="form-label">* Cargo</label>
+                                <select class="form-select" formControlName="tipoUsuario">
                                     <option *ngFor="let tipo of tipoUsuarios.data" value="{{ tipo.id }}">{{ tipo.nombre }}</option>
                                 </select>
-                            </div>
-                         </div>
 
+                                @if (this.formularioEdit.get('tipoUsuario')?.touched && this.formularioEdit.get('tipoUsuario')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el cmapo Tipo usuario</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="modal-footer mt-5">
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Actualizar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+
             </div>
         </div>
     </div>
+
+
+
 
 
 

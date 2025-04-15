@@ -1,15 +1,26 @@
 <div class="main-sidebar">
 
-    <div class="icono-sidebar">
-       <img src="imagenes/pagina/escudo_ejercito.png" alt="">
-    </div>
+  <div class="icono-sidebar">
+     <img src="imagenes/pagina/escudo_ejercito.png" alt="">
+  </div>
 
-    <nav class="menu">
-        <ul class="menu__content">
-            <li class="menu__item" [routerLink]="['/usuarios']">Registro usuarios</li>
-            <li class="menu__item">Registro unidad</li>
-            <li class="menu__item">Detalle unidad</li>
-            <li class="menu__item">Listado unidad</li>
-        </ul>
-    </nav>
+  <nav class="menu">
+      <ul class="menu__content">
+          <li class="menu__item" routerLinkActive="active">
+              <a>Usuarios</a>
+              <ul class="submenu">
+                  <li class="submenu__item" [routerLink]="['/main/usuarios']" routerLinkActive="Active">Listado de usuarios</li>
+                  <li class="submenu__item" [routerLink]="['/main/usuarios/registroUsuarios']" routerLinkActive="Active">Registro de usuarios</li>
+              </ul>
+          </li>
+          <li class="menu__item" routerLinkActive="active">
+              <a>Unidades</a>
+              <ul class="submenu">
+                  <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Listado de unidades</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active">Registro de unidades</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active">Registro detalle unidad</li>
+              </ul>
+          </li>
+      </ul>
+  </nav>
 </div>

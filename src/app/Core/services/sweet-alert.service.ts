@@ -32,4 +32,25 @@ export class SweetAlertService {
             timer: 1500
         });
     }
+
+    alertaCamposInvalidosFormularios(){
+        Swal.fire({
+            icon: "warning",
+            title: "Error de campos",
+            text:   'Favor diligenciar todos los campos del formulario'
+        });
+    }
+
+    alertaDeConfirmacionRegistro():Promise<any>{
+        return Swal.fire({
+          title: 'Desea realizar el registro?',
+          text: 'Esta seguro de realizar el registro!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si registrar',
+          cancelButtonText: 'Cancelar',
+        });
+    }
 }

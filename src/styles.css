@@ -37,7 +37,10 @@ body{
     --verdePrincipal: #1c5e1c;
     --verdePrincipalOscuro: #3e5315;
     --negroTrasparente: #00000065;
+    --rojo: rgb(148, 6, 6);
+
     --titulos: "Kanit", serif;
+
 }
 
 /***********************************************************
@@ -115,6 +118,7 @@ ul{
 
 .form-select{
     font-size: 1.6rem !important;
+    padding: 1rem;
 }
 
 .swal2-html-container{
@@ -141,6 +145,23 @@ ul{
 .dropdown-item{
     font-size: 1rem;
 }
+
+.content-form{
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border-radius: 1rem;
+}
+
+.content-from__btn{
+    display: flex;
+    justify-content: end;
+    gap: 2rem;
+}
+
+.tab-content{
+    padding: 3rem 1rem;
+}
+
 
 /***********************************************************
 

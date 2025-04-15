@@ -1,0 +1,32 @@
+.item{
+    border: solid 1px var(--negro);
+    padding: 2rem;
+    border-radius: 1rem;
+    line-height: 1.5;
+}
+
+.item__title{
+    margin-bottom: 3rem;
+    margin-left: 1rem;
+}
+
+.item__text span{
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.item__text{
+    font-size: 1.8rem;
+    margin-left: 1rem;
+    text-transform: uppercase;
+}
+
+.item__text-observacion{
+    text-align: justify;
+    margin-left: 1rem;
+    border: solid 0.5px var(--negro);
+    padding: 1rem;
+    border-radius: .5rem;
+    overflow: auto;
+    max-height: 20rem;
+}
