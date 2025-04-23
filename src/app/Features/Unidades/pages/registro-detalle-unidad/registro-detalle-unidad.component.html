@@ -3,9 +3,9 @@
         <h3>Registro Detalle Unidad</h3>
         <div class="d-flex align-items-center justify-content-end content-button"></div>
     </div>
-  <div class="card-body card-body-page">
+  <div class="card-body card-body-page detalleArchivo">
     <div class="content-form">
-        <form class="" [formGroup]="formDetalle" (ngSubmit)="validarFormulario()">
+        <form class="" [formGroup]="formDetalle">
           <div class="row">
               <div class="col-md-12 formulario__texto">
                   <p>
@@ -14,6 +14,7 @@
                   </p>
               </div>
           </div>
+          <p> <strong>Detalle Unidad:</strong></p>
           <div class="row mt-5">
               <div class="col-md-4 form-group">
                   <label for="" class="form-label">* Unidad</label>
@@ -104,14 +105,28 @@
           </div>
         </form>
         <div class="content-formulario-archivo">
-            <form action="">
-                                                    
+            <p class="mt-5"> <strong> Archivo:</strong></p>
+            <form action="" [formGroup]="formArchivo">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="" class="form-label"> Cantidad de cajas</label>
+                        <input type="number" class="form-control" formControlName="numero_cajas">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="" class="form-label">Cantidad de carpetas</label>
+                        <input type="number" class="form-control" formControlName="numero_carpetas">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="" class="form-label">Cantidad de folios</label>
+                        <input type="number" class="form-control" formControlName="numero_folio">
+                    </div>
+                </div>
             </form>
         </div>
 
         <div class="row mt-5">
           <div class="col-md-12 content-from__btn">
-              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="submit" class="btn btn-primary" (click)="validarFormulario()">Guardar</button>
               <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
           </div>
         </div>

@@ -2,7 +2,11 @@
 
 }
 .content-formulario-archivo{
-    border-top: .2rem black solid;
+    border-top: .1rem black solid;
     margin: 0 auto;
     margin-top: 5rem;
+}
+
+.detalleArchivo{
+    overflow: auto;
 }

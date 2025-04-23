@@ -217,7 +217,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
               return Object.values(this.formularioEditarUnidad.controls).forEach(controlls =>{
                   controlls.markAllAsTouched();
               });
-          }else if (this.formularioEditarDetalleUnidad.invalid) {
+          }else if (this.seccionEditarArchivo == true && this.formularioEditarDetalleUnidad.invalid) {
               this.sweet.alertaCamposInvalidosFormularios();
               this.tab = 'detalle-tab';
               /* this.ngAfterViewInit(); */
@@ -228,23 +228,28 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           }
 
           const dataFormUnidad = this.crearDataUnidadFormulario();
-          const dataFormDetalleUnidad = this.crearDataDetalleFormulario();
+
+          if (this.seccionEditarArchivo == true) {
+              const dataFormDetalleUnidad = this.crearDataDetalleFormulario();
+
+              forkJoin({
+                  unidadEditar: this.httpUnidades.updateUnidad(dataFormUnidad, this.unidad.id_unidad),
+                  detalle: this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, dataFormDetalleUnidad)
+              }).subscribe(({ unidadEditar, detalle }) => {
+                  if (unidadEditar.statusCode === 200 && detalle.statusCode === 200) {
+                      this.sweet.alertaGeneral('success', 'Actualización exitosa', 'La unidad y su detalle fueron actualizados correctamente.');
+                      this.cerrarModales();
+                  } else {
+                      this.sweet.alertaGeneral('error', 'Error al actualizar', 'Ocurrió un error al actualizar los datos.');
+                  }
+              }, error => {
+                  this.sweet.alertaGeneral('error', 'Error inesperado', 'No se pudo completar la actualización.');
+              });
+          }else{
+              this.editarUnidad(dataFormUnidad);
+          }
 
 
-
-          forkJoin({
-              unidadEditar: this.httpUnidades.updateUnidad(dataFormUnidad, this.unidad.id_unidad),
-              detalle: this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, dataFormDetalleUnidad)
-          }).subscribe(({ unidadEditar, detalle }) => {
-              if (unidadEditar.statusCode === 200 && detalle.statusCode === 200) {
-                  this.sweet.alertaGeneral('success', 'Actualización exitosa', 'La unidad y su detalle fueron actualizados correctamente.');
-                  this.cerrarModales();
-              } else {
-                  this.sweet.alertaGeneral('error', 'Error al actualizar', 'Ocurrió un error al actualizar los datos.');
-              }
-          }, error => {
-              this.sweet.alertaGeneral('error', 'Error inesperado', 'No se pudo completar la actualización.');
-          });
       }
 
       crearDataDetalleFormulario():StoreDetalleUnidad{
