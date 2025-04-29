@@ -109,15 +109,16 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
   registroDetalleUnidad(data: StoreDetalleUnidad): void {
       this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe((detalle) => {
           if (detalle.statusCode = 200) {
-              let dataFormArchivo = this.crearDataFormArchivo();
+              let dataFormArchivo = this.crearDataFormArchivo(detalle.data.id_detalle);
               this.registroArchivo(dataFormArchivo);
           }
       });
   }
 
-  crearDataFormArchivo(): StoreArchivoDetalleUnidad{
+  crearDataFormArchivo(idDetalle: number): StoreArchivoDetalleUnidad{
       const data = {
-        ...this.formArchivo.value
+        ...this.formArchivo.value,
+        'id_detalle': idDetalle
       };
 
       return data;
