@@ -1,4 +1,6 @@
-export interface StoreDetalleUnidad {
+
+
+export interface StoreDetalleUnidad{
   actoAdministrativoCreacion:      string;
   actoAdministrativoDesactivacion: string;
   fechaCreacionUnidad:             string;
@@ -7,4 +9,7 @@ export interface StoreDetalleUnidad {
   puestoMandoAtrasado:             string;
   observacion:                     string;
   idUnidad:                        number;
+  numero_cajas:                    number;
+  numero_carpetas:                 number;
+  numero_folio:                    number;
 }

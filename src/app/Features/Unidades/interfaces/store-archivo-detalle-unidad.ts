@@ -4,3 +4,5 @@ export interface StoreArchivoDetalleUnidad {
   numero_folio:    number;
   id_detalle:      number;
 }
+
+
