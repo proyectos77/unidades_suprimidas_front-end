@@ -39,7 +39,12 @@
               <p class="item__text"><span>Observación:</span></p>
               <p class="item__text-observacion">{{ informacionUnidad.data.detalle_unidad.observacion_detalle }}</p>
           </div>
-          <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">messages</div>
+          <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              <p class="item__text"><span>Numero de cajas: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_cajas_archivos }}</p>
+              <p class="item__text"><span>Numero de carpetas: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_carpetas_archivo }}</p>
+              <p class="item__text"><span>Numero de folios: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_folios_archivo }}</p>
+          </div>
       </div>
 
   </div>

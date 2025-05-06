@@ -42,6 +42,16 @@ export default class VistaDetalleUnidadComponent implements OnInit {
         fecha_creacion_detalle: '',
         fecha_actualizacion_detalle: '',
         id_estado: 0,
+        archivo: {
+          id_archivo:                  0,
+          numero_cajas_archivos:       0,
+          numero_carpetas_archivo:     0,
+          numero_folios_archivo:       0,
+          id_detalle:                  0,
+          fecha_creacion_archivo:      '',
+          fecha_actualizacion_archivo: '',
+          id_estado:                   0
+        },
       },
       municipio: {
         id_municipio: 0,
@@ -80,8 +90,6 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           next: (informacion) => {
               if (informacion.statusCode === 200) {
                   this.informacionUnidad = informacion;
-              } else {
-                  this.router.navigate(['/main/unidades/listadoUnidades']);
               }
           },
           error: (error) => {

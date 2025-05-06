@@ -32,6 +32,18 @@ export interface DetalleUnidad {
   fecha_creacion_detalle:                    Date | '';
   fecha_actualizacion_detalle:               Date | '';
   id_estado:                                 number;
+  archivo:                                   Archivo;
+}
+
+export interface Archivo {
+  id_archivo:                  number;
+  numero_cajas_archivos:       number;
+  numero_carpetas_archivo:     number;
+  numero_folios_archivo:       number;
+  id_detalle:                  number;
+  fecha_creacion_archivo:      Date | '';
+  fecha_actualizacion_archivo: Date | '';
+  id_estado:                   number;
 }
 
 export interface Municipio {
@@ -45,9 +57,9 @@ export interface Municipio {
 }
 
 export interface Departamentos {
-  id_departamento:                  number;
-  nombre_departamento:              string;
-  fecha_creacion_departamento:      Date | '';
+  id_departamento: number;
+  nombre_departamento: string;
+  fecha_creacion_departamento: Date | '';
   fecha_actualizacion_departamento: Date | '';
-  id_estado:                        number;
+  id_estado: number;
 }
