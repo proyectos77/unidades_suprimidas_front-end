@@ -7,6 +7,7 @@ export interface StoreDetalleUnidad{
   fechaDesactivacionUnidad:        string;
   puestoMandoAdelantado:           string;
   puestoMandoAtrasado:             string;
+  planReorganizacionDiorg:         string;
   observacion:                     string;
   idUnidad:                        number;
   numero_cajas:                    number;

@@ -6,6 +6,7 @@ export const routes: Routes = [
     { path: 'registroUnidades', loadComponent: () =>  import('./pages/registro-unidades/registro-unidades.component')},
     { path: 'registroDetalleUnidad', loadComponent: () => import('./pages/registro-detalle-unidad/registro-detalle-unidad.component')},
     { path: 'informacionUnidad/:id', loadComponent: () => import('./pages/vista-detalle-unidad/vista-detalle-unidad.component')},
+    { path: 'registroArchivoUnidad', loadComponent: () => import('./pages/registro-archivo-unidad/registro-archivo-unidad.component')},
 
     /* { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},
 

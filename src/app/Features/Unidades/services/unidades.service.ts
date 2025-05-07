@@ -8,6 +8,8 @@ import { GetAllUnidades } from '../interfaces/get-all-unidades';
 import { RespuestaUpdateUnidad } from '../interfaces/respuesta-update-unidad';
 import { GetListUnidadesSelect } from '../interfaces/get-list-unidades-select';
 import { GetInformacionUnidad } from '../interfaces/get-informacion-unidad';
+import { GetListUnidadesConDetalle } from '../interfaces/get-list-unidades-con-detalle';
+import { GetListadoAnios } from '../interfaces/get-listado-anios';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +48,15 @@ export class UnidadesService {
     getInformacionUnidad($id: number):Observable<GetInformacionUnidad>{
         let urlFinal = this.url + '/' + $id;
         return this.httpUnidades.get<GetInformacionUnidad>(urlFinal);
+    }
+
+    listUnidadesConDetalle():Observable<GetListUnidadesConDetalle>{
+        let urlFinal = this.urlList + '/selectUnidadConDetalle';
+        return this.httpUnidades.get<GetListUnidadesConDetalle>(urlFinal);
+    }
+
+    listadoAnios():Observable<GetListadoAnios>{
+        let urlFinal = this.urlList + '/anios';
+        return this.httpUnidades.get<GetListadoAnios>(urlFinal);
     }
 }

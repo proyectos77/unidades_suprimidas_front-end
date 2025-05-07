@@ -56,6 +56,7 @@ export default class RegistroUnidadesComponent implements OnInit{
         return this.form.group({
             nombre: ['', [Validators.required]],
             sigla: ['', [Validators.required]],
+            division: ['', [Validators.required]],
             padreUnidad: ['', [Validators.required]],
             departamentos: ['', [Validators.required]],
             idMunicipio: ['', [Validators.required]]

@@ -1,0 +1,93 @@
+<div class="card cardContenido">
+  <div class="d-flex card-header card-header-paddin align-items-center justify-content-between">
+      <h3>Registro Archivo Unidad</h3>
+      <div class="d-flex align-items-center justify-content-end content-button"></div>
+  </div>
+<div class="card-body card-body-page detalleArchivo">
+  <div class="content-form">
+      <div class="content-formulario-archivo">
+          <form action="" [formGroup]="formArchivo">
+              <div class="row">
+                  <div class="col-md-12 formulario__texto">
+                      <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span></p>
+                  </div>
+              </div>
+              <div class="row mt-5">
+
+                  <div class="row mt-5">
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Unidad</label>
+                          <select class="form-select" formControlName="unidad">
+                              <option value="">Seleccione</option>
+                              <option *ngFor="let unidad of unidadesSelect.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option>
+                          </select>
+
+                          @if (this.formArchivo.get('unidad')?.touched && formArchivo.get('unidad')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario el campo unidad</small>
+                              </div>
+                          }
+                      </div>
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Año de registro</label>
+                          <select class="form-select" formControlName="anioRegistro">
+                              <option value="">Seleccione</option>
+                              <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
+                          </select>
+
+                          @if (this.formArchivo.get('anioRegistro')?.touched && formArchivo.get('anioRegistro')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario el año</small>
+                              </div>
+                          }
+
+                      </div>
+                      <div class="col-md-4">
+                          <label for="" class="form-label"> Cantidad de cajas</label>
+                          <input type="number" class="form-control" formControlName="numero_cajas">
+
+                          @if (this.formArchivo.get('numero_cajas')?.touched && formArchivo.get('numero_cajas')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de cajas</small>
+                              </div>
+                          }
+                      </div>
+                  </div>
+
+                  <div class="row mt-5">
+                      <div class="col-md-4">
+                          <label for="" class="form-label">Cantidad de carpetas</label>
+                          <input type="number" class="form-control" formControlName="numero_carpetas">
+
+                          @if (this.formArchivo.get('numero_carpetas')?.touched && formArchivo.get('numero_carpetas')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de carpetas</small>
+                              </div>
+                          }
+                      </div>
+                      <div class="col-md-4">
+                          <label for="" class="form-label">Cantidad de folios</label>
+                          <input type="number" class="form-control" formControlName="numero_folio">
+
+                          @if (this.formArchivo.get('numero_folio')?.touched && formArchivo.get('numero_folio')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de folios</small>
+                              </div>
+                          }
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-md-12 content-from__btn">
+            <button type="submit" class="btn btn-primary" (click)="validarFormulario()">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
+        </div>
+      </div>
+  </div>
+
+
+</div>
+</div>

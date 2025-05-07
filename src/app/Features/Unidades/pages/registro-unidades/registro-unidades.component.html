@@ -12,9 +12,10 @@
                   <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red;">*</span></p>
               </div>
           </div>
-          <div class="row">
+          <div class="row mt-4">
               <div class="col-md-6 form-group">
-                  <input class="form-control" type="text" formControlName="nombre" placeholder="* Nombre unidad">
+                  <label for="" class="form-label">* Nombre unidad</label>
+                  <input class="form-control" type="text" formControlName="nombre" placeholder="">
                   @if (this.formularioUnidad.get('nombre')?.touched && formularioUnidad.get('nombre')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
                           <small class="text-danger">Es necesario el campo nombre</small>
@@ -23,10 +24,11 @@
               </div>
 
               <div class="col-md-6 form-group">
-                  <input class="form-control" type="text" formControlName="padreUnidad" placeholder="* Padre unidad">
+                  <label for="" class="form-label">* Unidad que asumio el archivo</label>
+                  <input class="form-control" type="text" formControlName="padreUnidad" placeholder="">
                   @if (this.formularioUnidad.get('padreUnidad')?.touched && formularioUnidad.get('padreUnidad')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo padre unidad</small>
+                          <small class="text-danger">Es necesario la uniadad que asumio el archivo</small>
                       </div>
                   }
               </div>
@@ -34,7 +36,8 @@
 
           <div class="row mt-5">
               <div class="col-md-6 form-group">
-                  <input class="form-control" type="text" formControlName="sigla" placeholder="* Sigla unidad">
+                  <label for="" class="form-label">* Sigla unidad</label>
+                  <input class="form-control" type="text" formControlName="sigla" placeholder="">
                   @if (this.formularioUnidad.get('sigla')?.touched && formularioUnidad.get('sigla')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
                           <small class="text-danger">Es necesario el campo sigla</small>
@@ -43,8 +46,34 @@
               </div>
 
               <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Division</label>
+                  <input class="form-control" type="text" formControlName="division" placeholder="">
+                  @if (this.formularioUnidad.get('division')?.touched && formularioUnidad.get('division')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo Division</small>
+                      </div>
+                  }
+              </div>
+          </div>
+
+          <div class="row mt-5">
+              <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Municipios</label>
+                  <select class="form-select" formControlName="idMunicipio">
+                      <option value="">Seleccionar</option>
+                      <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
+                  </select>
+                  @if (this.formularioUnidad.get('idMunicipio')?.touched && formularioUnidad.get('idMunicipio')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo municipios</small>
+                      </div>
+                  }
+              </div>
+
+              <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Departamentos</label>
                   <select class="form-select" name="" id="" formControlName="departamentos">
-                      <option value="">* Departamentos</option>
+                      <option value="">Seleeccionar</option>
                       <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">{{ departamento.nombre }}</option>
                   </select>
 
@@ -57,19 +86,7 @@
           </div>
 
           <div class="row mt-5">
-              <div class="col-md-6 form-group">
-                  <select class="form-select" formControlName="idMunicipio">
-                      <option value="">* Municipios</option>
-                      <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
-                  </select>
-                  @if (this.formularioUnidad.get('idMunicipio')?.touched && formularioUnidad.get('idMunicipio')?.errors?.['required']){
-                      <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo municipios</small>
-                      </div>
-                  }
-              </div>
-
-              <div class="content-from__btn col-md-6">
+              <div class="content-from__btn">
                   <button type="submit" class="btn btn-primary">Registrar</button>
                   <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
               </div>
