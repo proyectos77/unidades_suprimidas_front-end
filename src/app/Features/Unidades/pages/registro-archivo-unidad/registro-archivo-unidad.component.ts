@@ -9,6 +9,8 @@ import { GetListUnidadesSelect } from '../../interfaces/get-list-unidades-select
 import { NgFor, NgIf } from '@angular/common';
 import { GetListUnidadesConDetalle } from '../../interfaces/get-list-unidades-con-detalle';
 import { GetListadoAnios } from '../../interfaces/get-listado-anios';
+import { RespuestaRegistroArchivo } from '../../interfaces/respuesta-registro-archivo';
+import { StoreArchivoDetalleUnidad } from '../../interfaces/store-archivo-detalle-unidad';
 
 @Component({
   selector: 'app-registro-archivo-unidad',
@@ -48,8 +50,8 @@ export default class RegistroArchivoUnidadComponent {
 
     formularioArchivo(): FormGroup {
       return (this.formArchivo = this.formulario.group({
-        unidad: ['', Validators.required],
-        anioRegistro: ['', Validators.required],
+        id_detalle: ['', Validators.required],
+        anio_registro_archivo: ['', Validators.required],
         numero_cajas: ['', Validators.required],
         numero_carpetas: ['', Validators.required],
         numero_folio: ['', Validators.required],
@@ -82,18 +84,19 @@ export default class RegistroArchivoUnidadComponent {
         this.registroDetalleUnidad(dataform);
     }
 
-    crearDataForm(): StoreDetalleUnidad {
+    crearDataForm(): StoreArchivoDetalleUnidad {
       const data = {
-        ...this.formDetalle.value,
-        ...this.formArchivo.value,
+          ...this.formArchivo.value,
       };
 
       return data;
     }
 
-    registroDetalleUnidad(data: StoreDetalleUnidad): void {
-      this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe((detalle) => {
-        this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
+    registroDetalleUnidad(data: StoreArchivoDetalleUnidad): void {
+      this.httArchivo.storeArchivo(data).subscribe((detalle) => {
+          console.log(detalle);
+
+          this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
       });
     }
 

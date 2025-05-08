@@ -17,12 +17,12 @@
                   <div class="row mt-5">
                       <div class="col-md-4">
                           <label for="" class="form-label">* Unidad</label>
-                          <select class="form-select" formControlName="unidad">
+                          <select class="form-select" formControlName="id_detalle">
                               <option value="">Seleccione</option>
                               <option *ngFor="let unidad of unidadesSelect.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option>
                           </select>
 
-                          @if (this.formArchivo.get('unidad')?.touched && formArchivo.get('unidad')?.errors?.['required']){
+                          @if (this.formArchivo.get('id_detalle')?.touched && formArchivo.get('id_detalle')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario el campo unidad</small>
                               </div>
@@ -30,12 +30,12 @@
                       </div>
                       <div class="col-md-4">
                           <label for="" class="form-label">* Año de registro</label>
-                          <select class="form-select" formControlName="anioRegistro">
+                          <select class="form-select" formControlName="anio_registro_archivo">
                               <option value="">Seleccione</option>
                               <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
                           </select>
 
-                          @if (this.formArchivo.get('anioRegistro')?.touched && formArchivo.get('anioRegistro')?.errors?.['required']){
+                          @if (this.formArchivo.get('anio_registro_archivo')?.touched && formArchivo.get('anio_registro_archivo')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario el año</small>
                               </div>
