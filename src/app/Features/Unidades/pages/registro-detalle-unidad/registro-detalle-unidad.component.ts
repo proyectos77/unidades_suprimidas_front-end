@@ -39,9 +39,8 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-      this.listadoUnidades();
-      this.formDetalle = this.formularioDetalleUnidad();
-      this.formArchivo = this.formularioArchivo();
+        this.listadoUnidades();
+        this.formDetalle = this.formularioDetalleUnidad();
     }
 
     formularioDetalleUnidad(): FormGroup {
@@ -58,14 +57,6 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         }));
     }
 
-    formularioArchivo(): FormGroup{
-        return (this.formArchivo = this.formulario.group({
-            numero_cajas: ['', Validators.required],
-            numero_carpetas: ['', Validators.required],
-            numero_folio: ['', Validators.required]
-        }));
-    }
-
     listadoUnidades(): void {
         this.httUnidades.listUnidadesSelect().subscribe((listadoUnidades) => {
             this.unidadesSelect = listadoUnidades;
@@ -73,25 +64,10 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     }
 
     validarFormulario(): void {
-
-        let error = false;
         if (this.formDetalle.invalid) {
             return Object.values(this.formDetalle.controls).forEach((control) => {
-                error = true;
                 control.markAsTouched();
             });
-        }
-
-        if(this.formArchivo.invalid){
-            return Object.values(this.formArchivo.controls).forEach((control) => {
-                error = true;
-                control.markAsTouched();
-            });
-        }
-
-        if (error) {
-            this.sweet.alertaCamposInvalidosFormularios();
-            return;
         }
 
         let dataform = this.crearDataForm();
@@ -101,7 +77,6 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     crearDataForm(): StoreDetalleUnidad {
         const data = {
           ...this.formDetalle.value,
-          ...this.formArchivo.value
         };
 
         return data;

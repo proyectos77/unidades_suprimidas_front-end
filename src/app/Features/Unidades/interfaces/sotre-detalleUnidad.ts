@@ -10,7 +10,4 @@ export interface StoreDetalleUnidad{
   planReorganizacionDiorg:         string;
   observacion:                     string;
   idUnidad:                        number;
-  numero_cajas:                    number;
-  numero_carpetas:                 number;
-  numero_folio:                    number;
 }
