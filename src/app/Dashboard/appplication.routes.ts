@@ -12,6 +12,11 @@ export const routes: Routes = [
         loadChildren: () => import('../Features/Usuarios/usuarios.routes')
     },
 
+    {
+        path: 'transferencias', loadComponent:() => import('./layout/main/main.component'),
+        loadChildren: () => import('../Features/Transferencias/transferencias.routes')
+    },
+
     {path: '', redirectTo: 'unidades', pathMatch:'full'}
 
 ];
