@@ -58,19 +58,6 @@
 
           <div class="row mt-5">
               <div class="col-md-6 form-group">
-                  <label for="" class="form-label">* Municipios</label>
-                  <select class="form-select" formControlName="idMunicipio">
-                      <option value="">Seleccionar</option>
-                      <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
-                  </select>
-                  @if (this.formularioUnidad.get('idMunicipio')?.touched && formularioUnidad.get('idMunicipio')?.errors?.['required']){
-                      <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo municipios</small>
-                      </div>
-                  }
-              </div>
-
-              <div class="col-md-6 form-group">
                   <label for="" class="form-label">* Departamentos</label>
                   <select class="form-select" name="" id="" formControlName="departamentos">
                       <option value="">Seleeccionar</option>
@@ -80,6 +67,19 @@
                   @if (this.formularioUnidad.get('departamentos')?.touched && formularioUnidad.get('departamentos')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
                           <small class="text-danger">Es necesario el campo departamento</small>
+                      </div>
+                  }
+              </div>
+
+              <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Municipios</label>
+                  <select class="form-select" formControlName="idMunicipio">
+                      <option value="">Seleccionar</option>
+                      <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">{{ municipio.nombre_municipio }}</option>
+                  </select>
+                  @if (this.formularioUnidad.get('idMunicipio')?.touched && formularioUnidad.get('idMunicipio')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo municipios</small>
                       </div>
                   }
               </div>

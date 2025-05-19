@@ -11,8 +11,6 @@ import { GetListUnidadesSelect } from "../../interfaces/get-list-unidades-select
 import { SweetAlertService } from "../../../../Core/services/sweet-alert.service";
 import { StoreDetalleUnidad } from "../../interfaces/sotre-detalleUnidad";
 import { DetalleUnidadService } from "../../services/detalleUnidad.service";
-import { StoreArchivoDetalleUnidad } from "../../interfaces/store-archivo-detalle-unidad";
-import { ArchivoDetalleUnidadService } from "../../services/archivo-detalle-unidad.service";
 
 @Component({
   selector: "app-registro-detalle-unidad",
@@ -34,8 +32,7 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         private httUnidades: UnidadesService,
         private formulario: FormBuilder,
         private sweet: SweetAlertService,
-        private httpDetalleUnidad: DetalleUnidadService,
-        private httArchivo: ArchivoDetalleUnidadService
+        private httpDetalleUnidad: DetalleUnidadService
     ) {}
 
     ngOnInit(): void {
@@ -85,6 +82,7 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     registroDetalleUnidad(data: StoreDetalleUnidad): void {
         this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe((detalle) => {
             this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
+            this.limpiarForm();
         });
     }
 
