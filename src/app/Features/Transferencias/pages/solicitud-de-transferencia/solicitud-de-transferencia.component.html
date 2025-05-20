@@ -20,8 +20,8 @@
                           <label for="" class="form-label">* Unidad</label>
                           <select class="form-select" ><!-- formControlName="id_detalle" -->
                               <option value="">Seleccione</option>
-                              <!-- <option *ngFor="let unidad of unidadesSelect.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option> -->
-                          </select>
+                              <option *ngFor="let unidad of listadoUnidadesConArchivo.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option>
+                    </select>
 
                          <!--  @if (this.formArchivo.get('id_detalle')?.touched && formArchivo.get('id_detalle')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
