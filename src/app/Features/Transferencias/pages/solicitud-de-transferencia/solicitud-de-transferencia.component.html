@@ -7,7 +7,7 @@
 <div class="card-body card-body-page">
   <div class="content-form">
       <div class=""><!-- [formGroup]="formArchivo" -->
-          <form action="" >
+          <form action="" [formGroup]="formTransferencia">
               <div class="row">
                   <div class="col-md-12 formulario__texto">
                       <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span></p>
@@ -18,7 +18,7 @@
                   <div class="row mt-5">
                       <div class="col-md-4">
                           <label for="" class="form-label">* Unidad</label>
-                          <select class="form-select" ><!-- formControlName="id_detalle" -->
+                          <select class="form-select" formControlName="id_detalle_unidad"><!-- formControlName="id_detalle" -->
                               <option value="">Seleccione</option>
                               <option *ngFor="let unidad of listadoUnidadesConArchivo.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option>
                     </select>
@@ -31,9 +31,9 @@
                       </div>
                       <div class="col-md-4">
                           <label for="" class="form-label">* Año del archivo</label>
-                          <select class="form-select" ><!-- formControlName="anio_registro_archivo" -->
+                          <select class="form-select" formControlName="id_archivo"><!-- formControlName="anio_registro_archivo" -->
                               <option value="">Seleccione</option>
-                              <!-- <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option> -->
+                              <option *ngFor="let anio of listadoArchivoUnidad.data" value="{{ anio.id_archivo }}">{{ anio.anio }}</option>
                           </select>
 
                           <!-- @if (this.formArchivo.get('anio_registro_archivo')?.touched && formArchivo.get('anio_registro_archivo')?.errors?.['required']){
@@ -46,7 +46,7 @@
 
                       <div class="col-md-4">
                           <label for="" class="form-label">Cantidad de cajas</label>
-                          <input type="number" class="form-control" ><!-- formControlName="numero_carpetas" -->
+                          <input type="number" class="form-control" formControlName="cantidadCajas"><!-- formControlName="numero_carpetas" -->
 
                          <!--  @if (this.formArchivo.get('numero_carpetas')?.touched && formArchivo.get('numero_carpetas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
@@ -60,8 +60,8 @@
                   <div class="row mt-5">
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">Cantidad de folios</label>
-                          <input type="number" class="form-control" ><!-- formControlName="numero_folio" -->
+                          <label for="" class="form-label">Cantidad de carpetas</label>
+                          <input type="number" class="form-control" formControlName="cantidadCarpetas"><!-- formControlName="numero_folio" -->
 
                           <!-- @if (this.formArchivo.get('numero_folio')?.touched && formArchivo.get('numero_folio')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
@@ -71,8 +71,8 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label"> Cantidad de carpetas</label>
-                          <input type="number" class="form-control" ><!-- formControlName="numero_cajas" -->
+                          <label for="" class="form-label"> Cantidad de folios</label>
+                          <input type="number" class="form-control" formControlName="cantidadFolios"><!-- formControlName="numero_cajas" -->
 
                           <!-- @if (this.formArchivo.get('numero_cajas')?.touched && formArchivo.get('numero_cajas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
@@ -83,7 +83,7 @@
 
                       <div class="col-md-4">
                           <label for="" class="form-label">Documentos</label>
-                          <input type="file" name="" id="" class="form-control" multiple>
+                          <input type="file" name="" id="" class="form-control" multiple formControlName="documentos"><!-- formControlName="documentos" -->
                       </div>
                   </div>
               </div>
