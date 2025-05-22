@@ -72,17 +72,15 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
     listArchivoUnidad(idDetalleUnidad: number):void{
         this.httpTransferencias.getAllArchivoPorUnidad(idDetalleUnidad).subscribe( archivo =>{
             this.listadoArchivoUnidad = archivo;
-            console.log(archivo);
-
         });
     }
 
-     onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.documentos = Array.from(input.files);
+     seleccionDeArchivo(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        if (input.files) {
+          this.documentos = Array.from(input.files);
+        }
     }
-  }
 
     validarForm():void{
         if (this.formTransferencia.invalid) {
@@ -92,40 +90,32 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
             });
         }
 
-        /* let dataTransferencias = this.dataForm(); */
+        let data = this.dataForm();
 
-        const form = this.formTransferencia.value;
-    const formData = new FormData();
-
-      formData.append('id_detalle_unidad', form.id_detalle_unidad);
-      formData.append('id_archivo', form.id_archivo);
-      formData.append('cantidad_cajas', form.cantidad_cajas);
-      formData.append('cantidad_carpetas', form.cantidad_carpetas);
-      formData.append('cantidad_folios', form.cantidad_folios);
-
-      this.documentos.forEach((file, index) => {
-        formData.append('documentos[]', file);
-  });
-
-console.log(formData);
-
-      this.registroSolicitudTransferencia(formData);
+        this.registroSolicitudTransferencia(data);
     }
 
     registroSolicitudTransferencia(data: FormData):void {
         this.httpTransferencias.storeSolicitudTransferencia(data).subscribe((solicitud) => {
-            console.log(solicitud);
-
+            this.sweet.alertaGeneral(solicitud.icono, solicitud.titulo, solicitud.mensaje);
         })
     }
 
+    dataForm(): FormData{
+        const form = this.formTransferencia.value;
+        const formData = new FormData();
 
+        formData.append('id_detalle_unidad', form.id_detalle_unidad);
+        formData.append('id_archivo', form.id_archivo);
+        formData.append('cantidad_cajas', form.cantidad_cajas);
+        formData.append('cantidad_carpetas', form.cantidad_carpetas);
+        formData.append('cantidad_folios', form.cantidad_folios);
 
-    dataForm(): StoreSolicitudTransferencia{
-        const data = {
-            ...this.formTransferencia.value
-        }
-        return data;
+        this.documentos.forEach((file, index) => {
+            formData.append('documentos[]', file);
+        });
+
+        return formData;
     }
 
     limpiarForm():void{
@@ -136,15 +126,14 @@ console.log(formData);
         this.listadoUnidades();
     }
 
-
     limpiarListadoUnidadesConArchivo(): void {
-    this.listadoUnidadesConArchivo = {
-        statusCode: 0,
-        titulo: '',
-        mensaje: '',
-        icono: '',
-        data: []
-    };
-}
+        this.listadoUnidadesConArchivo = {
+            statusCode: 0,
+            titulo: '',
+            mensaje: '',
+            icono: '',
+            data: []
+        };
+    }
 
 }

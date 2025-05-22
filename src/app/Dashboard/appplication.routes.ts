@@ -17,6 +17,7 @@ export const routes: Routes = [
         loadChildren: () => import('../Features/Transferencias/transferencias.routes')
     },
 
+
     {path: '', redirectTo: 'unidades', pathMatch:'full'}
 
 ];
