@@ -6,7 +6,7 @@
   </div>
 <div class="card-body card-body-page">
   <div class="content-form">
-      <div class=""><!-- [formGroup]="formArchivo" -->
+      <div class="">
           <form action="" [formGroup]="formTransferencia">
               <div class="row">
                   <div class="col-md-12 formulario__texto">
@@ -18,41 +18,41 @@
                   <div class="row mt-5">
                       <div class="col-md-4">
                           <label for="" class="form-label">* Unidad</label>
-                          <select class="form-select" formControlName="id_detalle_unidad"><!-- formControlName="id_detalle" -->
+                          <select class="form-select" formControlName="id_detalle_unidad">
                               <option value="">Seleccione</option>
                               <option *ngFor="let unidad of listadoUnidadesConArchivo.data" value="{{ unidad.id_detalle_unidad }}">{{ unidad.nombre_unidad }}</option>
-                    </select>
+                          </select>
 
-                         <!--  @if (this.formArchivo.get('id_detalle')?.touched && formArchivo.get('id_detalle')?.errors?.['required']){
+                          @if (this.formTransferencia.get('id_detalle_unidad')?.touched && formTransferencia.get('id_detalle_unidad')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario el campo unidad</small>
                               </div>
-                          } -->
+                          }
                       </div>
                       <div class="col-md-4">
                           <label for="" class="form-label">* Año del archivo</label>
-                          <select class="form-select" formControlName="id_archivo"><!-- formControlName="anio_registro_archivo" -->
+                          <select class="form-select" formControlName="id_archivo">
                               <option value="">Seleccione</option>
                               <option *ngFor="let anio of listadoArchivoUnidad.data" value="{{ anio.id_archivo }}">{{ anio.anio }}</option>
                           </select>
 
-                          <!-- @if (this.formArchivo.get('anio_registro_archivo')?.touched && formArchivo.get('anio_registro_archivo')?.errors?.['required']){
+                          @if (this.formTransferencia.get('id_archivo')?.touched && formTransferencia.get('id_archivo')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario el año</small>
                               </div>
-                          } -->
+                          }
 
                       </div>
 
                       <div class="col-md-4">
                           <label for="" class="form-label">Cantidad de cajas</label>
-                          <input type="number" class="form-control" formControlName="cantidadCajas"><!-- formControlName="numero_carpetas" -->
+                          <input type="number" class="form-control" formControlName="cantidad_cajas">
 
-                         <!--  @if (this.formArchivo.get('numero_carpetas')?.touched && formArchivo.get('numero_carpetas')?.errors?.['required']){
+                          @if (this.formTransferencia.get('cantidad_cajas')?.touched && formTransferencia.get('cantidad_cajas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario la cantidad de carpetas</small>
                               </div>
-                          } -->
+                          }
                       </div>
 
                   </div>
@@ -61,29 +61,41 @@
 
                       <div class="col-md-4">
                           <label for="" class="form-label">Cantidad de carpetas</label>
-                          <input type="number" class="form-control" formControlName="cantidadCarpetas"><!-- formControlName="numero_folio" -->
+                          <input type="number" class="form-control" formControlName="cantidad_carpetas">
 
-                          <!-- @if (this.formArchivo.get('numero_folio')?.touched && formArchivo.get('numero_folio')?.errors?.['required']){
+                          @if (this.formTransferencia.get('cantidad_carpetas')?.touched && formTransferencia.get('cantidad_carpetas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario la cantidad de folios</small>
                               </div>
-                          } -->
+                          }
                       </div>
 
                       <div class="col-md-4">
                           <label for="" class="form-label"> Cantidad de folios</label>
-                          <input type="number" class="form-control" formControlName="cantidadFolios"><!-- formControlName="numero_cajas" -->
+                          <input type="number" class="form-control" formControlName="cantidad_folios">
 
-                          <!-- @if (this.formArchivo.get('numero_cajas')?.touched && formArchivo.get('numero_cajas')?.errors?.['required']){
+                          @if (this.formTransferencia.get('cantidad_folios')?.touched && formTransferencia.get('cantidad_folios')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario la cantidad de cajas</small>
                               </div>
-                          } -->
+                          }
                       </div>
 
                       <div class="col-md-4">
                           <label for="" class="form-label">Documentos</label>
-                          <input type="file" name="" id="" class="form-control" multiple formControlName="documentos"><!-- formControlName="documentos" -->
+                          <!-- <input type="file" name="" id="" class="form-control" multiple formControlName="documentos"> -->
+
+                          <input formControlName="documentos"
+  type="file" multiple
+  (change)="onFileChange($event)"
+  accept=".pdf,.docx,.jpg,.png"
+/>
+
+                          @if (this.formTransferencia.get('documentos')?.touched && formTransferencia.get('documentos')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de cajas</small>
+                              </div>
+                          }
                       </div>
                   </div>
               </div>
@@ -92,8 +104,8 @@
 
       <div class="row mt-5">
         <div class="col-md-12 content-from__btn">
-            <button type="submit" class="btn btn-primary" >Solitar transferencia</button><!-- (click)="validarFormulario()" -->
-            <button type="button" class="btn btn-secondary" >Cancelar</button><!-- (click)="limpiarForm()" -->
+            <button type="submit" class="btn btn-primary" (click)="validarForm()">Solitar transferencia</button>
+            <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Cancelar</button>
         </div>
       </div>
   </div>
