@@ -55,6 +55,8 @@ export default class RegistroArchivoUnidadComponent {
         numero_cajas: ['', Validators.required],
         numero_carpetas: ['', Validators.required],
         numero_folio: ['', Validators.required],
+        numero_tomos: [''],
+        otros: [''],
       }));
     }
 
