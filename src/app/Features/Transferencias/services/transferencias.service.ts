@@ -6,6 +6,8 @@ import { ListadoUnidadesConArchivo } from '../interfaces/listado-unidades-con-ar
 import { LsitadoArchivoPorUnidad } from '../interfaces/lsitado-archivo-por-unidad';
 import { RespuestaRegistroSolicitudTransferencia } from '../interfaces/respuesta-registro-solicitud-transferencia';
 import { StoreSolicitudTransferencia } from '../interfaces/store-solicitud-transferencia';
+import { ListadoSolicitudesTransferencias } from '../interfaces/listado-solicitudes-transferencias';
+import ListadoSolicitudesTransferenciasComponent from '../pages/listado-solicitudes-transferencias/listado-solicitudes-transferencias.component';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,11 @@ export class TransferenciasService {
     storeSolicitudTransferencia(data: FormData):Observable<RespuestaRegistroSolicitudTransferencia>{
         let urlFinal = this.url + '/transferencia';
         return this.http.post<RespuestaRegistroSolicitudTransferencia>(urlFinal, data);
+    }
+
+    getAllSolicitudesTransferencias():Observable<ListadoSolicitudesTransferencias>{
+        let urlFinal = this.url + '/solicitudesTransferencias';
+        return this.http.get<ListadoSolicitudesTransferencias>(urlFinal);
     }
 
 }

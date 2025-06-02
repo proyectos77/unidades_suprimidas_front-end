@@ -1,1 +1,65 @@
-<p>listado-solicitudes-transferencias works!</p>
+
+
+<div class="card cardContenido" >
+  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+      <h3>Listado de unidades</h3>
+  </div>
+  <div class="card-body card-body-page">
+      <div class="table-usuarios">
+          <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
+              <thead class="text-center table-dark">
+                  <tr>
+                      <th>ID</th>
+                      <th>Unidad</th>
+                      <th>Año transferencia</th>
+                      <th>Solicita</th>
+                      <th>Cajas</th>
+                      <th>Carpetas</th>
+                      <th>Folios</th>
+                      <th>Porsentaje</th>
+                      <th>Estado</th>
+
+                  </tr>
+              </thead>
+              <tbody class="text-center">
+                  <tr *ngFor="let solicitud of solicitud.data">
+                      <td>{{ solicitud.idSolicitudTransferencia }}</td>
+                      <td>{{ solicitud.unidad }}</td>
+                      <td>{{ solicitud.anio }}</td>
+                      <td>{{ solicitud.usuarioSolicita }}</td>
+                      <td>{{ solicitud.cantidadCajas }}</td>
+                      <td>{{ solicitud.cantidadCarpetas }}</td>
+                      <td>{{ solicitud.cantidadFolios }}</td>
+                      <td>{{ solicitud.porcentajeTransferencia }}%</td>
+                      <td>{{ solicitud.estadoSolicitud }}</td>
+                      <!-- <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
+                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                      </td> -->
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+     <!--  <nav aria-label="..." *ngIf="pagina > 0">
+          <ul class="pagination">
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>
+              </li>
+
+              <li *ngFor="let pagina of [].constructor(listaUnidades.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="listaUnidades.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === listaUnidades.infoPagination.totalPaginas" (click)="cambiarPagina(listaUnidades.infoPagination.pagina + 1)">Siguiente</a>
+              </li>
+          </ul>
+      </nav> -->
+  </div>
+</div>
+
+
+<!-- <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad> -->
+
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+
