@@ -17,6 +17,7 @@
                       <th>Carpetas</th>
                       <th>Folios</th>
                       <th>Porsentaje</th>
+                      <th>Fecha solicitud</th>
                       <th>Estado</th>
 
                   </tr>
@@ -31,6 +32,7 @@
                       <td>{{ solicitud.cantidadCarpetas }}</td>
                       <td>{{ solicitud.cantidadFolios }}</td>
                       <td>{{ solicitud.porcentajeTransferencia }}%</td>
+                      <td>{{ solicitud.fechaSolicitud }}</td>
                       <td>{{ solicitud.estadoSolicitud }}</td>
                       <!-- <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
