@@ -43,19 +43,19 @@
               </tbody>
           </table>
       </div>
-     <!--  <nav aria-label="..." *ngIf="pagina > 0">
+      <nav aria-label="..." *ngIf="pagina > 0">
           <ul class="pagination">
               <li class="page-item">
-                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>
+                  <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === 1" (click)="cambiarPagina(solicitud.infoPagination.pagina - 1)">Anterior</a>
               </li>
 
-              <li *ngFor="let pagina of [].constructor(listaUnidades.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="listaUnidades.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+              <li *ngFor="let pagina of [].constructor(solicitud.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="solicitud.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
 
               <li class="page-item">
-                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === listaUnidades.infoPagination.totalPaginas" (click)="cambiarPagina(listaUnidades.infoPagination.pagina + 1)">Siguiente</a>
+                  <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === solicitud.infoPagination.totalPaginas" (click)="cambiarPagina(solicitud.infoPagination.pagina + 1)">Siguiente</a>
               </li>
           </ul>
-      </nav> -->
+      </nav>
   </div>
 </div>
 

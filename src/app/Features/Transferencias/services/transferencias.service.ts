@@ -34,8 +34,8 @@ export class TransferenciasService {
         return this.http.post<RespuestaRegistroSolicitudTransferencia>(urlFinal, data);
     }
 
-    getAllSolicitudesTransferencias():Observable<ListadoSolicitudesTransferencias>{
-        let urlFinal = this.url + '/solicitudesTransferencias';
+    getAllSolicitudesTransferencias(pagina: number):Observable<ListadoSolicitudesTransferencias>{
+        let urlFinal = this.url + '/solicitudesTransferencias/?page='+pagina;
         return this.http.get<ListadoSolicitudesTransferencias>(urlFinal);
     }
 

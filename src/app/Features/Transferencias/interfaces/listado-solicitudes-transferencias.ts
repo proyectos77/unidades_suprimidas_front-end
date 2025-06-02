@@ -1,9 +1,10 @@
 export interface ListadoSolicitudesTransferencias {
-	statusCode: number;
-	titulo:     string;
-	mensaje:    string;
-	icono:      string;
-	data:       Datum[];
+	statusCode:     number;
+	titulo:         string;
+	mensaje:        string;
+	icono:          string;
+	data:           Datum[];
+	infoPagination: InfoPagination;
 }
 
 export interface Datum {
@@ -18,4 +19,11 @@ export interface Datum {
 	porcentajeTransferencia:  string;
 	anio:                     string;
 	unidad:                   string;
+}
+
+export interface InfoPagination {
+	pagina:                  number;
+	totalRegistro:           number;
+	totalRegistrosPorPagina: number;
+	totalPaginas:            number;
 }
