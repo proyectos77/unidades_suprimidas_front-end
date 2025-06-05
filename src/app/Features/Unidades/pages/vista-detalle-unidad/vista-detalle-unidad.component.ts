@@ -3,13 +3,15 @@ import { GetInformacionUnidad } from '../../interfaces/get-informacion-unidad';
 import { UnidadesService } from '../../services/unidades.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ListadoArchivoPorUnidad } from '../../interfaces/listado-archivo-por-unidad';
+import { NgFor } from '@angular/common';
 
 
 
 
 @Component({
   selector: 'app-vista-detalle-unidad',
-  imports: [RouterLink],
+  imports: [RouterLink, NgFor],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
 })
@@ -71,6 +73,20 @@ export default class VistaDetalleUnidadComponent implements OnInit {
     },
   };
 
+  public informacionArchivoUnidad: ListadoArchivoPorUnidad = {
+      statusCode:     0,
+      titulo:         '',
+      mensaje:        '',
+      icono:          '',
+      data:           [],
+      infoPagination: {
+          pagina:                  0,
+          totalRegistro:           0,
+          totalRegistrosPorPagina: 0,
+          totalPaginas:            0,
+      },
+  }
+
   constructor(
       private httpUnidad: UnidadesService,
       private sweet: SweetAlertService,
@@ -90,11 +106,18 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           next: (informacion) => {
               if (informacion.statusCode === 200) {
                   this.informacionUnidad = informacion;
+                  this.getArchivoUnidad(informacion.data.detalle_unidad.id_detalle, 1);
               }
           },
           error: (error) => {
               this.router.navigate(['/main/unidades/listadoUnidades']);
           },
+      });
+  }
+
+  getArchivoUnidad(idDetalleUnidad: number, page:number):void{
+      this.httpUnidad.detalleArchivoPorUnidad(idDetalleUnidad, page).subscribe(archivo => {
+          this.informacionArchivoUnidad = archivo;
       });
   }
 }

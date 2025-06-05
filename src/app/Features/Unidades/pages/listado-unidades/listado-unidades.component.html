@@ -11,7 +11,7 @@
                       <th>ID</th>
                       <th>Nombre</th>
                       <th>Sigla</th>
-                      <th>Unidad Padre</th>
+                      <th>Unidad que asume</th>
                       <th>Departamento</th>
                       <th>Municipio</th>
                       <th>Estado</th>
@@ -23,7 +23,7 @@
                       <td>{{ unidad.id_unidad }}</td>
                       <td>{{ unidad.nombre }}</td>
                       <td>{{ unidad.sigla }}</td>
-                      <td>{{ unidad.padre }}</td>
+                      <td>{{ unidad.unidad_que_asume_archivo_unidad }}</td>
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
                       <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>

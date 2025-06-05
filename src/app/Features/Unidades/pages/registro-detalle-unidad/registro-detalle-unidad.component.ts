@@ -89,6 +89,5 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
     limpiarForm(): void {
         this.formDetalle.reset();
         this.formDetalle.get('idUnidad')?.setValue('');
-        this.formArchivo.reset();
     }
 }

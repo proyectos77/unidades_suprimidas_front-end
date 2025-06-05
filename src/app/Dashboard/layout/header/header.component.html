@@ -16,7 +16,9 @@
                     <i class="fas fa-user fa-2x fa-fw"></i>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#" (click)="cerrarSesion()">Cerrar Sesion</a></li>
+                    <li><a class="dropdown-item submenu__item" href="#" (click)="cerrarSesion()">Cerrar Sesion</a></li>
+                    <li class="submenu__item" [routerLink]="['/main/usuarios']" routerLinkActive="Active">Listado de usuarios</li>
+                    <li class="submenu__item" [routerLink]="['/main/usuarios/registroUsuarios']" routerLinkActive="Active">Registro de usuarios</li>
                 </ul>
             </div>
           </div>

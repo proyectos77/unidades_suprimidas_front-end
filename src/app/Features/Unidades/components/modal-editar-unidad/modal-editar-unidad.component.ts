@@ -183,7 +183,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           this.formularioEditarUnidad.patchValue({
               'nombre': unidad.nombre,
               'sigla': unidad.sigla,
-              'padreUnidad': unidad.padre,
+              'padreUnidad': unidad.unidad_que_asume_archivo_unidad,
               'departamentos': unidad.idDepartamento,
               'idMunicipio': unidad.idMunicipio
           });

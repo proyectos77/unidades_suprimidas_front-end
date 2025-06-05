@@ -10,6 +10,7 @@ import { GetListUnidadesSelect } from '../interfaces/get-list-unidades-select';
 import { GetInformacionUnidad } from '../interfaces/get-informacion-unidad';
 import { GetListUnidadesConDetalle } from '../interfaces/get-list-unidades-con-detalle';
 import { GetListadoAnios } from '../interfaces/get-listado-anios';
+import { ListadoArchivoPorUnidad } from '../interfaces/listado-archivo-por-unidad';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,10 @@ export class UnidadesService {
     listadoAnios():Observable<GetListadoAnios>{
         let urlFinal = this.urlList + '/anios';
         return this.httpUnidades.get<GetListadoAnios>(urlFinal);
+    }
+
+    detalleArchivoPorUnidad(idDetalleUnidad:number, page: number):Observable<ListadoArchivoPorUnidad>{
+        let urlFinal = this.urlList + '/archivoPorUnidad/'+idDetalleUnidad+'?page=' + page;
+        return this.httpUnidades.get<ListadoArchivoPorUnidad>(urlFinal);
     }
 }

@@ -39,11 +39,60 @@
               <p class="item__text"><span>Observación:</span></p>
               <p class="item__text-observacion">{{ informacionUnidad.data.detalle_unidad.observacion_detalle }}</p>
           </div>
-          <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+          <div class="tab-pane item" id="messages" role="tabpanel" aria-labelledby="messages-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
-              <p class="item__text"><span>Numero de cajas: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_cajas_archivos }}</p>
-              <p class="item__text"><span>Numero de carpetas: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_carpetas_archivo }}</p>
-              <p class="item__text"><span>Numero de folios: </span>{{ informacionUnidad.data.detalle_unidad.archivo.numero_folios_archivo }}</p>
+              <table class="table table-hover table-bordered text-center">
+                  <thead style="font-size: 1.4rem;" class="table-dark">
+                      <tr>
+                        <th colspan="6">Total Archivo</th>
+                        <th colspan="6">Total Transferido</th>
+                        <th colspan="6">Total Faltante</th>
+                      </tr>
+                      <tr>
+                        <th>Año</th>
+                        <th>Cajas</th>
+                        <th>Carpetas</th>
+                        <th>Folios</th>
+                        <th>Tomos</th>
+                        <th>Otros</th>
+                        <th>Cajas</th>
+                        <th>Carpetas</th>
+                        <th>Folios</th>
+                        <th>Tomos</th>
+                        <th>Otros</th>
+                        <th>Porcentaje</th>
+                        <th>Cajas</th>
+                        <th>Carpetas</th>
+                        <th>Folios</th>
+                        <th>Tomos</th>
+                        <th>Otros</th>
+                        <th>Porcentaje</th>
+                      </tr>
+                  </thead>
+
+                  <tbody style="font-size: 1.2rem;">
+                      <tr *ngFor="let archivo of informacionArchivoUnidad.data">
+                          <td>{{ archivo.anio_registro_archivo }}</td>
+                          <td>{{ archivo.numero_cajas_archivos }}</td>
+                          <td>{{ archivo.numero_carpetas_archivo }}</td>
+                          <td>{{ archivo.numero_folios_archivo }}</td>
+                          <td>{{ archivo.numero_tomos_archivo }}</td>
+                          <td>{{ archivo.numero_otros_archivo }}</td>
+                          <td>{{ archivo.cantidad_cajas_transferencia }}</td>
+                          <td>{{ archivo.cantidad_carpetas_transferencia }}</td>
+                          <td>{{ archivo.cantidad_folios_transferencia }}</td>
+                          <td>{{ archivo.cantidad_tomos_transferencia }}</td>
+                          <td>{{ archivo.cantidad_otros_transferencia }}</td>
+                          <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
+                          <td>{{ archivo.cantidad_cajas_faltante }}</td>
+                          <td>{{  archivo.cantidad_carpetas_faltante }}</td>
+                          <td>{{ archivo.cantidad_folios_faltante }}</td>
+                          <td>{{ archivo.cantidad_tomos_faltante }}</td>
+                          <td>{{ archivo.cantidad_otros_faltante }}</td>
+                          <td class="bg-warning">{{ archivo.porcentaje_faltante }}%</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
       </div>
 

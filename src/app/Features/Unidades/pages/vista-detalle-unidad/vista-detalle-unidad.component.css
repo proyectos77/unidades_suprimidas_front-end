@@ -1,8 +1,9 @@
 .item{
-    border: solid 1px var(--negro);
+    /* border: solid 0.5px var(--negro); */
     padding: 2rem;
     border-radius: 1rem;
     line-height: 1.5;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .item__title{

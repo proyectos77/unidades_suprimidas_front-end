@@ -11,7 +11,7 @@ export interface DatumUnidad {
   id_unidad:        number;
   nombre:           string;
   sigla:            string;
-  padre:            string;
+  unidad_que_asume_archivo_unidad:            string;
   departamento:     string;
   idDepartamento:   number;
   municipio:        string;
