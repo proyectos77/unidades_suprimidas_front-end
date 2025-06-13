@@ -59,7 +59,9 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
             cantidad_cajas: ['', [Validators.required]],
             cantidad_carpetas: ['', [Validators.required]],
             cantidad_folios: ['', [Validators.required]],
-            documentos: ['', [Validators.required]]
+            documentos: ['', [Validators.required]],
+            cantidad_tomos: [''],
+            cantidad_otros: ['']
         }));
     }
 
@@ -98,6 +100,10 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
     registroSolicitudTransferencia(data: FormData):void {
         this.httpTransferencias.storeSolicitudTransferencia(data).subscribe((solicitud) => {
             this.sweet.alertaGeneral(solicitud.icono, solicitud.titulo, solicitud.mensaje);
+
+            if (solicitud.statusCode == 200) {
+                this.limpiarForm();
+            }
         })
     }
 
@@ -110,6 +116,8 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
         formData.append('cantidad_cajas', form.cantidad_cajas);
         formData.append('cantidad_carpetas', form.cantidad_carpetas);
         formData.append('cantidad_folios', form.cantidad_folios);
+        formData.append('cantidad_tomos', form.cantidad_tomos);
+        formData.append('cantidad_otros', form.cantidad_otros);
 
         this.documentos.forEach((file, index) => {
             formData.append('documentos[]', file);

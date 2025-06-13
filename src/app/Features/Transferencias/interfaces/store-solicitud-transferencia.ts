@@ -4,6 +4,8 @@ export interface StoreSolicitudTransferencia {
     cantidad_carpetas: number,
     cantidad_folios: number,
     id_archivo: number,
-    documentos: []
+    documentos: [],
+    cantidad_tomos: number,
+    cantidad_otros: number
 
 }

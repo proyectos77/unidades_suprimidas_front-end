@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ListadoSolicitudesTransferencias } from '../../interfaces/listado-solicitudes-transferencias';
 import { TransferenciasService } from '../../services/transferencias.service';
 import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BuscadorListadoSolicitudesPipe } from '../../../../Shared/Pipes/buscador-listado-solicitudes.pipe';
 
 @Component({
   selector: 'app-listado-solicitudes-transferencias',
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, FormsModule, BuscadorListadoSolicitudesPipe],
   templateUrl: './listado-solicitudes-transferencias.component.html',
   styleUrl: './listado-solicitudes-transferencias.component.css'
 })
@@ -28,6 +30,8 @@ export default class ListadoSolicitudesTransferenciasComponent implements OnInit
     public totalRegistros:number = 0;
     public registrosPorPagina:number = 0;
     public totalPaginas:number = 0;
+    public filterPost:string = '';
+
 
     constructor(private httpTransferencias: TransferenciasService){}
 

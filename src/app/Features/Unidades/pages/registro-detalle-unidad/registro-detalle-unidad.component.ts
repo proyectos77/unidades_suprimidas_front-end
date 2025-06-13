@@ -83,6 +83,7 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe((detalle) => {
             this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
             this.limpiarForm();
+            this.listadoUnidades();
         });
     }
 

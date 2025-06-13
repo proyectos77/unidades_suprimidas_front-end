@@ -5,12 +5,14 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { RouterLink, RouterModule } from '@angular/router';
+import { BuscadorListadoUnidadesPipe } from '../../../../Shared/Pipes/buscador-listado-unidades.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-listado-unidades',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesPipe, FormsModule],
   templateUrl: './listado-unidades.component.html',
   styleUrl: './listado-unidades.component.css'
 })
@@ -36,6 +38,9 @@ export default class ListadoUnidadesComponent implements OnInit{
     public registrosPorPagina:number = 0;
     public totalPaginas:number = 0;
     public unidad!: DatumUnidad;
+
+    public filterPost: string = '';
+
 
     constructor(private httUnidades: UnidadesService, private sweet: SweetAlertService){}
 

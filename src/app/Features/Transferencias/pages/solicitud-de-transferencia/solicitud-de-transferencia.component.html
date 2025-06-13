@@ -45,7 +45,7 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">Cantidad de cajas</label>
+                          <label for="" class="form-label">* Cantidad de cajas</label>
                           <input type="number" class="form-control" formControlName="cantidad_cajas">
 
                           @if (this.formTransferencia.get('cantidad_cajas')?.touched && formTransferencia.get('cantidad_cajas')?.errors?.['required']){
@@ -60,7 +60,7 @@
                   <div class="row mt-5">
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">Cantidad de carpetas</label>
+                          <label for="" class="form-label">* Cantidad de carpetas</label>
                           <input type="number" class="form-control" formControlName="cantidad_carpetas">
 
                           @if (this.formTransferencia.get('cantidad_carpetas')?.touched && formTransferencia.get('cantidad_carpetas')?.errors?.['required']){
@@ -71,7 +71,7 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label"> Cantidad de folios</label>
+                          <label for="" class="form-label">* Cantidad de folios</label>
                           <input type="number" class="form-control" formControlName="cantidad_folios">
 
                           @if (this.formTransferencia.get('cantidad_folios')?.touched && formTransferencia.get('cantidad_folios')?.errors?.['required']){
@@ -82,7 +82,19 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">Documentos</label>
+                          <label for="" class="form-label"> Cantidad de tomos</label>
+                          <input type="number" class="form-control" formControlName="cantidad_tomos">
+                      </div>
+                  </div>
+
+                  <div class="row mt-5">
+                      <div class="col-md-4">
+                          <label for="" class="form-label"> Cantidad otros</label>
+                          <input type="number" class="form-control" formControlName="cantidad_otros">
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Documentos</label>
                           <input class="form-control" formControlName="documentos" type="file" multiple (change)="seleccionDeArchivo($event)"accept=".pdf,.docx,.jpg,.png"/>
 
                           @if (this.formTransferencia.get('documentos')?.touched && formTransferencia.get('documentos')?.errors?.['required']){
@@ -99,7 +111,7 @@
       <div class="row mt-5">
         <div class="col-md-12 content-from__btn">
             <button type="submit" class="btn btn-primary" (click)="validarForm()">Solitar transferencia</button>
-            <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Cancelar</button>
+            <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
         </div>
       </div>
   </div>

@@ -5,13 +5,15 @@ import { SweetAlertService } from '../../../../Core/services/sweet-alert.service
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListadoArchivoPorUnidad } from '../../interfaces/listado-archivo-por-unidad';
 import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-archivo-unidad.pipe';
 
 
 
 
 @Component({
   selector: 'app-vista-detalle-unidad',
-  imports: [RouterLink, NgFor],
+  imports: [RouterLink, NgFor, FormsModule, BuscadorArchivoUnidadPipe],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
 })
@@ -86,6 +88,8 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           totalPaginas:            0,
       },
   }
+
+  public filterPost: string = '';
 
   constructor(
       private httpUnidad: UnidadesService,

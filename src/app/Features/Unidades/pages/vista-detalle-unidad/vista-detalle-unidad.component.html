@@ -22,13 +22,27 @@
 
       <!-- Tab panes -->
       <div class="tab-content">
-          <div class="tab-pane active item" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="tab-pane active content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
-              <p class="item__text"><span>Sigla:</span> {{ informacionUnidad.data.sigla_unidad }}</p>
-              <p class="item__text"><span>Padre de la unidad:</span> {{ informacionUnidad.data.padre_unidad }}</p>
-              <p class="item__text"><span>Departamento / Municipio de creación:</span> {{ informacionUnidad.data.municipio.departamentos.nombre_departamento }} / {{ informacionUnidad.data.municipio.nombre_municipio }}</p>
+              <div class="row text-start">
+                  <div class="col-md-6">
+                      <p class="item__text"><span>Sigla:</span></p>
+                  </div>
+                  <div class="col-md-6">
+                      <p>{{ informacionUnidad.data.sigla_unidad }}</p>
+                  </div>
+              </div>
+
+              <div class="row text-start">
+                  <div class="col-md-6">
+                      <p class="item__text"><span>Padre de la unidad:</span></p>
+                  </div>
+              </div>
+             <!--
+               {{ informacionUnidad.data.padre_unidad }}</p>
+              <p class="item__text"><span>Departamento / Municipio de creación:</span> {{ informacionUnidad.data.municipio.departamentos.nombre_departamento }} / {{ informacionUnidad.data.municipio.nombre_municipio }}</p> -->
           </div>
-          <div class="tab-pane item" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="tab-pane content-form" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
               <p class="item__text"><span>Acto administrativo de creación: </span>{{ informacionUnidad.data.detalle_unidad.acto_administrativo_creacion_detalle }}</p>
               <p class="item__text"><span>Fecha de creación: </span>{{ informacionUnidad.data.detalle_unidad.fecha_creacion_unidad_detalle }}</p>
@@ -39,60 +53,67 @@
               <p class="item__text"><span>Observación:</span></p>
               <p class="item__text-observacion">{{ informacionUnidad.data.detalle_unidad.observacion_detalle }}</p>
           </div>
-          <div class="tab-pane item" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+          <div class="tab-pane content-list" id="messages" role="tabpanel" aria-labelledby="messages-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
-              <table class="table table-hover table-bordered text-center">
-                  <thead style="font-size: 1.4rem;" class="table-dark">
-                      <tr>
-                        <th colspan="6">Total Archivo</th>
-                        <th colspan="6">Total Transferido</th>
-                        <th colspan="6">Total Faltante</th>
-                      </tr>
-                      <tr>
-                        <th>Año</th>
-                        <th>Cajas</th>
-                        <th>Carpetas</th>
-                        <th>Folios</th>
-                        <th>Tomos</th>
-                        <th>Otros</th>
-                        <th>Cajas</th>
-                        <th>Carpetas</th>
-                        <th>Folios</th>
-                        <th>Tomos</th>
-                        <th>Otros</th>
-                        <th>Porcentaje</th>
-                        <th>Cajas</th>
-                        <th>Carpetas</th>
-                        <th>Folios</th>
-                        <th>Tomos</th>
-                        <th>Otros</th>
-                        <th>Porcentaje</th>
-                      </tr>
-                  </thead>
 
-                  <tbody style="font-size: 1.2rem;">
-                      <tr *ngFor="let archivo of informacionArchivoUnidad.data">
-                          <td>{{ archivo.anio_registro_archivo }}</td>
-                          <td>{{ archivo.numero_cajas_archivos }}</td>
-                          <td>{{ archivo.numero_carpetas_archivo }}</td>
-                          <td>{{ archivo.numero_folios_archivo }}</td>
-                          <td>{{ archivo.numero_tomos_archivo }}</td>
-                          <td>{{ archivo.numero_otros_archivo }}</td>
-                          <td>{{ archivo.cantidad_cajas_transferencia }}</td>
-                          <td>{{ archivo.cantidad_carpetas_transferencia }}</td>
-                          <td>{{ archivo.cantidad_folios_transferencia }}</td>
-                          <td>{{ archivo.cantidad_tomos_transferencia }}</td>
-                          <td>{{ archivo.cantidad_otros_transferencia }}</td>
-                          <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
-                          <td>{{ archivo.cantidad_cajas_faltante }}</td>
-                          <td>{{  archivo.cantidad_carpetas_faltante }}</td>
-                          <td>{{ archivo.cantidad_folios_faltante }}</td>
-                          <td>{{ archivo.cantidad_tomos_faltante }}</td>
-                          <td>{{ archivo.cantidad_otros_faltante }}</td>
-                          <td class="bg-warning">{{ archivo.porcentaje_faltante }}%</td>
-                      </tr>
-                  </tbody>
-              </table>
+              <div class="content-buscador">
+                  <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro">
+              </div>
+
+              <div class="table-responsive mt-5">
+                <table class="table table-hover table-bordered text-center">
+                    <thead style="font-size: 1.4rem;" class="table-dark">
+                        <tr>
+                          <th colspan="6">Total Archivo</th>
+                          <th colspan="6" class="bg-success">Total Transferido</th>
+                          <th colspan="6" class="bg-warning">Total Faltante</th>
+                        </tr>
+                        <tr>
+                          <th>Año</th>
+                          <th>Cajas</th>
+                          <th>Carpetas</th>
+                          <th>Folios</th>
+                          <th>Tomos</th>
+                          <th>Otros</th>
+                          <th class="bg-success">Cajas</th>
+                          <th class="bg-success">Carpetas</th>
+                          <th class="bg-success">Folios</th>
+                          <th class="bg-success">Tomos</th>
+                          <th class="bg-success">Otros</th>
+                          <th class="bg-success">Porcentaje</th>
+                          <th class="bg-warning">Cajas</th>
+                          <th class="bg-warning">Carpetas</th>
+                          <th class="bg-warning">Folios</th>
+                          <th class="bg-warning">Tomos</th>
+                          <th class="bg-warning">Otros</th>
+                          <th class="bg-warning">Porcentaje</th>
+                        </tr>
+                    </thead>
+
+                    <tbody style="font-size: 1.2rem;">
+                        <tr *ngFor="let archivo of informacionArchivoUnidad.data | buscadorArchivoUnidad:filterPost">
+                            <td>{{ archivo.anio_registro_archivo }}</td>
+                            <td>{{ archivo.numero_cajas_archivos }}</td>
+                            <td>{{ archivo.numero_carpetas_archivo }}</td>
+                            <td>{{ archivo.numero_folios_archivo }}</td>
+                            <td>{{ archivo.numero_tomos_archivo }}</td>
+                            <td>{{ archivo.numero_otros_archivo }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_cajas_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_carpetas_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_folios_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_tomos_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_otros_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
+                            <td class="bg-warning">{{ archivo.cantidad_cajas_faltante }}</td>
+                            <td class="bg-warning">{{  archivo.cantidad_carpetas_faltante }}</td>
+                            <td class="bg-warning">{{ archivo.cantidad_folios_faltante }}</td>
+                            <td class="bg-warning">{{ archivo.cantidad_tomos_faltante }}</td>
+                            <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
+                            <td class="bg-warning">{{ archivo.porcentaje_faltante }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
           </div>
       </div>
 

@@ -96,15 +96,16 @@ export default class RegistroArchivoUnidadComponent {
 
     registroDetalleUnidad(data: StoreArchivoDetalleUnidad): void {
       this.httArchivo.storeArchivo(data).subscribe((detalle) => {
-          console.log(detalle);
-
           this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
+          if (detalle.statusCode == 200) {
+              this.limpiarForm();
+          }
       });
     }
 
     limpiarForm(): void {
-      this.formDetalle.reset();
-      this.formDetalle.get('idUnidad')?.setValue('');
-      this.formArchivo.reset();
+        this.formArchivo.reset();
+        this.formArchivo.get('id_detalle')?.setValue('');
+        this.formArchivo.get('anio_registro_archivo')?.setValue('');
     }
 }

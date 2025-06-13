@@ -4,7 +4,10 @@
       <h3>Listado de unidades</h3>
   </div>
   <div class="card-body card-body-page">
-      <div class="table-usuarios">
+      <div class="content-buscador">
+          <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" placeholder="Filtro" [(ngModel)] = "filterPost">
+      </div>
+      <div class="table-usuarios table-responsive content-list mt-5">
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
               <thead class="text-center table-dark">
                   <tr>
@@ -19,23 +22,23 @@
                   </tr>
               </thead>
               <tbody class="text-center">
-                  <tr *ngFor="let unidad of listaUnidades.data">
+                  <tr *ngFor="let unidad of listaUnidades.data | buscadorListadoUnidades:filterPost">
                       <td>{{ unidad.id_unidad }}</td>
-                      <td>{{ unidad.nombre }}</td>
+                      <td class="text-start">{{ unidad.nombre }}</td>
                       <td>{{ unidad.sigla }}</td>
                       <td>{{ unidad.unidad_que_asume_archivo_unidad }}</td>
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
                       <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
-                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem; font-size: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" style="font-size: 1rem;" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
                       </td>
                   </tr>
               </tbody>
           </table>
       </div>
-      <nav aria-label="..." *ngIf="pagina > 0">
+      <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
           <ul class="pagination">
               <li class="page-item">
                   <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>

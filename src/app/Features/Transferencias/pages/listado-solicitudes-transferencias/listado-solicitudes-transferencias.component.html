@@ -2,15 +2,19 @@
 
 <div class="card cardContenido" >
   <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
-      <h3>Listado de unidades</h3>
+      <h3>Listado de solicitudes de transferencia</h3>
   </div>
   <div class="card-body card-body-page">
-      <div class="table-usuarios">
+      <div class="content-buscador">
+          <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro">
+      </div>
+
+      <div class="table-usuarios content-list mt-5">
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
               <thead class="text-center table-dark">
                   <tr>
                       <th>ID</th>
-                      <th>Unidad</th>
+                      <th class="text-start">Unidad</th>
                       <th>Año transferencia</th>
                       <th>Solicita</th>
                       <th>Cajas</th>
@@ -23,7 +27,7 @@
                   </tr>
               </thead>
               <tbody class="text-center">
-                  <tr *ngFor="let solicitud of solicitud.data">
+                  <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
                       <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
                       <td>{{ solicitud.anio }}</td>
@@ -43,7 +47,7 @@
               </tbody>
           </table>
       </div>
-      <nav aria-label="..." *ngIf="pagina > 0">
+      <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
           <ul class="pagination">
               <li class="page-item">
                   <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === 1" (click)="cambiarPagina(solicitud.infoPagination.pagina - 1)">Anterior</a>

@@ -152,6 +152,12 @@ ul{
     border-radius: 1rem;
 }
 
+.content-list{
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    border-radius: 1rem;
+}
+
 .content-from__btn{
     display: flex;
     justify-content: end;
@@ -162,6 +168,18 @@ ul{
     padding: 3rem 1rem;
 }
 
+thead{
+    font-size: 1.4rem;
+}
+
+tbody{
+    font-size: 1.2rem;
+}
+
+.filtrado-tabla{
+    font-size: 1.4rem !important;
+    padding: .5rem .7rem;
+}
 
 /***********************************************************
 
