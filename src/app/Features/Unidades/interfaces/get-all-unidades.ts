@@ -10,6 +10,7 @@ export interface GetAllUnidades {
 export interface DatumUnidad {
   id_unidad:        number;
   nombre:           string;
+  unidad_superior_jerarquicamente: string;
   sigla:            string;
   unidad_que_asume_archivo_unidad:            string;
   departamento:     string;

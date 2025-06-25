@@ -1,3 +1,4 @@
+import { validateHeaderName } from 'http';
 import { Component } from '@angular/core';
 import { StoreDetalleUnidad } from '../../interfaces/sotre-detalleUnidad';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -55,8 +56,7 @@ export default class RegistroArchivoUnidadComponent {
         numero_cajas: ['', Validators.required],
         numero_carpetas: ['', Validators.required],
         numero_folio: ['', Validators.required],
-        numero_tomos: [''],
-        otros: [''],
+        otros: ['', Validators.required],
       }));
     }
 

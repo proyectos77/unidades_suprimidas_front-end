@@ -18,14 +18,14 @@
 
                   @if (this.formulario.get('nombre')?.touched && this.formulario.get('nombre')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo Nombre</small>
+                          <small class="text-danger">Es necesario el campo Nombre</small>
                       </div>
 
                   }
 
                   @if (this.formulario.get('nombre')?.touched && this.formulario.get('nombre')?.errors?.['validarSoloLetras']){
                       <div class="invalid-feedback" style="display: block;">
-                        <small class="text-danger">El campos Nombre solo acepta letras</small>
+                        <small class="text-danger">El campo Nombre solo acepta letras</small>
                       </div>
                   }
 
@@ -36,14 +36,14 @@
 
                   @if ((this.formulario.get('identificacion')?.touched || this.formulario.get('identificacion')?.dirty)&& this.formulario.get('identificacion')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo iIentificacion</small>
+                          <small class="text-danger">Es necesario el campo Identificación</small>
                       </div>
 
                   }
 
                   @if ((this.formulario.get('identificacion')?.touched || this.formulario.get('identificacion')?.dirty)&& this.formulario.get('identificacion')?.errors?.['validarSoloNumeros']){
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">El campos Identificacion solo acepta numeros </small>
+                          <small class="text-danger">El campos Identificación solo acepta números </small>
                       </div>
                   }
 
@@ -54,7 +54,7 @@
 
                   @if ((this.formulario.get('user')?.touched || this.formulario.get('user')?.dirty)&& this.formulario.get('user')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo Usuario</small>
+                          <small class="text-danger">Es necesario el campo Usuario</small>
                       </div>
                   }
 
@@ -65,7 +65,7 @@
 
                   @if ((this.formulario.get('emailUsuario')?.touched || this.formulario.get('emailUsuario')?.dirty)&& this.formulario.get('emailUsuario')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo Email</small>
+                          <small class="text-danger">Es necesario el campo Email</small>
                       </div>
                   }
 
@@ -84,7 +84,7 @@
 
                   @if (this.formulario.get('tipoUsuario')?.touched && this.formulario.get('tipoUsuario')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo Tipo usuario</small>
+                          <small class="text-danger">Es necesario el campo Tipo usuario</small>
                       </div>
                   }
 
@@ -98,7 +98,7 @@
 
                   @if (this.formulario.get('cargo')?.touched && this.formulario.get('cargo')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el cmapo cargo</small>
+                          <small class="text-danger">Es necesario el campo cargo</small>
                       </div>
                   }
               </div>

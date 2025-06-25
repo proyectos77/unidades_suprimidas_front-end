@@ -1,7 +1,7 @@
 
 <div class="card cardContenido" >
   <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
-      <h3>Informacion de la unidad</h3>
+      <h3>Información de la unidad</h3>
       <div class="content-btn-regresar">
           <button type="button" class="btn btn-primary" [routerLink]="['/main/unidades/listadoUnidades']">Regresar</button>
       </div>
@@ -64,27 +64,26 @@
                 <table class="table table-hover table-bordered text-center">
                     <thead style="font-size: 1.4rem;" class="table-dark">
                         <tr>
-                          <th colspan="6">Total Archivo</th>
-                          <th colspan="6" class="bg-success">Total Transferido</th>
-                          <th colspan="6" class="bg-warning">Total Faltante</th>
+                          <th colspan="5">Total Archivo</th>
+                          <th colspan="5" class="bg-success">Total Transferido</th>
+                          <th colspan="5" class="bg-warning">Total Faltante</th>
                         </tr>
                         <tr>
                           <th>Año</th>
                           <th>Cajas</th>
                           <th>Carpetas</th>
                           <th>Folios</th>
-                          <th>Tomos</th>
                           <th>Otros</th>
                           <th class="bg-success">Cajas</th>
                           <th class="bg-success">Carpetas</th>
                           <th class="bg-success">Folios</th>
-                          <th class="bg-success">Tomos</th>
+
                           <th class="bg-success">Otros</th>
                           <th class="bg-success">Porcentaje</th>
                           <th class="bg-warning">Cajas</th>
                           <th class="bg-warning">Carpetas</th>
                           <th class="bg-warning">Folios</th>
-                          <th class="bg-warning">Tomos</th>
+
                           <th class="bg-warning">Otros</th>
                           <th class="bg-warning">Porcentaje</th>
                         </tr>
@@ -96,18 +95,18 @@
                             <td>{{ archivo.numero_cajas_archivos }}</td>
                             <td>{{ archivo.numero_carpetas_archivo }}</td>
                             <td>{{ archivo.numero_folios_archivo }}</td>
-                            <td>{{ archivo.numero_tomos_archivo }}</td>
+
                             <td>{{ archivo.numero_otros_archivo }}</td>
                             <td class="bg-success">{{ archivo.cantidad_cajas_transferencia }}</td>
                             <td class="bg-success">{{ archivo.cantidad_carpetas_transferencia }}</td>
                             <td class="bg-success">{{ archivo.cantidad_folios_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.cantidad_tomos_transferencia }}</td>
+
                             <td class="bg-success">{{ archivo.cantidad_otros_transferencia }}</td>
                             <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
                             <td class="bg-warning">{{ archivo.cantidad_cajas_faltante }}</td>
                             <td class="bg-warning">{{  archivo.cantidad_carpetas_faltante }}</td>
                             <td class="bg-warning">{{ archivo.cantidad_folios_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.cantidad_tomos_faltante }}</td>
+
                             <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
                             <td class="bg-warning">{{ archivo.porcentaje_faltante }}%</td>
                         </tr>

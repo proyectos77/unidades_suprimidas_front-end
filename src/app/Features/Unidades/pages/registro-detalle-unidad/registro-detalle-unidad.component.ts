@@ -47,8 +47,8 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
             actoAdministrativoDesactivacion: [null, Validators.required],
             fechaCreacionUnidad: [null, Validators.required],
             fechaDesactivacionUnidad: [null, Validators.required],
-            puestoMandoAdelantado: [null, Validators.required],
-            puestoMandoAtrasado: [null, Validators.required],
+            puestoMandoAdelantado: [null],
+            puestoMandoAtrasado: [null],
             planReorganizacionDiorg: [null, Validators.required],
             observacion: [null, Validators.required],
         }));

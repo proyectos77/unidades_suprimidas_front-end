@@ -56,11 +56,13 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
         return (this.formTransferencia = this.form.group({
             id_detalle_unidad: ['', [Validators.required]],
             id_archivo: ['', [Validators.required]],
+            seccion: ['', [Validators.required]],
+            serie: ['', [Validators.required]],
+            subserie: ['', [Validators.required]],
             cantidad_cajas: ['', [Validators.required]],
             cantidad_carpetas: ['', [Validators.required]],
             cantidad_folios: ['', [Validators.required]],
             documentos: ['', [Validators.required]],
-            cantidad_tomos: [''],
             cantidad_otros: ['']
         }));
     }
@@ -112,11 +114,13 @@ export default class SolicitudDeTransferenciaComponent implements OnInit{
         const formData = new FormData();
 
         formData.append('id_detalle_unidad', form.id_detalle_unidad);
+        formData.append('seccion', form.seccion);
+        formData.append('serie', form.serie);
+        formData.append('subserie', form.subserie);
         formData.append('id_archivo', form.id_archivo);
         formData.append('cantidad_cajas', form.cantidad_cajas);
         formData.append('cantidad_carpetas', form.cantidad_carpetas);
         formData.append('cantidad_folios', form.cantidad_folios);
-        formData.append('cantidad_tomos', form.cantidad_tomos);
         formData.append('cantidad_otros', form.cantidad_otros);
 
         this.documentos.forEach((file, index) => {

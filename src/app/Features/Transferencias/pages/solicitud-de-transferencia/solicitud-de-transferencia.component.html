@@ -45,6 +45,48 @@
                       </div>
 
                       <div class="col-md-4">
+                          <label for="" class="form-label">* Seccion</label>
+                          <input type="text" class="form-control" name="" id="" formControlName="seccion">
+
+                          @if (this.formTransferencia.get('seccion')?.touched && formTransferencia.get('seccion')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la sección</small>
+                              </div>
+                          }
+
+                      </div>
+
+
+
+                  </div>
+
+                  <div class="row mt-5">
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Serie</label>
+                          <input type="text" class="form-control" formControlName="serie">
+
+                          @if (this.formTransferencia.get('serie')?.touched && formTransferencia.get('serie')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la serie</small>
+                              </div>
+                          }
+
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Subserie</label>
+                          <input type="text" class="form-control" name="" id="" formControlName="subserie">
+
+                          @if (this.formTransferencia.get('subserie')?.touched && formTransferencia.get('subserie')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la subserie</small>
+                              </div>
+                          }
+
+                      </div>
+
+                      <div class="col-md-4">
                           <label for="" class="form-label">* Cantidad de cajas</label>
                           <input type="number" class="form-control" formControlName="cantidad_cajas">
 
@@ -71,6 +113,11 @@
                       </div>
 
                       <div class="col-md-4">
+                          <label for="" class="form-label"> Cantidad otros</label>
+                          <input type="number" class="form-control" formControlName="cantidad_otros">
+                      </div>
+
+                      <div class="col-md-4">
                           <label for="" class="form-label">* Cantidad de folios</label>
                           <input type="number" class="form-control" formControlName="cantidad_folios">
 
@@ -80,19 +127,9 @@
                               </div>
                           }
                       </div>
-
-                      <div class="col-md-4">
-                          <label for="" class="form-label"> Cantidad de tomos</label>
-                          <input type="number" class="form-control" formControlName="cantidad_tomos">
-                      </div>
                   </div>
 
                   <div class="row mt-5">
-                      <div class="col-md-4">
-                          <label for="" class="form-label"> Cantidad otros</label>
-                          <input type="number" class="form-control" formControlName="cantidad_otros">
-                      </div>
-
                       <div class="col-md-4">
                           <label for="" class="form-label">* Documentos</label>
                           <input class="form-control" formControlName="documentos" type="file" multiple (change)="seleccionDeArchivo($event)"accept=".pdf,.docx,.jpg,.png"/>

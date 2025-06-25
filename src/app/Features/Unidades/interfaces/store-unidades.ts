@@ -1,7 +1,7 @@
 export interface StoreUnidades {
     nombre:             String,
-    sigla:              String,
     division:           String,
+    sigla:              String,     
     unidad_que_asume:   String,
     idMunicipio:        number,
 }

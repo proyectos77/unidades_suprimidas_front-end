@@ -23,15 +23,16 @@
                   }
               </div>
 
-              <div class="col-md-6 form-group">
-                  <label for="" class="form-label">* Unidad que asumio el archivo</label>
-                  <input class="form-control" type="text" formControlName="unidad_que_asume" placeholder="">
-                  @if (this.formularioUnidad.get('unidad_que_asume')?.touched && formularioUnidad.get('unidad_que_asume')?.errors?.['required']){
+               <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Unidad superior jerárquicamente (División)</label>
+                  <input class="form-control" type="text" formControlName="division" placeholder="">
+                  @if (this.formularioUnidad.get('division')?.touched && formularioUnidad.get('division')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario la uniadad que asumio el archivo</small>
+                          <small class="text-danger">Es necesario la unidad que asumió el archivo</small>
                       </div>
                   }
               </div>
+
           </div>
 
           <div class="row mt-5">
@@ -44,6 +45,19 @@
                       </div>
                   }
               </div>
+
+               <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Unidad que asumió el archivo</label>
+                  <input class="form-control" type="text" formControlName="unidad_que_asume" placeholder="">
+                  @if (this.formularioUnidad.get('unidad_que_asume')?.touched && formularioUnidad.get('unidad_que_asume')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario la unidad que asumió el archivo</small>
+                      </div>
+                  }
+              </div>
+          </div>
+
+          <div class="row mt-5">
 
               <div class="col-md-6 form-group">
                   <label for="" class="form-label">* Departamentos</label>
@@ -59,11 +73,6 @@
                   }
               </div>
 
-          </div>
-
-          <div class="row mt-5">
-
-
               <div class="col-md-6 form-group">
                   <label for="" class="form-label">* Municipios</label>
                   <select class="form-select" formControlName="idMunicipio">
@@ -76,13 +85,15 @@
                       </div>
                   }
               </div>
+          </div>
 
-              <div class="col-md-6 mt-5">
-                  <div class="content-from__btn">
-                      <button type="submit" class="btn btn-primary">Registrar</button>
-                      <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
-                  </div>
-              </div>
+          <div class="row mt-5">
+              <div class="col-md-12 mt-5">
+                    <div class="content-from__btn">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
+                    </div>
+                </div>
           </div>
 
 
