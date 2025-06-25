@@ -28,7 +28,8 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       id_unidad: 0,
       nombre_unidad: '',
       sigla_unidad: '',
-      padre_unidad: '',
+      unidad_superior_jerarquicamente_unidad: '',
+      unidad_que_asume_archivo_unidad: '',
       id_municipio: 0,
       fecha_creacion_unidad: '',
       fecha_actualizacion_unidad: '',
@@ -41,6 +42,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
         fecha_desactivacion_unidad_detalle: '',
         puesto_mando_adelantado_detalle: '',
         puesto_mando_atrasado_detalle: '',
+        plan_reorganizacion_diorg_detalle: '',
         observacion_detalle: '',
         id_unidad: 0,
         fecha_creacion_detalle: '',
@@ -109,6 +111,8 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       this.httpUnidad.getInformacionUnidad(id).subscribe({
           next: (informacion) => {
               if (informacion.statusCode === 200) {
+                  console.log(informacion);
+
                   this.informacionUnidad = informacion;
                   this.getArchivoUnidad(informacion.data.detalle_unidad.id_detalle, 1);
               }

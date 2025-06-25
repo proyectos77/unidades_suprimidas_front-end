@@ -15,6 +15,7 @@
                   <tr>
                       <th>ID</th>
                       <th class="text-start">Unidad</th>
+                      <th>Seccion</th>
                       <th>Año transferencia</th>
                       <th>Solicita</th>
                       <th>Cajas</th>
@@ -30,6 +31,7 @@
                   <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
                       <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
+                      <td>{{ solicitud.seccion }}</td>
                       <td>{{ solicitud.anio }}</td>
                       <td>{{ solicitud.usuarioSolicita }}</td>
                       <td>{{ solicitud.cantidadCajas }}</td>

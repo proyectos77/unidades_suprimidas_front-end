@@ -17,7 +17,7 @@
 }
 
 .item__text{
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     margin-left: 1rem;
     text-transform: uppercase;
 }
@@ -30,4 +30,20 @@
     border-radius: .5rem;
     overflow: auto;
     max-height: 20rem;
+}
+
+
+.contentVistaInfoUnidad{
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 70%;
+}
+
+.itenInformacion{
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid black;
 }

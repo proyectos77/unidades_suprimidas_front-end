@@ -10,7 +10,8 @@ export interface Data {
   id_unidad:                  number;
   nombre_unidad:              string;
   sigla_unidad:               string;
-  padre_unidad:               string;
+  unidad_superior_jerarquicamente_unidad:               string;
+  unidad_que_asume_archivo_unidad:               string;
   id_municipio:               number;
   fecha_creacion_unidad:      Date | '';
   fecha_actualizacion_unidad: Date | '';
@@ -33,6 +34,7 @@ export interface DetalleUnidad {
   fecha_actualizacion_detalle:               Date | '';
   id_estado:                                 number;
   archivo:                                   Archivo;
+  plan_reorganizacion_diorg_detalle: string;
 }
 
 export interface Archivo {

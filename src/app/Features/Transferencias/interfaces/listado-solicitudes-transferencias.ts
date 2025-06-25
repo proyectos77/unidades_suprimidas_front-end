@@ -19,6 +19,7 @@ export interface Datum {
 	porcentajeTransferencia:  string;
 	anio:                     string;
 	unidad:                   string;
+  seccion:                  string;
 }
 
 export interface InfoPagination {
