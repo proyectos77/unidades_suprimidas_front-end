@@ -35,7 +35,7 @@
                       <td>{{ solicitud.cantidadCajas }}</td>
                       <td>{{ solicitud.cantidadCarpetas }}</td>
                       <td>{{ solicitud.cantidadFolios }}</td>
-                      <td>{{ solicitud.porcentajeTransferencia }}%</td>
+                      <td>{{ solicitud.porcentajeTransferencia | number:'1.0-0' }}%</td>
                       <td>{{ solicitud.fechaSolicitud }}</td>
                       <td>{{ solicitud.estadoSolicitud }}</td>
                       <!-- <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>

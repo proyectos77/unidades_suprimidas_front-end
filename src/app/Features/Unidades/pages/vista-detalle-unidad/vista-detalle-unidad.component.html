@@ -108,7 +108,7 @@
                             <td class="bg-warning">{{ archivo.cantidad_folios_faltante }}</td>
 
                             <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.porcentaje_faltante }}%</td>
+                            <td class="bg-warning">{{ archivo.porcentaje_faltante | number:'1.0-0'  }}%</td>
                         </tr>
                     </tbody>
                 </table>

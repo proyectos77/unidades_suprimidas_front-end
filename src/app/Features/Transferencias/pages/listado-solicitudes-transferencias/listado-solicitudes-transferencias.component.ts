@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ListadoSolicitudesTransferencias } from '../../interfaces/listado-solicitudes-transferencias';
 import { TransferenciasService } from '../../services/transferencias.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuscadorListadoSolicitudesPipe } from '../../../../Shared/Pipes/buscador-listado-solicitudes.pipe';
 
 @Component({
   selector: 'app-listado-solicitudes-transferencias',
-  imports: [NgFor, NgIf, FormsModule, BuscadorListadoSolicitudesPipe],
+  imports: [NgFor, NgIf, FormsModule, BuscadorListadoSolicitudesPipe, CommonModule],
   templateUrl: './listado-solicitudes-transferencias.component.html',
   styleUrl: './listado-solicitudes-transferencias.component.css'
 })

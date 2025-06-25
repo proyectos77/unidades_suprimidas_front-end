@@ -4,7 +4,7 @@ import { UnidadesService } from '../../services/unidades.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListadoArchivoPorUnidad } from '../../interfaces/listado-archivo-por-unidad';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-archivo-unidad.pipe';
 
@@ -13,7 +13,7 @@ import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-arc
 
 @Component({
   selector: 'app-vista-detalle-unidad',
-  imports: [RouterLink, NgFor, FormsModule, BuscadorArchivoUnidadPipe],
+  imports: [RouterLink, NgFor, FormsModule, BuscadorArchivoUnidadPipe, CommonModule],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
 })
