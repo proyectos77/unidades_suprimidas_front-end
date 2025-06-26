@@ -176,6 +176,28 @@
           <div class="tab-pane content-list" id="messages" role="tabpanel" aria-labelledby="messages-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
 
+              <div class="contentGrafica">
+                  <ngx-charts-bar-vertical
+                      [view]="view"
+                      [scheme]="customColorScheme"
+                      [results]="data"
+                      [gradient]="gradient"
+                      [xAxis]="showXAxis"
+                      [yAxis]="showYAxis"
+                      [legend]="showLegend"
+                      [showXAxisLabel]="showXAxisLabel"
+                      [showYAxisLabel]="showYAxisLabel"
+                      [xAxisLabel]="xAxisLabel"
+                      [yAxisLabel]="yAxisLabel"
+                      [legendTitle]="legendTitle"
+                      [yAxisTickFormatting]="formatAsPercentage"
+
+                      [dataLabelFormatting]="formatAsPercentage"
+                      >
+                  </ngx-charts-bar-vertical>
+              </div>
+
+
               <div class="content-buscador">
                   <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro">
               </div>

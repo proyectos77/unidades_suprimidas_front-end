@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetInformacionUnidad } from '../../interfaces/get-informacion-unidad';
 import { UnidadesService } from '../../services/unidades.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
@@ -7,17 +7,51 @@ import { ListadoArchivoPorUnidad } from '../../interfaces/listado-archivo-por-un
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-archivo-unidad.pipe';
-
-
-
+import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-vista-detalle-unidad',
-  imports: [RouterLink, NgFor, FormsModule, BuscadorArchivoUnidadPipe, CommonModule],
+  // --- LA SOLUCIÓN ESTÁ AQUÍ ---
+  standalone: true, // ¡Añade esta línea!
+  // -----------------------------
+  imports: [
+    RouterLink,
+    NgFor,
+    FormsModule,
+    BuscadorArchivoUnidadPipe,
+    CommonModule,
+    NgxChartsModule
+  ],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
+  // No necesitas la propiedad 'animations' aquí porque las animaciones
+  // vienen definidas dentro de NgxChartsModule.
 })
 export default class VistaDetalleUnidadComponent implements OnInit {
+
+  public data: any[] = [];
+
+  view: [number, number] = [600, 150]; // Dimensiones [ancho, alto]
+
+  // Opciones del gráfico
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = '';
+  showYAxisLabel: boolean = true;
+  yAxisLabel: string = '';
+  legendTitle: string = 'Estados';
+  customColorScheme = {
+      name: 'custom', // Dale un nombre
+      selectable: true,
+      group: ScaleType.Ordinal, // Tipo de escala, 'Ordinal' es común
+      domain: ['#198754', '#ffc107'] // Tus colores personalizados aquí
+    // Por ejemplo, un azul para 'Archivo Transferido' y un naranja para 'Archivo Faltante'
+  };
+
+
 
   public informacionUnidad: GetInformacionUnidad = {
     statusCode: 0,
@@ -49,14 +83,14 @@ export default class VistaDetalleUnidadComponent implements OnInit {
         fecha_actualizacion_detalle: '',
         id_estado: 0,
         archivo: {
-          id_archivo:                  0,
-          numero_cajas_archivos:       0,
-          numero_carpetas_archivo:     0,
-          numero_folios_archivo:       0,
-          id_detalle:                  0,
-          fecha_creacion_archivo:      '',
+          id_archivo: 0,
+          numero_cajas_archivos: 0,
+          numero_carpetas_archivo: 0,
+          numero_folios_archivo: 0,
+          id_detalle: 0,
+          fecha_creacion_archivo: '',
           fecha_actualizacion_archivo: '',
-          id_estado:                   0
+          id_estado: 0
         },
       },
       municipio: {
@@ -78,16 +112,16 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   };
 
   public informacionArchivoUnidad: ListadoArchivoPorUnidad = {
-      statusCode:     0,
-      titulo:         '',
-      mensaje:        '',
-      icono:          '',
-      data:           [],
+      statusCode: 0,
+      titulo: '',
+      mensaje: '',
+      icono: '',
+      data: [],
       infoPagination: {
-          pagina:                  0,
-          totalRegistro:           0,
+          pagina: 0,
+          totalRegistro: 0,
           totalRegistrosPorPagina: 0,
-          totalPaginas:            0,
+          totalPaginas: 0,
       },
   }
 
@@ -111,8 +145,6 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       this.httpUnidad.getInformacionUnidad(id).subscribe({
           next: (informacion) => {
               if (informacion.statusCode === 200) {
-                  console.log(informacion);
-
                   this.informacionUnidad = informacion;
                   this.getArchivoUnidad(informacion.data.detalle_unidad.id_detalle, 1);
               }
@@ -125,7 +157,23 @@ export default class VistaDetalleUnidadComponent implements OnInit {
 
   getArchivoUnidad(idDetalleUnidad: number, page:number):void{
       this.httpUnidad.detalleArchivoPorUnidad(idDetalleUnidad, page).subscribe(archivo => {
+          this.data = [
+              {
+                  'name': 'Archivo Transferido',
+                  'value' : archivo.data[0].porcentaje_transferencia
+              },
+              {
+                  'name': 'Archivo Faltante',
+                  'value' : archivo.data[0].porcentaje_faltante
+              }
+          ];
           this.informacionArchivoUnidad = archivo;
       });
   }
+
+  formatAsPercentage(value: number): string {
+    return `${value}%`;
+  }
+
+
 }

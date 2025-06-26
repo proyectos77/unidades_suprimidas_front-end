@@ -47,3 +47,9 @@
     padding: 1rem;
     border: 1px solid black;
 }
+
+.contentGrafica{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 2rem;
+}
