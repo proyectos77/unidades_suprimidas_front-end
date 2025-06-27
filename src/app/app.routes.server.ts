@@ -9,6 +9,13 @@ export const serverRoutes: ServerRoute[] = [
                                    // RenderMode.Server es más explícito.
   },
 
+  {
+      path: 'main/unidades/listadoTransferenciasPorArchivo/:id',
+      renderMode: RenderMode.Server
+  },
+
+
+
 
   {
     path: '**',

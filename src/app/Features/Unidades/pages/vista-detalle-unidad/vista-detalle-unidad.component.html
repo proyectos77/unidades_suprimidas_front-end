@@ -209,6 +209,7 @@
                           <th colspan="5">Total Archivo</th>
                           <th colspan="5" class="bg-success">Total Transferido</th>
                           <th colspan="5" class="bg-warning">Total Faltante</th>
+                          <th>Opciones</th>
                         </tr>
                         <tr>
                           <th>Año</th>
@@ -228,6 +229,7 @@
 
                           <th class="bg-warning">Otros</th>
                           <th class="bg-warning">Porcentaje</th>
+                          <th></th>
                         </tr>
                     </thead>
 
@@ -251,6 +253,11 @@
 
                             <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
                             <td class="bg-warning">{{ archivo.porcentaje_faltante | number:'1.0-0'  }}%</td>
+                            <td>
+                              <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/listadoTransferenciasPorArchivo', archivo.id_archivo]">
+                                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                              </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

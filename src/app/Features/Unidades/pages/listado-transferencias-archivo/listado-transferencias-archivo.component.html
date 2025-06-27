@@ -1,0 +1,62 @@
+
+<div class="card cardContenido" >
+  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+      <h3>Transferencias por archivo</h3>
+      <div class="content-btn-regresar">
+          <button type="button" class="btn btn-primary" (click)="regresar()">Regresar</button>
+      </div>
+  </div>
+  <div class="card-body card-body-page">
+      <div class="content-buscador">
+          <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" placeholder="Filtro" [(ngModel)] = "filterPost">
+      </div>
+      <div class="table-usuarios table-responsive content-list mt-5">
+          <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
+              <thead class="text-center table-dark">
+                  <tr>
+                      <th>ID</th>
+                      <th>Seccion</th>
+                      <th>Serie</th>
+                      <th>Subserie</th>
+                      <th>Cajas</th>
+                      <th>Carpetas</th>
+                      <th>Otros</th>
+                      <th>Folios</th>
+                  </tr>
+              </thead>
+              <tbody class="text-center">
+                  <tr *ngFor="let transfer of transferencias.data | buscadorTransferenciaPorArchivo:filterPost">
+                      <td>{{ transfer.id_transferencia }}</td>
+                      <td>{{ transfer.seccion_transferencia }}</td>
+                      <td>{{ transfer.serie_transferencia }}</td>
+                      <td>{{ transfer.subserie_transferencia }}</td>
+                      <td>{{ transfer.cantidad_cajas_transferencia }}</td>
+                      <td>{{ transfer.cantidad_carpetas_transferencia }}</td>
+                      <td>{{ transfer.cantidad_otros_transferencia }}</td>
+                      <td>{{ transfer.cantidad_folios_transferencia }}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
+          <ul class="pagination">
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="transferencias.infoPagination.pagina === 1" (click)="cambiarPagina(transferencias.infoPagination.pagina - 1)">Anterior</a>
+              </li>
+
+              <li *ngFor="let pagina of [].constructor(transferencias.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="transferencias.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+              <li class="page-item">
+                  <a class="page-link" [class.disabled]="transferencias.infoPagination.pagina === transferencias.infoPagination.totalPaginas" (click)="cambiarPagina(transferencias.infoPagination.pagina + 1)">Siguiente</a>
+              </li>
+          </ul>
+      </nav>
+  </div>
+</div>
+
+
+<!-- <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad>
+ -->
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+
