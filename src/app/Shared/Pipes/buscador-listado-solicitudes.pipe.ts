@@ -15,6 +15,7 @@ export class BuscadorListadoSolicitudesPipe implements PipeTransform {
       return lista.filter(item =>
          this.normalizar(item.unidad).includes(textoNormalizado) ||
         this.normalizar(item.anio?.toString()).includes(textoNormalizado) ||
+        this.normalizar(item.seccion?.toString()).includes(textoNormalizado) ||
         this.normalizar(item.usuarioSolicita).includes(textoNormalizado) ||
         this.normalizar(item.fechaSolicitud).includes(textoNormalizado) ||
         this.normalizar(item.estadoSolicitud).includes(textoNormalizado)

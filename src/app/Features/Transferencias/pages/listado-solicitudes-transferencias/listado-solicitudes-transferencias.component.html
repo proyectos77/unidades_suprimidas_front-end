@@ -15,8 +15,8 @@
                   <tr>
                       <th>ID</th>
                       <th class="text-start">Unidad</th>
-                      <th>Seccion</th>
                       <th>Año transferencia</th>
+                      <th>Seccion</th>
                       <th>Solicita</th>
                       <th>Cajas</th>
                       <th>Carpetas</th>
@@ -24,6 +24,7 @@
                       <th>Porcentaje</th>
                       <th>Fecha solicitud</th>
                       <th>Estado</th>
+                      <th>Opciones</th>
 
                   </tr>
               </thead>
@@ -31,8 +32,8 @@
                   <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
                       <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
-                      <td>{{ solicitud.seccion }}</td>
                       <td>{{ solicitud.anio }}</td>
+                      <td>{{ solicitud.seccion }}</td>
                       <td>{{ solicitud.usuarioSolicita }}</td>
                       <td>{{ solicitud.cantidadCajas }}</td>
                       <td>{{ solicitud.cantidadCarpetas }}</td>
@@ -40,11 +41,11 @@
                       <td>{{ solicitud.porcentajeTransferencia | number:'1.0-0' }}%</td>
                       <td>{{ solicitud.fechaSolicitud }}</td>
                       <td>{{ solicitud.estadoSolicitud }}</td>
-                      <!-- <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Inactivo'}">{{ unidad.estado }}</td><td>
-                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
-                      </td> -->
+                      <td>
+                          <button type="button" title="Editar unidad" class="btn btn-warning"  style="margin-left: 1rem; font-size: 1rem; color: white;"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                          <!-- <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button> -->
+                      </td>
                   </tr>
               </tbody>
           </table>
