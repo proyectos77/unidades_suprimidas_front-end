@@ -45,7 +45,7 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">* Seccion</label>
+                          <label for="" class="form-label">* Seccion <span style="color: rgba(158, 158, 158, 0.934);">(Segun la TOE)</span></label>
                           <input type="text" class="form-control" name="" id="" formControlName="seccion">
 
                           @if (this.formTransferencia.get('seccion')?.touched && formTransferencia.get('seccion')?.errors?.['required']){
@@ -63,7 +63,7 @@
                   <div class="row mt-5">
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">* Serie</label>
+                          <label for="" class="form-label">* Serie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la serie)</span></label>
                           <input type="text" class="form-control" formControlName="serie">
 
                           @if (this.formTransferencia.get('serie')?.touched && formTransferencia.get('serie')?.errors?.['required']){
@@ -75,7 +75,7 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">* Subserie</label>
+                          <label for="" class="form-label">* Subserie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la subserie) </span> </label>
                           <input type="text" class="form-control" name="" id="" formControlName="subserie">
 
                           @if (this.formTransferencia.get('subserie')?.touched && formTransferencia.get('subserie')?.errors?.['required']){
@@ -147,7 +147,7 @@
 
       <div class="row mt-5">
         <div class="col-md-12 content-from__btn">
-            <button type="submit" class="btn btn-primary" (click)="validarForm()">Solitar transferencia</button>
+            <button type="submit" class="btn btn-primary" (click)="validarForm()">Solitar aprobación</button>
             <button type="button" class="btn btn-secondary" (click)="limpiarForm()">Limpiar</button>
         </div>
       </div>
