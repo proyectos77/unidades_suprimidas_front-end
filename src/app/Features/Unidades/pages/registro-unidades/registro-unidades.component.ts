@@ -59,7 +59,8 @@ export default class RegistroUnidadesComponent implements OnInit{
             sigla: ['', [Validators.required]],
             unidad_que_asume: ['', [Validators.required]],
             departamentos: ['', [Validators.required]],
-            idMunicipio: ['', [Validators.required]]
+            idMunicipio: ['', [Validators.required]],
+            estado:[false, [Validators.required]]
         });
     }
 

@@ -89,6 +89,99 @@
                       </div>
                   </div>
               </div>
+
+
+              <!-- Registro de de la tansferencia para la unidades activas -->
+              <div *ngIf="unidadActiva == 1">
+                   <div class="row mt-5">
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Seccion <span style="color: rgba(158, 158, 158, 0.934);">(Segun la TOE)</span></label>
+                          <input type="text" class="form-control" name="" id="" formControlName="seccion">
+
+                          <!-- @if (this.formTransferencia.get('seccion')?.touched && formTransferencia.get('seccion')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la sección</small>
+                              </div>
+                          } -->
+
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Serie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la serie)</span></label>
+                          <input type="text" class="form-control" formControlName="serie">
+
+                         <!--  @if (this.formTransferencia.get('serie')?.touched && formTransferencia.get('serie')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la serie</small>
+                              </div>
+                          } -->
+
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Subserie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la subserie) </span> </label>
+                          <input type="text" class="form-control" name="" id="" formControlName="subserie">
+
+                          <!-- @if (this.formTransferencia.get('subserie')?.touched && formTransferencia.get('subserie')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesaria la subserie</small>
+                              </div>
+                          } -->
+
+                      </div>
+
+                  </div>
+
+                  <div class="row mt-5">
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Cantidad de cajas</label>
+                          <input type="number" class="form-control" formControlName="cantidad_cajas">
+
+                          <!-- @if (this.formTransferencia.get('cantidad_cajas')?.touched && formTransferencia.get('cantidad_cajas')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de carpetas</small>
+                              </div>
+                          } -->
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Cantidad de carpetas</label>
+                          <input type="number" class="form-control" formControlName="cantidad_carpetas">
+
+                         <!--  @if (this.formTransferencia.get('cantidad_carpetas')?.touched && formTransferencia.get('cantidad_carpetas')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de folios</small>
+                              </div>
+                          } -->
+                      </div>
+
+                      <div class="col-md-4">
+                          <label for="" class="form-label"> Cantidad otros</label>
+                          <input type="number" class="form-control" formControlName="cantidad_otros">
+                      </div>
+                  </div>
+
+                  <div class="row mt-5">
+                      <div class="col-md-4">
+                          <label for="" class="form-label">* Cantidad de folios</label>
+                          <input type="number" class="form-control" formControlName="cantidad_folios">
+
+                         <!--  @if (this.formTransferencia.get('cantidad_folios')?.touched && formTransferencia.get('cantidad_folios')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de cajas</small>
+                              </div>
+                          } -->
+                      </div>
+
+
+
+                     <!--  <div class="col-md-4 d-flex align-items-end justify-content-end">
+                          <button type="button" class="btn btn-warning" (click)="validarForm()">Agregar +</button>
+                      </div> -->
+                  </div>
+              </div>
           </form>
       </div>
 

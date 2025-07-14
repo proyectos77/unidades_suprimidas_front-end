@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransferenciasService } from '../../services/transferencias.service';
 import { ListadoUnidadesConArchivo } from '../../interfaces/listado-unidades-con-archivo';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { LsitadoArchivoPorUnidad } from '../../interfaces/lsitado-archivo-por-unidad';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreSolicitudTransferencia } from '../../interfaces/store-solicitud-transferencia';
@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-solicitud-de-transferencia',
   standalone: true, // Se asume standalone por la importación de 'NgFor', si no es así, elimine esta línea.
-  imports: [ReactiveFormsModule, NgFor],
+  imports: [ReactiveFormsModule, NgFor, NgIf],
   templateUrl: './solicitud-de-transferencia.component.html',
   styleUrl: './solicitud-de-transferencia.component.css'
 })
@@ -36,6 +36,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         icono: '',
         data: []
     };
+
+    public solicitudesAbjuntas: any = [];
+    public solicitudesLegibles: any[] = [];
+
+
+
 
     constructor(
         private form: FormBuilder,
@@ -75,8 +81,6 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         .pipe(takeUntil(this.destroy$)) // Se desuscribe automáticamente al destruir el componente
         .subscribe(idDetalleUnidad => {
             const idArchivoControl = this.formTransferencia.get('id_archivo');
-            // FIX: Se usa '&&' en lugar de '||' para una lógica correcta.
-            // Una forma más simple es solo comprobar si el valor es "truthy".
             if (idDetalleUnidad) {
                 idArchivoControl?.enable(); // Habilita el campo de archivo
                 this.listArchivoUnidad(idDetalleUnidad);
@@ -109,22 +113,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
 
     validarForm(): void {
         if (this.formTransferencia.invalid) {
-            // Se marca el formulario como "tocado" para mostrar errores en la UI
             this.formTransferencia.markAllAsTouched();
             this.sweet.alertaCamposInvalidosFormularios();
             return;
         }
-        const data = this.dataForm();
-        this.registroSolicitudTransferencia(data);
-    }
 
-    registroSolicitudTransferencia(data: FormData): void {
-        this.httpTransferencias.storeSolicitudTransferencia(data).subscribe((solicitud) => {
-            this.sweet.alertaGeneral(solicitud.icono, solicitud.titulo, solicitud.mensaje);
-            if (solicitud.statusCode == 200) {
-                this.limpiarForm();
-            }
-        });
+        this.adjuntarArchivo();
     }
 
     dataForm(): FormData {
@@ -146,6 +140,29 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         });
 
         return formData;
+    }
+
+    adjuntarArchivo(): void {
+        const data = this.dataForm();
+
+        // Agregar a la lista original
+        this.solicitudesAbjuntas.push(data);
+
+        // Convertir FormData a objeto legible para la tabla
+        const legible: any = {
+          id_detalle_unidad: data.get('id_detalle_unidad'),
+          id_archivo: data.get('id_archivo'),
+          seccion: data.get('seccion'),
+          serie: data.get('serie'),
+          subserie: data.get('subserie'),
+          cantidad_cajas: data.get('cantidad_cajas'),
+          cantidad_carpetas: data.get('cantidad_carpetas'),
+          cantidad_folios: data.get('cantidad_folios'),
+          cantidad_otros: (data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
+          documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos
+        };
+
+        this.solicitudesLegibles.push(legible);
     }
 
     limpiarForm(): void {
@@ -175,5 +192,25 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             icono: '',
             data: []
         };
+    }
+
+    enviarSoliciutudes(): void {
+        if (this.solicitudesAbjuntas.length === 0) {
+          this.sweet.alertaGeneral('warning', 'Sin solicitud', 'No hay registro de solicitudes para enviar.');
+          return;
+        }
+
+        this.solicitudesAbjuntas.forEach((solicitud: FormData) => {
+          this.registroSolicitudTransferencia(solicitud);
+        });
+    }
+
+    registroSolicitudTransferencia(data: FormData): void {
+        this.httpTransferencias.storeSolicitudTransferencia(data).subscribe((solicitud) => {
+            this.sweet.alertaGeneral(solicitud.icono, solicitud.titulo, solicitud.mensaje);
+            if (solicitud.statusCode == 200) {
+                this.limpiarForm();
+            }
+        });
     }
 }

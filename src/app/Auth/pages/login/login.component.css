@@ -7,7 +7,7 @@
     /* background-color: var(--verdePrincipal); */
     display: flex;
 
-    background-image: url(../../../../../public/imagenes/pagina/banner2.jpeg);
+    background-image: url(../../../../../public/imagenes/pagina/Fondo\ Pantalla\ Principal\ GD\ ACHIVO\ CENTRAL\ EJC\ 1A.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -27,12 +27,14 @@
     width: 100%;
 }
 .content-form{
-    width: 40%;
+    width: 50%;
     height: 60vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--blanco);
+    /* background-color: var(--blanco); */
+    color: var(--blanco);
+    box-shadow: unset;
 
 }
 
@@ -46,6 +48,7 @@
     flex-direction: column;
     justify-content: center;
     /* background-color: rgba(158, 158, 158, 0.589); */
+
 }
 
 .formulario__icono{
@@ -68,11 +71,14 @@
 .formulario__titulo{
     margin-bottom: 3rem;
     text-align: center;
+    width: 100%;
 }
 
 .formulario__input .form-control{
     border: unset;
     border-bottom: solid 1px black;
+    width: 90%;
+    margin: 0 auto;
     /* border-radius: unset; */
 }
 

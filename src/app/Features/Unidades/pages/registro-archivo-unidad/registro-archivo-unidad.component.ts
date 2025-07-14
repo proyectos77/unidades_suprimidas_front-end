@@ -12,10 +12,11 @@ import { GetListUnidadesConDetalle } from '../../interfaces/get-list-unidades-co
 import { GetListadoAnios } from '../../interfaces/get-listado-anios';
 import { RespuestaRegistroArchivo } from '../../interfaces/respuesta-registro-archivo';
 import { StoreArchivoDetalleUnidad } from '../../interfaces/store-archivo-detalle-unidad';
+import { elementAt } from 'rxjs';
 
 @Component({
   selector: 'app-registro-archivo-unidad',
-  imports: [NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule, NgIf],
   templateUrl: './registro-archivo-unidad.component.html',
   styleUrl: './registro-archivo-unidad.component.css',
 })
@@ -35,6 +36,8 @@ export default class RegistroArchivoUnidadComponent {
         data: []
 
     };
+
+    public unidadActiva: number = 0;
     constructor(
       private httUnidades: UnidadesService,
       private formulario: FormBuilder,
@@ -44,9 +47,24 @@ export default class RegistroArchivoUnidadComponent {
     ) {}
 
     ngOnInit(): void {
-      this.listadoUnidadesConDetalle();
-      this.formArchivo = this.formularioArchivo();
-      this.listaAnios();
+        this.listadoUnidadesConDetalle();
+        this.formArchivo = this.formularioArchivo();
+        this.listaAnios();
+        this.formArchivo.get('id_detalle')?.valueChanges.subscribe((idDetalle) => {
+            const unidadEncontrada = this.unidadesSelect.data.some(elemento => {
+                return elemento.id_detalle_unidad == idDetalle && elemento.estado_unidad == 1;
+            });
+
+            if (unidadEncontrada) {
+                this.unidadActiva = 1;
+                console.log('entro1');
+
+            } else {
+                this.unidadActiva = 0;
+                console.log('entro2');
+
+            }
+        });
     }
 
     formularioArchivo(): FormGroup {
