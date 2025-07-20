@@ -53,4 +53,46 @@ export class SweetAlertService {
           cancelButtonText: 'Cancelar',
         });
     }
+
+    alertaDeConfirmacionAprobacion():Promise<any>{
+        return Swal.fire({
+          title: 'Aprobar solicitud?',
+          text: 'Esta seguro de aprobar la solicitud!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aprobar',
+          cancelButtonText: 'Cancelar',
+        });
+    }
+
+
+    async alertaConTexArea(titulo: string, texto: string): Promise<any> {
+        return await Swal.fire({
+            title: titulo,
+            text: texto,
+            input: 'textarea',
+            inputAttributes: {
+              autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Enviar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: async (inputValue) => {
+                if (!inputValue) {
+                    Swal.showValidationMessage('Debes ingresar una observación');
+                    return false;
+                }
+                return inputValue;
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        });
+    }
+
+
+
+
+
 }

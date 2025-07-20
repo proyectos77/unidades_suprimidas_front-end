@@ -1,0 +1,106 @@
+
+<div class="card cardContenido" >
+  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+      <h3>Detalle solicitud</h3>
+      <div class="content-btn-regresar">
+          <button type="button" class="btn btn-primary" [routerLink]="['/main/transferencias/listadoSolicitudes']">Regresar</button>
+      </div>
+  </div>
+  <div class="card-body card-body-page">
+      <div class="table-usuarios content-list mt-5">
+
+          <div class="contentGrafica">
+              <ngx-charts-pie-chart
+                  [view]="view"
+                  [scheme]="customColorScheme"
+                  [results]="data"
+                  [legend]="showLegend"
+                  [labels]="true"
+                  [doughnut]="false"
+                  [explodeSlices]="false"
+                  [animations]="true">
+              </ngx-charts-pie-chart>
+
+          </div>
+
+          <div>
+              <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
+                  <thead class="text-center table-dark">
+                      <tr>
+                          <th>Transferencia #</th>
+                          <th>Seccion</th>
+                          <th>Serie</th>
+                          <th>Subserie</th>
+                          <th>Cajas</th>
+                          <th>Carpetas</th>
+                          <th>Otros</th>
+                          <th>Folio</th>
+                          <th>Porcentaje</th>
+                      </tr>
+                  </thead>
+                  <tbody class="text-center">
+                      <tr *ngFor="let detalle of detalle.data "><!-- | buscadorListadodetallees:filterPost -->
+                          <td>{{ detalle.id_transferencia }}</td>
+                          <td>{{ detalle.seccion_detalle_transferencia }}</td>
+                          <td>{{ detalle.serie_detalle_transferencia }}</td>
+                          <td>{{ detalle.subserie_detalle_transferencia }}</td>
+                          <td>{{ detalle.cantidad_cajas_detalle_transferencia }}</td>
+                          <td>{{ detalle.cantidad_carpetas_detalle_transferencia }}</td>
+                          <td>{{ detalle.cantidad_otros_detalle_transferencia }}</td>
+                          <td>{{ detalle.cantidad_folios_detalle_transferencia }}</td>
+                          <td>{{ detalle.porcentaje_detalle_transferencia }}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+
+          <div class="row" *ngIf="estadoSolicitud === 5">
+              <p style="font-size: 2rem; font-weight: bold; color: red;">Solicitud rechazada</p>
+              <div class="col-md-8">
+                  <div class="observacion">
+                      <p style="font-size: 1.3rem;">{{ observacion }}</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row mt-5">
+              <p style="font-size: 2rem; font-weight: bold;">Documentos adjuntos</p>
+              <div class="col-md-6">
+                  <div class="list-group">
+                      <a style="font-size: 1.3rem;" class="list-group-item list-group-item-action" *ngFor="let documento of documentos.data" (click)="abrirModalDocumento(documento.id_documento)">{{ documento.documento.nombre_documento }}</a>
+                  </div>
+                  <!-- <ul>
+                    <li *ngFor="let documento of documentos.data">{{ }}</li>
+                  </ul> -->
+              </div>
+              <div class="col-md-6 d-flex justify-content-end align-items-end" *ngIf="estadoSolicitud === 3 && permiso">
+                  <button type="button" class="btn btn-primary" style="height: 3rem; margin-right: 1rem;" (click)="aprobarSolicitud()">Aprobar solicitud</button>
+                  <button type="button" class="btn btn-danger" style="height: 3rem;" (click)="rechazarSolicitud()">Rechazar solicitud</button>
+              </div>
+          </div>
+
+      </div>
+  </div>
+</div>
+
+
+<!-- Modal para ver documento -->
+<div class="modal fade" id="modalVerDocumento" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ nombreDocumentoModal }}</h5>
+                <button type="button" class="btn-close" (click)="cerrarModalDocumento()"></button>
+            </div>
+            <div class="modal-body" style="height: 80vh;">
+                <iframe [src]="urlDocumentoModal | urlDocumentos" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+

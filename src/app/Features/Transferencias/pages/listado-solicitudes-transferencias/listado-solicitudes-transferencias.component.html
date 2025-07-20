@@ -15,38 +15,47 @@
                   <tr>
                       <th>ID</th>
                       <th class="text-start">Unidad</th>
-                      <th>Año transferencia</th>
-                      <th>Seccion</th>
-                      <th>Solicita</th>
+                      <th>Año</th>
                       <th>Cajas</th>
                       <th>Carpetas</th>
+                      <th>Otros</th>
                       <th>Folios</th>
                       <th>Porcentaje</th>
+                      <th>Solicita</th>
                       <th>Fecha solicitud</th>
+                      <th>Aprobo</th>
+                      <th>Fecha aprovacion</th>
                       <th>Estado</th>
                       <th>Opciones</th>
 
                   </tr>
               </thead>
               <tbody class="text-center">
-                  <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
+
+                    <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
                       <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
+
                       <td>{{ solicitud.anio }}</td>
-                      <td>{{ solicitud.seccion }}</td>
+
+                      <td>{{ solicitud.totalCajas }}</td>
+                      <td>{{ solicitud.totalCarpetas }}</td>
+                      <td>{{ solicitud.totalOtros }}</td>
+                      <td>{{ solicitud.totalFolios }}</td>
+                      <td>{{ solicitud.totalPorcentajeTransferencia }}%</td>
                       <td>{{ solicitud.usuarioSolicita }}</td>
-                      <td>{{ solicitud.cantidadCajas }}</td>
-                      <td>{{ solicitud.cantidadCarpetas }}</td>
-                      <td>{{ solicitud.cantidadFolios }}</td>
-                      <td>{{ solicitud.porcentajeTransferencia | number:'1.0-0' }}%</td>
                       <td>{{ solicitud.fechaSolicitud }}</td>
-                      <td>{{ solicitud.estadoSolicitud }}</td>
+                      <td>{{ solicitud.usuarioRevisor }}</td>
+                      <td>{{ solicitud.fechaFinSolicitud }}</td>
+                       <td style="font-weight: bold;" [ngClass]="{'aprobada': solicitud.idEstado === 4, 'rechazada': solicitud.idEstado === 5, 'enProceso': solicitud.idEstado === 3}">{{ solicitud.estadoSolicitud }}</td>
+
+
                       <td>
-                          <button type="button" title="Editar unidad" class="btn btn-warning"  style="margin-left: 1rem; font-size: 1rem; color: white;"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
-                          <!-- <button type="button" title="Activar/Inactivar" class="btn btn-secondary" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button> -->
-                      </td>
-                  </tr>
+                          <button type="button" title="Editar unidad" class="btn btn-warning"  style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/transferencias/detalleSolicitud', solicitud.idSolicitudTransferencia]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button></td>
+
+                          </tr>
+
+
               </tbody>
           </table>
       </div>

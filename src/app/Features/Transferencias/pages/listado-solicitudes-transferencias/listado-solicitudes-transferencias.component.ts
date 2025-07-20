@@ -4,10 +4,11 @@ import { TransferenciasService } from '../../services/transferencias.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuscadorListadoSolicitudesPipe } from '../../../../Shared/Pipes/buscador-listado-solicitudes.pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-listado-solicitudes-transferencias',
-  imports: [NgFor, NgIf, FormsModule, BuscadorListadoSolicitudesPipe, CommonModule],
+  imports: [NgFor, NgIf, FormsModule, BuscadorListadoSolicitudesPipe, CommonModule, RouterLink],
   templateUrl: './listado-solicitudes-transferencias.component.html',
   styleUrl: './listado-solicitudes-transferencias.component.css'
 })
@@ -41,6 +42,8 @@ export default class ListadoSolicitudesTransferenciasComponent implements OnInit
 
     listadoSolicitudes(pagina:number):void{
         this.httpTransferencias.getAllSolicitudesTransferencias(pagina).subscribe(solicitudes =>{
+            console.log(solicitudes);
+
             this.solicitud = solicitudes;
         });
     }

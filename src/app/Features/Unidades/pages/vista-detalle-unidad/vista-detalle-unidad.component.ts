@@ -12,7 +12,7 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 @Component({
   selector: 'app-vista-detalle-unidad',
   // --- LA SOLUCIÓN ESTÁ AQUÍ ---
-  standalone: true, // ¡Añade esta línea!
+
   // -----------------------------
   imports: [
     RouterLink,
@@ -31,7 +31,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
 
   public data: any[] = [];
 
-  view: [number, number] = [600, 150]; // Dimensiones [ancho, alto]
+  view: [number, number] = [800, 150]; // Dimensiones [ancho, alto]
 
   // Opciones del gráfico
   showXAxis: boolean = true;
@@ -163,7 +163,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
                   'value' : archivo.data[0].porcentaje_transferencia
               },
               {
-                  'name': 'Archivo Faltante',
+                  'name': 'Archivo Pendiente',
                   'value' : archivo.data[0].porcentaje_faltante
               }
           ];

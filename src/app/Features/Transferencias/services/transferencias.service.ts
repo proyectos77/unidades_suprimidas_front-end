@@ -8,6 +8,9 @@ import { RespuestaRegistroSolicitudTransferencia } from '../interfaces/respuesta
 import { StoreSolicitudTransferencia } from '../interfaces/store-solicitud-transferencia';
 import { ListadoSolicitudesTransferencias } from '../interfaces/listado-solicitudes-transferencias';
 import ListadoSolicitudesTransferenciasComponent from '../pages/listado-solicitudes-transferencias/listado-solicitudes-transferencias.component';
+import { ResultadoUpdateEstadoSolicitud } from '../interfaces/resultado-update-estado-solicitud';
+import { DataUpdateSolicitud } from '../interfaces/data-update-solicitud';
+import { InformacionSolicitud } from '../interfaces/informacion-solicitud';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +40,17 @@ export class TransferenciasService {
     getAllSolicitudesTransferencias(pagina: number):Observable<ListadoSolicitudesTransferencias>{
         let urlFinal = this.url + '/solicitudesTransferencias/?page='+pagina;
         return this.http.get<ListadoSolicitudesTransferencias>(urlFinal);
+    }
+
+    updateEstadoSolicitudTransferencia(idSolicitud: number, data: DataUpdateSolicitud):Observable<ResultadoUpdateEstadoSolicitud>{
+        let urlFinal = this.url + '/solicitudesTransferencias/' + idSolicitud;
+
+        return this.http.put<ResultadoUpdateEstadoSolicitud>(urlFinal, data);
+    }
+
+    getInformacionSolicitudTransferencia(idSolicitudTransferencia: number):Observable<InformacionSolicitud>{
+        let urlFinal = this.url + '/solicitudesTransferencias/' + idSolicitudTransferencia;
+        return this.http.get<InformacionSolicitud>(urlFinal);
     }
 
 }

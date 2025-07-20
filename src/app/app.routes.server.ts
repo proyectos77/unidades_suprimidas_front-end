@@ -14,7 +14,10 @@ export const serverRoutes: ServerRoute[] = [
       renderMode: RenderMode.Server
   },
 
-
+  {
+      path: 'main/transferencias/detalleSolicitud/:idSolicitudTransferencia',
+      renderMode: RenderMode.Server
+  },
 
 
   {

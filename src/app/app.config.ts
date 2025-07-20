@@ -7,6 +7,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from './Core/interceptors/http.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { DatePipe } from '@angular/common';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         provideClientHydration(withEventReplay()),
         provideHttpClient(withInterceptors([httpInterceptor])),
+        DatePipe
 
     ]
 };

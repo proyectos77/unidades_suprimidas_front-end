@@ -1,0 +1,8 @@
+.observacion{
+    border: solid 1px rgb(132, 132, 132);
+    padding: 1rem 2rem;
+    border-radius: .5rem;
+    text-align: justify;
+    max-height: 150px;
+    overflow-y: auto;
+}

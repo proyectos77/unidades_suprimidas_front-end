@@ -39,6 +39,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
 
     public solicitudesAbjuntas: any = [];
     public solicitudesLegibles: any[] = [];
+    public mostrarForm: boolean = false;
 
 
 
@@ -53,10 +54,15 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         this.listadoUnidades();
         this.formularioSolicitudTransferencia();
         this.escucharCambiosUnidad();
+
+        this.formTransferencia.get('id_archivo')?.valueChanges.subscribe((idArchivo) =>{
+            this.mostrarForm = (idArchivo == null || idArchivo == '') ? false : true;
+        })
+
     }
 
     ngOnDestroy(): void {
-        // Se emite un valor para que todas las suscripciones que usan takeUntil(this.destroy$) se completen y se limpien.
+
         this.destroy$.next();
         this.destroy$.complete();
     }
@@ -71,7 +77,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             cantidad_cajas: ['', [Validators.required]],
             cantidad_carpetas: ['', [Validators.required]],
             cantidad_folios: ['', [Validators.required]],
-            documentos: ['', [Validators.required]],
+            documentos: [''],
             cantidad_otros: ['']
         }));
     }
@@ -135,9 +141,9 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         formData.append('cantidad_folios', form.cantidad_folios);
         formData.append('cantidad_otros', form.cantidad_otros);
 
-        this.documentos.forEach((file) => {
+        /* this.documentos.forEach((file) => {
             formData.append('documentos[]', file);
-        });
+        }); */
 
         return formData;
     }
@@ -158,11 +164,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
           cantidad_cajas: data.get('cantidad_cajas'),
           cantidad_carpetas: data.get('cantidad_carpetas'),
           cantidad_folios: data.get('cantidad_folios'),
-          cantidad_otros: (data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
-          documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos
+          cantidad_otros: (data.get('cantidad_otros') == '') ? 0 : data.get('cantidad_otros'),
+          /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
         };
 
         this.solicitudesLegibles.push(legible);
+        this.limpiarCamposEspecificos();
     }
 
     limpiarForm(): void {
@@ -182,6 +189,10 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         // Se limpian los listados y se asegura que el control de archivo esté deshabilitado.
         this.limpiarListadoArchivoUnidad();
         this.formTransferencia.get('id_archivo')?.disable();
+
+        // 👉 Limpiar también las solicitudes adjuntas y la tabla
+        this.solicitudesAbjuntas = [];
+        this.solicitudesLegibles = [];
     }
 
     limpiarListadoArchivoUnidad(): void {
@@ -200,9 +211,19 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
           return;
         }
 
-        this.solicitudesAbjuntas.forEach((solicitud: FormData) => {
-          this.registroSolicitudTransferencia(solicitud);
-        });
+        if (this.documentos.length === 0) {
+            this.sweet.alertaGeneral('warning', 'Sin documentos', 'Debe adjuntar al menos un documento.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('transferencia', JSON.stringify(this.formTransferencia.value));
+
+        formData.append('detalles', JSON.stringify(this.solicitudesLegibles));
+        this.documentos.forEach((file) => formData.append('documentos[]', file));
+
+
+        this.registroSolicitudTransferencia(formData);
     }
 
     registroSolicitudTransferencia(data: FormData): void {
@@ -211,6 +232,35 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             if (solicitud.statusCode == 200) {
                 this.limpiarForm();
             }
+        });
+    }
+
+    eliminar(index: number){
+        console.log('entro');
+
+        this.solicitudesAbjuntas.splice(index, 1);
+        this.solicitudesLegibles.splice(index, 1);
+    }
+
+    limpiarCamposEspecificos() {
+        const campos = [
+          'seccion',
+          'serie',
+          'subserie',
+          'cantidad_cajas',
+          'cantidad_carpetas',
+          'cantidad_folios',
+          'cantidad_otros'
+        ];
+
+        campos.forEach(campo => {
+          const control = this.formTransferencia.get(campo);
+          if (control) {
+            control.reset('');
+            control.markAsPristine();   // El campo vuelve a estar "limpio"
+            control.markAsUntouched();  // El campo vuelve a estar "no tocado"
+            control.setErrors(null);    // Limpia errores actuales si los tuviera
+          }
         });
     }
 }

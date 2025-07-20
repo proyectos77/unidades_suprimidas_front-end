@@ -25,17 +25,22 @@
                   </tr>
               </thead>
               <tbody class="text-center">
-                  <tr *ngFor="let transfer of transferencias.data | buscadorTransferenciaPorArchivo:filterPost">
-                      <td>{{ transfer.id_transferencia }}</td>
-                      <td>{{ transfer.seccion_transferencia }}</td>
-                      <td>{{ transfer.serie_transferencia }}</td>
-                      <td>{{ transfer.subserie_transferencia }}</td>
-                      <td>{{ transfer.cantidad_cajas_transferencia }}</td>
-                      <td>{{ transfer.cantidad_carpetas_transferencia }}</td>
-                      <td>{{ transfer.cantidad_otros_transferencia }}</td>
-                      <td>{{ transfer.cantidad_folios_transferencia }}</td>
-                  </tr>
+                  <ng-container *ngFor="let transfer of transferencias.data | buscadorTransferenciaPorArchivo:filterPost">
+                      <ng-container *ngFor="let detalle of transfer.detalle_transferencias">
+                          <tr>
+                              <td>{{ transfer.id_transferencia }}</td>
+                              <td>{{ detalle.seccion_detalle_transferencia }}</td>
+                              <td>{{ detalle.serie_detalle_transferencia }}</td>
+                              <td>{{ detalle.subserie_detalle_transferencia }}</td>
+                              <td>{{ detalle.cantidad_cajas_detalle_transferencia }}</td>
+                              <td>{{ detalle.cantidad_carpetas_detalle_transferencia }}</td>
+                              <td>{{ detalle.cantidad_otros_detalle_transferencia }}</td>
+                              <td>{{ detalle.cantidad_folios_detalle_transferencia }}</td>
+                          </tr>
+                      </ng-container>
+                  </ng-container>
               </tbody>
+
           </table>
       </div>
       <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">

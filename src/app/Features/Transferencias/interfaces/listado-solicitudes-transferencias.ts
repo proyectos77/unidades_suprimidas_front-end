@@ -1,30 +1,37 @@
 export interface ListadoSolicitudesTransferencias {
-	statusCode:     number;
-	titulo:         string;
-	mensaje:        string;
-	icono:          string;
-	data:           Datum[];
-	infoPagination: InfoPagination;
+  statusCode:     number;
+  titulo:         string;
+  mensaje:        string;
+  icono:          string;
+  data:           Datum[];
+  infoPagination: InfoPagination;
 }
 
 export interface Datum {
-	idSolicitudTransferencia: number;
-	fechaSolicitud:           Date;
-	estadoSolicitud:          string;
-	estado:                   string;
-	usuarioSolicita:          string;
-	cantidadCajas:            number;
-	cantidadCarpetas:         number;
-	cantidadFolios:           number;
-	porcentajeTransferencia:  string;
-	anio:                     string;
-	unidad:                   string;
-  seccion:                  string;
+  idSolicitudTransferencia:     number;
+  idTransferencia:              number;
+  fechaSolicitud:               Date;
+  estadoSolicitud:              string;
+  idEstado:                     number
+  estado:                       string;
+  usuarioSolicita:              string;
+  anio:                         string;
+  unidad:                       string;
+  totalCajas:                   number;
+  totalCarpetas:                number;
+  totalFolios:                  number;
+  totalPorcentajeTransferencia: number;
+  totalOtros:                   number;
+  secciones:                    string[];
+  series:                       string[];
+  subseries:                    string[];
+  observacion:                  string;
 }
 
 export interface InfoPagination {
-	pagina:                  number;
-	totalRegistro:           number;
-	totalRegistrosPorPagina: number;
-	totalPaginas:            number;
+  pagina:                  number;
+  totalRegistro:           number;
+  totalRegistrosPorPagina: number;
+  totalPaginas:            number;
 }
+

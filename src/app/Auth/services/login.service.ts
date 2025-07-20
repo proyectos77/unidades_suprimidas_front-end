@@ -57,4 +57,9 @@ export class LoginService {
       const usuario = sessionStorage.getItem('usuario');
       return usuario ? JSON.parse(usuario) : null;
     }
+
+    tienePermiso(perfilesPermitidos: number[]): boolean {
+        const usuario = this.datosSesion();
+        return usuario ? perfilesPermitidos.includes(usuario.idTipoUsuario) : false;
+    }
 }

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { perfilGuard } from '../Core/guards/perfil.guard';
 
 export const routes: Routes = [
 
@@ -9,7 +10,7 @@ export const routes: Routes = [
 
     {
         path: 'usuarios', loadComponent:() => import('./layout/main/main.component'),
-        loadChildren: () => import('../Features/Usuarios/usuarios.routes')
+        loadChildren: () => import('../Features/Usuarios/usuarios.routes'), canActivateChild: [perfilGuard]
     },
 
     {

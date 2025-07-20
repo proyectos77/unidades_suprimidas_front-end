@@ -1,0 +1,11 @@
+.aprobada{
+    color: var(--verdePrincipal);
+}
+
+.rechazada{
+    color: var(--rojo);
+}
+
+.enProceso{
+    color: var(--warning);
+}

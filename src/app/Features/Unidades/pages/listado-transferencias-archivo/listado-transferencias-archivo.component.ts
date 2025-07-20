@@ -64,6 +64,8 @@ export default class ListadoTransferenciasArchivoComponent implements OnInit{
         let id = (parametro !== null) ? parseInt(parametro) : 0;
 
         this.httpTransferencias.getAllTransferenciasPorArchivo(id, pagina).subscribe(transferencias => {
+            console.log(transferencias);
+
             this.transferencias = transferencias;
 
         });
