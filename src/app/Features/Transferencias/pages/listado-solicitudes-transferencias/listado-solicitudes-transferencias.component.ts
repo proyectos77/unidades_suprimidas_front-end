@@ -5,6 +5,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BuscadorListadoSolicitudesPipe } from '../../../../Shared/Pipes/buscador-listado-solicitudes.pipe';
 import { RouterLink } from '@angular/router';
+import { LoginService } from '../../../../Auth/services/login.service';
 
 @Component({
   selector: 'app-listado-solicitudes-transferencias',
@@ -32,26 +33,31 @@ export default class ListadoSolicitudesTransferenciasComponent implements OnInit
     public registrosPorPagina:number = 0;
     public totalPaginas:number = 0;
     public filterPost:string = '';
+    public usuarioLogueado:number = 0;
+    private perfilUsuarioLogueado:number = 0;
 
 
-    constructor(private httpTransferencias: TransferenciasService){}
-
-    ngOnInit(): void {
-        this.listadoSolicitudes(1);
+    constructor(private httpTransferencias: TransferenciasService, private httpLogin: LoginService){
+        this.usuarioLogueado = this.httpLogin.datosSesion().id
+        this.perfilUsuarioLogueado = this.httpLogin.datosSesion().idTipoUsuario;
     }
 
-    listadoSolicitudes(pagina:number):void{
-        this.httpTransferencias.getAllSolicitudesTransferencias(pagina).subscribe(solicitudes =>{
-            console.log(solicitudes);
+    ngOnInit(): void {
 
+        this.listadoSolicitudes(this.usuarioLogueado, this.perfilUsuarioLogueado, 1);
+    }
+
+    listadoSolicitudes(usuario: number, perfil: number, pagina:number):void{
+        this.httpTransferencias.getAllSolicitudesTransferencias(usuario, perfil, pagina).subscribe(solicitudes =>{
             this.solicitud = solicitudes;
+
         });
     }
 
 
     cambiarPagina(pagina: number):void{
         if (pagina >= 1 && pagina <= this.solicitud.infoPagination.totalPaginas) {
-            this.listadoSolicitudes(pagina);
+            this.listadoSolicitudes(this.usuarioLogueado, this.perfilUsuarioLogueado, pagina);
         }
     }
 

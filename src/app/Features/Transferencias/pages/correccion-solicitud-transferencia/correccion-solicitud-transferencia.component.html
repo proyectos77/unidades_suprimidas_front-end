@@ -6,7 +6,7 @@
   </div>
   <div class="card-body card-body-page">
       <div class="content-buscador">
-          <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro">
+          <!-- <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro"> -->
       </div>
 
       <div class="table-usuarios content-list mt-5">
@@ -14,25 +14,18 @@
               <thead class="text-center table-dark">
                   <tr>
                       <th>ID</th>
-                      <th class="text-start">Unidad</th>
+                      <th>Unidad</th>
                       <th>Año</th>
                       <th>Cajas</th>
                       <th>Carpetas</th>
                       <th>Otros</th>
                       <th>Folios</th>
-                      <th>Porcentaje</th>
-                      <th>Solicita</th>
-                      <th>Fecha solicitud</th>
-                      <th>Aprobo</th>
-                      <th>Fecha aprovacion</th>
-                      <th>Estado</th>
                       <th>Opciones</th>
-
                   </tr>
               </thead>
               <tbody class="text-center">
 
-                  <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
+                  <!-- <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
                       <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
 
@@ -54,7 +47,7 @@
                           <button type="button" title="Editar solicitud" class="btn btn-primary" style="margin-left: 1rem; font-size: 1rem;" *ngIf="solicitud.idEstado === 5 && solicitud.idUsuarioSolicita == usuarioLogueado" [routerLink]="['/main/transferencias/correccion', solicitud.idSolicitudTransferencia]"><i class="fas fa-pen"></i></button>
                       </td>
 
-                  </tr>
+                  </tr> -->
 
 
               </tbody>
@@ -62,7 +55,7 @@
       </div>
       <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
           <ul class="pagination">
-              <li class="page-item">
+             <!--  <li class="page-item">
                   <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === 1" (click)="cambiarPagina(solicitud.infoPagination.pagina - 1)">Anterior</a>
               </li>
 
@@ -70,7 +63,7 @@
 
               <li class="page-item">
                   <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === solicitud.infoPagination.totalPaginas" (click)="cambiarPagina(solicitud.infoPagination.pagina + 1)">Siguiente</a>
-              </li>
+              </li> -->
           </ul>
       </nav>
   </div>

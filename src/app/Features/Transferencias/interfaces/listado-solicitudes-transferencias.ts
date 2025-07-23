@@ -15,6 +15,9 @@ export interface Datum {
   idEstado:                     number
   estado:                       string;
   usuarioSolicita:              string;
+  idUsuarioSolicita:            number;
+  usuarioRevisor:                string;
+  idUsuarioRevisor:              number;
   anio:                         string;
   unidad:                       string;
   totalCajas:                   number;

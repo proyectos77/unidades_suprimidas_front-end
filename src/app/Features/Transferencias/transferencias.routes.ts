@@ -5,6 +5,7 @@ export const routes: Routes = [
     { path: 'solicitudTrasferencias', loadComponent: () =>  import('./pages/solicitud-de-transferencia/solicitud-de-transferencia.component')},
     { path: 'listadoSolicitudes', loadComponent: () =>  import('./pages/listado-solicitudes-transferencias/listado-solicitudes-transferencias.component')},
     { path: 'detalleSolicitud/:idSolicitudTransferencia', loadComponent: () =>  import('./pages/detalle-solicitu-transferencia/detalle-solicitu-transferencia.component')},
+    { path: 'correccion/:idTransferencia', loadComponent: () =>  import('./pages/correccion-solicitud-transferencia/correccion-solicitud-transferencia.component')},
    /*  { path: 'listadoUnidades', loadComponent: () =>  import('./pages/listado-unidades/listado-unidades.component')},
     { path: 'registroUnidades', loadComponent: () =>  import('./pages/registro-unidades/registro-unidades.component')},
     { path: 'registroDetalleUnidad', loadComponent: () => import('./pages/registro-detalle-unidad/registro-detalle-unidad.component')},
