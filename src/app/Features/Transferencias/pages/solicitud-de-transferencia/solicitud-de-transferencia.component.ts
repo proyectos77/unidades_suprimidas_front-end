@@ -78,7 +78,8 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             cantidad_carpetas: ['', [Validators.required]],
             cantidad_folios: ['', [Validators.required]],
             documentos: [''],
-            cantidad_otros: ['']
+            cantidad_otros: [''],
+            cantidad_tomos: ['']
         }));
     }
 
@@ -140,6 +141,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         formData.append('cantidad_carpetas', form.cantidad_carpetas);
         formData.append('cantidad_folios', form.cantidad_folios);
         formData.append('cantidad_otros', form.cantidad_otros);
+        formData.append('cantidad_tomos', form.cantidad_tomos);
 
         /* this.documentos.forEach((file) => {
             formData.append('documentos[]', file);
@@ -165,6 +167,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
           cantidad_carpetas: data.get('cantidad_carpetas'),
           cantidad_folios: data.get('cantidad_folios'),
           cantidad_otros: (data.get('cantidad_otros') == '') ? 0 : data.get('cantidad_otros'),
+          cantidad_tomos: (data.get('cantidad_tomos') == '') ? 0 : data.get('cantidad_tomos'),
           /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
         };
 
@@ -250,7 +253,8 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
           'cantidad_cajas',
           'cantidad_carpetas',
           'cantidad_folios',
-          'cantidad_otros'
+          'cantidad_otros',
+          'cantidad_tomos'
         ];
 
         campos.forEach(campo => {

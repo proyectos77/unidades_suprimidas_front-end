@@ -67,16 +67,28 @@
                       </div>
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">* Otros</label>
+                          <label for="" class="form-label"> Otros</label>
                           <input type="number" class="form-control" formControlName="otros">
 
-                          @if (this.formArchivo.get('otros')?.touched && formArchivo.get('otros')?.errors?.['required']){
+                          <!-- @if (this.formArchivo.get('otros')?.touched && formArchivo.get('otros')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
                                   <small class="text-danger">Es necesario la cantidad de otros</small>
                               </div>
-                          }
+                          } -->
                       </div>
 
+                       <div class="col-md-4">
+                          <label for="" class="form-label"> Tomos</label>
+                          <input type="number" class="form-control" formControlName="tomos">
+
+                          <!-- @if (this.formArchivo.get('tomos')?.touched && formArchivo.get('tomos')?.errors?.['required']){
+                              <div class="invalid-feedback" style="display: block;">
+                                  <small class="text-danger">Es necesario la cantidad de otros</small>
+                              </div>
+                          } -->
+                      </div>
+                  </div>
+                  <div class="row mt-5">
                       <div class="col-md-4">
                           <label for="" class="form-label">* Cantidad de folios</label>
                           <input type="number" class="form-control" formControlName="numero_folio">

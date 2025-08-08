@@ -3,19 +3,21 @@
 <div class="card cardContenido" >
   <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
       <h3>Listado de solicitudes de transferencia</h3>
+      <div class="content-btn-regresar">
+          <button type="button" class="btn btn-primary" [routerLink]="['/main/transferencias/listadoSolicitudes']">Regresar</button>
+      </div>
   </div>
   <div class="card-body card-body-page">
-      <div class="content-buscador">
-          <!-- <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro"> -->
-      </div>
-
       <div class="table-usuarios content-list mt-5">
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
               <thead class="text-center table-dark">
                   <tr>
                       <th>ID</th>
-                      <th>Unidad</th>
-                      <th>Año</th>
+                      <!-- <th>Unidad</th>
+                      <th>Año</th> -->
+                      <th>Seccion</th>
+                      <th>Serie</th>
+                      <th>Subserie</th>
                       <th>Cajas</th>
                       <th>Carpetas</th>
                       <th>Otros</th>
@@ -25,35 +27,136 @@
               </thead>
               <tbody class="text-center">
 
-                  <!-- <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
-                      <td>{{ solicitud.idSolicitudTransferencia }}</td>
-                      <td>{{ solicitud.unidad }}</td>
+                  <tr *ngFor="let detalle of detalle.data">
+                      <td>{{ detalle.id_detalle_transferencia }}</td>
+                      <!-- <td>{{ detalle.unidad }}</td>
+                      <td>{{ detalle.anio }}</td> -->
 
-                      <td>{{ solicitud.anio }}</td>
-
-                      <td>{{ solicitud.totalCajas }}</td>
-                      <td>{{ solicitud.totalCarpetas }}</td>
-                      <td>{{ solicitud.totalOtros }}</td>
-                      <td>{{ solicitud.totalFolios }}</td>
-                      <td>{{ solicitud.totalPorcentajeTransferencia }}%</td>
-                      <td>{{ solicitud.usuarioSolicita }}</td>
-                      <td>{{ solicitud.fechaSolicitud }}</td>
-                      <td>{{ solicitud.usuarioRevisor }}</td>
-                      <td>{{ solicitud.fechaFinSolicitud }}</td>
-                      <td style="font-weight: bold;" [ngClass]="{'aprobada': solicitud.idEstado === 4, 'rechazada': solicitud.idEstado === 5, 'enProceso': solicitud.idEstado === 3}">{{ solicitud.estadoSolicitud }}</td>
+                      <!-- Sección -->
                       <td>
-                          <button type="button" title="Ver detalle" class="btn btn-warning"  style="font-size: 1rem; color: white;" [routerLink]="['/main/transferencias/detalleSolicitud', solicitud.idSolicitudTransferencia]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
-
-                          <button type="button" title="Editar solicitud" class="btn btn-primary" style="margin-left: 1rem; font-size: 1rem;" *ngIf="solicitud.idEstado === 5 && solicitud.idUsuarioSolicita == usuarioLogueado" [routerLink]="['/main/transferencias/correccion', solicitud.idSolicitudTransferencia]"><i class="fas fa-pen"></i></button>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.seccion_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.seccion_detalle_transferencia">
                       </td>
 
-                  </tr> -->
+                      <!-- Serie -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.serie_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.serie_detalle_transferencia">
+                      </td>
 
+                      <!-- Subserie -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.subserie_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.subserie_detalle_transferencia">
+                      </td>
 
+                      <!-- Cajas -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.cantidad_cajas_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="number"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.cantidad_cajas_detalle_transferencia">
+                      </td>
+
+                      <!-- Carpetas -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.cantidad_carpetas_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="number"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.cantidad_carpetas_detalle_transferencia">
+                      </td>
+
+                      <!-- Otros -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.cantidad_otros_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="number"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.cantidad_otros_detalle_transferencia">
+                      </td>
+
+                      <!-- Folios -->
+                      <td>
+                          <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              {{ detalle.cantidad_folios_detalle_transferencia }}
+                          </span>
+                          <input
+                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                              type="number"
+                              class="form-control"
+                              [(ngModel)]="editingItem!.cantidad_folios_detalle_transferencia">
+                      </td>
+
+                      <!-- Opciones -->
+                      <td>
+                          <!-- Botones cuando NO está en modo edición -->
+                          <div *ngIf="editingItemId !== detalle.id_detalle_transferencia">
+                              <button type="button" class="btn btn-danger" style="font-size: 1rem; margin-right: 1rem;" (click)="eliminarDetalle(detalle.id_detalle_transferencia)">
+                                  <i class="fas fa-minus"></i>
+                              </button>
+                              <button type="button" class="btn btn-warning" style="font-size: 1rem;" (click)="editarItem(detalle)">
+                                  <i class="fas fa-pen"></i>
+                              </button>
+                          </div>
+
+                          <!-- Botones cuando SÍ está en modo edición -->
+                          <div *ngIf="editingItemId === detalle.id_detalle_transferencia">
+                              <button type="button" class="btn btn-success" style="font-size: 1rem; margin-right: 0.5rem;" (click)="confirmarEdicion()">
+                                  <i class="fas fa-check"></i>
+                              </button>
+                              <button type="button" class="btn btn-secondary" style="font-size: 1rem;" (click)="cancelarEdicion()">
+                                  <i class="fas fa-times"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
               </tbody>
           </table>
       </div>
-      <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
+
+      <div class="row mt-5">
+          <p style="font-size: 2rem; font-weight: bold;">Documentos adjuntos</p>
+          <div class="col-md-6">
+              <div class="list-group">
+                  <a style="font-size: 1.3rem;" class="list-group-item list-group-item-action" *ngFor="let documento of documentos.data" (click)="abrirModalDocumento(documento.id_documento)">{{ documento.documento.nombre_documento }}</a>
+              </div>
+              <!-- <ul>
+                <li *ngFor="let documento of documentos.data">{{ }}</li>
+              </ul> -->
+          </div>
+      </div>
+
+
+      <!-- <nav aria-label="..." *ngIf="pagina > 0" class="mt-5"> -->
           <ul class="pagination">
              <!--  <li class="page-item">
                   <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === 1" (click)="cambiarPagina(solicitud.infoPagination.pagina - 1)">Anterior</a>
@@ -65,10 +168,25 @@
                   <a class="page-link" [class.disabled]="solicitud.infoPagination.pagina === solicitud.infoPagination.totalPaginas" (click)="cambiarPagina(solicitud.infoPagination.pagina + 1)">Siguiente</a>
               </li> -->
           </ul>
-      </nav>
+      <!-- </nav> -->
   </div>
 </div>
 
+
+<!-- Modal para ver documento -->
+<div class="modal fade" id="modalVerDocumento" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ nombreDocumentoModal }}</h5>
+                <button type="button" class="btn-close" (click)="cerrarModalDocumento()"></button>
+            </div>
+            <div class="modal-body" style="height: 80vh;">
+                <iframe [src]="urlDocumentoModal | urlDocumentos" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad> -->
 

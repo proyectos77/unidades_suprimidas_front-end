@@ -19,6 +19,11 @@ export const serverRoutes: ServerRoute[] = [
       renderMode: RenderMode.Server
   },
 
+  {
+      path: 'main/transferencias/correccion/:idTransferencia',
+      renderMode: RenderMode.Server
+  },
+
 
   {
     path: '**',

@@ -51,7 +51,7 @@
                       <td>
                           <button type="button" title="Ver detalle" class="btn btn-warning"  style="font-size: 1rem; color: white;" [routerLink]="['/main/transferencias/detalleSolicitud', solicitud.idSolicitudTransferencia]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
 
-                          <button type="button" title="Editar solicitud" class="btn btn-primary" style="margin-left: 1rem; font-size: 1rem;" *ngIf="solicitud.idEstado === 5 && solicitud.idUsuarioSolicita == usuarioLogueado" [routerLink]="['/main/transferencias/correccion', solicitud.idSolicitudTransferencia]"><i class="fas fa-pen"></i></button>
+                          <button type="button" title="Editar solicitud" class="btn btn-primary" style="margin-left: 1rem; font-size: 1rem;" *ngIf="solicitud.idEstado === 5 && solicitud.idUsuarioSolicita == usuarioLogueado" [routerLink]="['/main/transferencias/correccion', solicitud.idTransferencia]"><i class="fas fa-pen"></i></button>
                       </td>
 
                   </tr>

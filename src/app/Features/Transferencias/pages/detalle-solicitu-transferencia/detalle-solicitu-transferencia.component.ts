@@ -139,6 +139,9 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
           modal.setAttribute('role', 'dialog');
       }
 
+
+
+
       this.httpDetalleTransferencia.verDocumento(idDocumento).subscribe(documento => {
           this.nombreDocumentoModal = documento.nombre_documento;
           this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`;
@@ -164,7 +167,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
               let data = this.dataActualizacionSolicitud(1);
               this.httpTransferencia.updateEstadoSolicitudTransferencia(this.idSolicitudTransferencia, data).subscribe(respuesta => {
                   this.sweet.alertaGeneral(respuesta.icono, respuesta.titulo, respuesta.mensaje);
-
+                  this.estadoSolicitud = 4;
               })
           }
       })
@@ -177,6 +180,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
               const data = this.dataActualizacionSolicitud(2, observacion); // estado diferente de 1, por ejemplo 2 para rechazo
               this.httpTransferencia.updateEstadoSolicitudTransferencia(this.idSolicitudTransferencia, data).subscribe(respuesta => {
                   this.sweet.alertaGeneral(respuesta.icono, respuesta.titulo, respuesta.mensaje);
+                  this.estadoSolicitud = 5;
               });
           }
       });
