@@ -198,6 +198,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
                       this.informacionUnidad = informacion;
                      /*  this.ngAfterViewInit(); */
                       this.seccionEditarDetalle = true;
+                      this.seccionEditarArchivo = true;
                       this.formularioEditarDetalleUnidad.patchValue({
                           'nombreUnidad': this.informacionUnidad.data.nombre_unidad,
                           'actoAdministrativoCreacion': this.informacionUnidad.data.detalle_unidad.acto_administrativo_creacion_detalle,
@@ -233,7 +234,6 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           }else if (this.seccionEditarArchivo == true && this.formularioEditarDetalleUnidad.invalid) {
               this.sweet.alertaCamposInvalidosFormularios();
               this.tab = 'detalle-tab';
-              /* this.ngAfterViewInit(); */
               error = true;
               return Object.values(this.formularioEditarDetalleUnidad.controls).forEach(controlls =>{
                   controlls.markAllAsTouched();
