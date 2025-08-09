@@ -9,6 +9,7 @@ import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
+import { DependenciaServiceService } from '../../services/dependencia-service.service';
 
 
 @Component({
@@ -43,13 +44,16 @@ export default class RegistroUsuariosComponent implements OnInit{
         private httpTipoUsuarios: TiposUsuariosService,
         private httpCargos : CargosService,
         private sweet: SweetAlertService,
-        private httpUsuarios: UsuariosServicesService
+        private httpUsuarios: UsuariosServicesService,
+        private httpDependencias: DependenciaServiceService
     ){}
+
+    public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
 
     ngOnInit(): void {
         this.listadoTipoUsaurios();
         this.listarCargos();
-
+        this.listadoDependenciasPadre();
         this.formulario = this.formularioRegistro();
 
         this.formulario.get('nombre')?.valueChanges.subscribe(valor => {
@@ -57,6 +61,8 @@ export default class RegistroUsuariosComponent implements OnInit{
                 this.formulario.patchValue({ nombre: valor.toUpperCase() }, { emitEvent: false });
             }
         });
+
+
     }
 
     formularioRegistro():FormGroup{
@@ -86,6 +92,40 @@ export default class RegistroUsuariosComponent implements OnInit{
         });
     }
 
+    listadoDependenciasPadre():void{
+        this.httpDependencias.getListadoUnidadesPadres().subscribe(dependencias => {
+            this.nivelesDependencias = [
+                { opciones: dependencias.data, seleccion: null }
+            ];
+        });
+    }
+
+    onSeleccionarDependencia(nivelIndex: number, event: Event): void {
+        const selectElement = event.target as HTMLSelectElement;
+        const idPadre: number = parseInt(selectElement.value, 10);
+        console.log(idPadre);
+
+
+        // Actualiza la selección del nivel actual
+        this.nivelesDependencias[nivelIndex].seleccion = idPadre;
+
+        // Elimina niveles inferiores si existen
+        this.nivelesDependencias = this.nivelesDependencias.slice(0, nivelIndex + 1);
+
+        // Aquí deberías consultar los hijos por idPadre
+        // Simulación: si el endpoint estuviera disponible, se haría algo como:
+         this.httpDependencias.getListadoUnidadesHijas(idPadre).subscribe(hijos => {
+             if (hijos.data && hijos.data.length > 0) {
+                 this.nivelesDependencias.push({ opciones: hijos.data, seleccion: null });
+             }
+         });
+        // Por ahora, solo estructura para cuando esté disponible
+
+
+    }
+
+
+
     validarFormulario():void{
         if (this.formulario.invalid) {
             this.sweet.alertaGeneral('error', 'Error', 'Porfavor llenar los campos obligatorios');
@@ -103,8 +143,9 @@ export default class RegistroUsuariosComponent implements OnInit{
 
     crearDataFormulario():StoreUsuarios{
         const data: StoreUsuarios = {
-            ...this.formulario.value
-        }
+            ...this.formulario.value,
+            dependencia: this.nivelesDependencias.length > 0 ? this.nivelesDependencias[this.nivelesDependencias.length - 1].seleccion : null
+        };
 
         return data;
     }
@@ -121,6 +162,10 @@ export default class RegistroUsuariosComponent implements OnInit{
 
     limpiar(): void {
         this.formulario.reset();
+        this.nivelesDependencias = [];
+        this.formulario.get('tipoUsuario')?.setValue('');
+        this.formulario.get('cargo')?.setValue('');
+        this.listadoDependenciasPadre();
     }
 
 

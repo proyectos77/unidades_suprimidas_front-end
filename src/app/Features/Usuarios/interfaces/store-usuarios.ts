@@ -5,5 +5,6 @@ export interface StoreUsuarios {
     emailUsuario:   string;
     tipoUsuario:    number;
     cargo:          number;
+    dependencia:   number;
 }
 

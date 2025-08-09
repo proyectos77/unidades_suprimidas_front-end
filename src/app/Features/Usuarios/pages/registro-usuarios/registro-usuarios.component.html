@@ -102,6 +102,21 @@
                       </div>
                   }
               </div>
+
+
+                <ng-container *ngFor="let nivel of nivelesDependencias; let i = index">
+                  <div>
+                    <div class="col-12">
+                      <select class="form-select w-100" [value]="nivel.seleccion || ''" (change)="onSeleccionarDependencia(i, $event)">
+                        <option value="" disabled selected>Seleccione Dependencia</option>
+                        <option *ngFor="let dep of nivel.opciones" [value]="dep.id_dependencia">
+                          {{ dep.nombre_dependencia }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </ng-container>
+
           </div>
 
           <div class="row">
