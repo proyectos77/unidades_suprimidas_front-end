@@ -12,13 +12,14 @@ export interface DatumUnidad {
   nombre:           string;
   unidad_superior_jerarquicamente: string;
   sigla:            string;
-  unidad_que_asume_archivo_unidad:            string;
+  unidad_que_asume_archivo_unidad: string;
   departamento:     string;
   idDepartamento:   number;
   municipio:        string;
   idMunicipio:      number;
   estado:           string;
   idEstado:         number;
+  id_dependencia?: number; // Nuevo campo para el filtro
 }
 
 export interface InfoPagination {

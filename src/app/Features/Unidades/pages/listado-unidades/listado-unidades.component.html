@@ -4,9 +4,25 @@
       <h3>Listado de unidades</h3>
   </div>
   <div class="card-body card-body-page">
-      <div class="content-buscador">
-          <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" placeholder="Filtro" [(ngModel)] = "filterPost">
-      </div>
+            <div class="row mb-3">
+                <div class="col-12 col-md-6 mb-2" *ngFor="let nivel of nivelesDependencias; let i = index">
+                    <select class="form-select mt-3" [value]="nivel.seleccion || ''" (change)="onSeleccionarDependencia(i, $event)">
+                        <option value="" disabled selected>Seleccione Dependencia</option>
+                        <option *ngFor="let dep of nivel.opciones" [value]="dep.id_dependencia">
+                            {{ dep.nombre_dependencia }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-10 mb-2">
+                    <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" placeholder="Filtro" [(ngModel)] = "filterPost">
+                </div>
+
+                <div class="col-12 col-md-2">
+                    <button type="button" class="btn btn-primary" (click)="limpiarFiltros()">Limpiar filtro</button>
+                </div>
+            </div>
       <div class="table-usuarios table-responsive content-list mt-5">
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
               <thead class="text-center table-dark">

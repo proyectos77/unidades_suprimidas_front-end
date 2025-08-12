@@ -8,6 +8,7 @@ import { StoreUnidades } from '../../interfaces/store-unidades';
 import { MunicipiosService } from '../../../../Core/services/municipios.service';
 import { GetAllMunicipiosPorDepartamento } from '../../../../Core/interfaces/get-all-municipios-por-departamento';
 import { UnidadesService } from '../../services/unidades.service';
+import { LoginService } from '../../../../Auth/services/login.service';
 
 
 @Component({
@@ -19,14 +20,18 @@ import { UnidadesService } from '../../services/unidades.service';
 export default class RegistroUnidadesComponent implements OnInit{
 
     public formularioUnidad!: FormGroup;
+    private idUsuario: number = 0;
 
     constructor(
         private httDepartamentos: DepartamentosService,
         private form: FormBuilder,
         private sweet: SweetAlertService,
         private httMunicipios: MunicipiosService,
-        private httUnidades: UnidadesService
-    ) {}
+        private httUnidades: UnidadesService,
+        private httpLogin: LoginService
+    ) {
+        this.idUsuario = this.httpLogin.datosSesion().id
+    }
 
     public departamentos:GetAllDepartamentos = {
         'icono': '',
@@ -103,7 +108,8 @@ export default class RegistroUnidadesComponent implements OnInit{
 
     crearDataFormulario():StoreUnidades{
         const data = {
-            ...this.formularioUnidad.value
+            ...this.formularioUnidad.value,
+            usuario: this.idUsuario,
         }
 
         return data;

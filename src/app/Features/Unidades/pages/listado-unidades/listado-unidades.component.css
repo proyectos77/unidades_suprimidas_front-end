@@ -8,3 +8,8 @@
   color: var(--rojo);
   font-weight: bold;
 }
+
+.form-select{
+  font-size: 1.3rem !important;
+  padding: .5rem !important;
+}

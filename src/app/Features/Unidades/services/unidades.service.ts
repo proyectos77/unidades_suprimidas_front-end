@@ -22,8 +22,15 @@ export class UnidadesService {
     constructor(private httpUnidades: HttpClient) { }
 
 
-    getAllUnidades(pagina: number):Observable<GetAllUnidades>{
-        const urlFinal = this.url + '?page=' + pagina
+    getAllUnidades(pagina: number, idDependencia: number):Observable<GetAllUnidades>{
+
+        let urlFinal;
+        if (idDependencia == 0) {
+            urlFinal =  this.url + '?page=' + pagina
+        }else{
+            urlFinal =  this.url + 'PorDependencia/' + idDependencia + '?page=' + pagina;
+        }
+
         return this.httpUnidades.get<GetAllUnidades>(urlFinal);
     }
 

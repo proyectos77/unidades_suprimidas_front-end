@@ -5,4 +5,5 @@ export interface StoreUnidades {
     unidad_que_asume:   String,
     idMunicipio:        number,
     estado:             boolean,
+    usuario:          number
 }

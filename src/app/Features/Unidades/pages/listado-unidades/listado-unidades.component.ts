@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DependenciaServiceService } from '../../../Usuarios/services/dependencia-service.service';
 import { DatumUnidad, GetAllUnidades } from '../../interfaces/get-all-unidades';
 import { UnidadesService } from '../../services/unidades.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
@@ -41,15 +42,47 @@ export default class ListadoUnidadesComponent implements OnInit{
 
     public filterPost: string = '';
 
+    // Filtros de dependencias
+    public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
 
-    constructor(private httUnidades: UnidadesService, private sweet: SweetAlertService){}
+
+    constructor(
+        private httUnidades: UnidadesService,
+        private sweet: SweetAlertService,
+        private dependenciaService: DependenciaServiceService
+    ){}
 
     ngOnInit(): void {
         this.getAllUnidades(this.pagina);
+        this.listadoDependenciasPadre();
     }
 
-    getAllUnidades(pagina: number):void{
-        this.httUnidades.getAllUnidades(pagina).subscribe(unidades =>{
+    listadoDependenciasPadre():void{
+        this.dependenciaService.getListadoUnidadesPadres().subscribe(dependencias => {
+            this.nivelesDependencias = [
+                { opciones: dependencias.data, seleccion: null }
+            ];
+        });
+    }
+
+    onSeleccionarDependencia(nivelIndex: number, event: Event): void {
+        const selectElement = event.target as HTMLSelectElement;
+        const idPadre: number = parseInt(selectElement.value, 10);
+        this.getAllUnidades(this.pagina, idPadre);
+        /* this.getIdDependenciaSeleccionada(idPadre); */
+
+        this.nivelesDependencias[nivelIndex].seleccion = idPadre;
+        this.nivelesDependencias = this.nivelesDependencias.slice(0, nivelIndex + 1);
+        this.dependenciaService.getListadoUnidadesHijas(idPadre).subscribe(hijos => {
+            if (hijos.data && hijos.data.length > 0) {
+                this.nivelesDependencias.push({ opciones: hijos.data, seleccion: null });
+            }
+        });
+        // Aquí podrías llamar a filtrarUnidades() si quieres filtrar automáticamente
+    }
+
+    getAllUnidades(pagina: number, idDependencia: number = 0):void{
+        this.httUnidades.getAllUnidades(pagina, idDependencia).subscribe(unidades =>{
             if (unidades.data.length == 0) {
               this.pagina = 0
             }else{
@@ -77,6 +110,14 @@ export default class ListadoUnidadesComponent implements OnInit{
             this.sweet.alertaGeneral(updateEstado.icono, updateEstado.titulo, updateEstado.mensaje);
             this.getAllUnidades(1);
         });
+    }
+
+    limpiarFiltros(): void {
+        this.filterPost = '';
+        this.nivelesDependencias = this.nivelesDependencias.map(nivel => ({ ...nivel, seleccion: null }));
+        this.nivelesDependencias = [];
+        this.listadoDependenciasPadre();
+        this.getAllUnidades(1);
     }
 
 }
