@@ -7,6 +7,9 @@ import { ListadoDetalleSolicitud, Datum } from '../../interfaces/listado-detalle
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { ListadoDocumentosDetalle } from '../../interfaces/listado-documentos-detalle';
 import { UrlDocumentosPipe } from '../../../../Shared/Pipes/url-documentos.pipe';
+import { SeriesSubseriesService } from '../../services/series-subseries.service';
+import { ListadoSeries } from '../../interfaces/listado-series';
+import { ListadoSubseries } from '../../interfaces/listado-subseries';
 
 @Component({
   selector: 'app-correccion-solicitud-transferencia',
@@ -40,7 +43,27 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
     public urlDocumentoModal: string = '';
     public idTransferencia: number = 0;
 
-    constructor(private router: ActivatedRoute, private httpDetalleTransferencia: DetalleTransferenciasService, private sweet: SweetAlertService) {
+    public series: ListadoSeries = {
+        statusCode: 0,
+        titulo: '',
+        mensaje: '',
+        icono: '',
+        data: []
+    };
+    public subseries: ListadoSubseries = {
+        statusCode: 0,
+        titulo: '',
+        mensaje: '',
+        icono: '',
+        data: []
+    };
+
+    constructor(
+        private router: ActivatedRoute,
+        private httpDetalleTransferencia: DetalleTransferenciasService,
+        private sweet: SweetAlertService,
+        private seriesSubseriesService: SeriesSubseriesService
+    ) {
         this.idSolicitudTransferencia = parseInt(this.router.snapshot.paramMap.get('idTransferencia') || '0');
     }
 
@@ -55,6 +78,28 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
             this.detalle = detalle
             this.idTransferencia = detalle.data[0].id_transferencia;
             this.listadoDocumentos();
+            // Cargar series del primer detalle si existe
+            if (detalle.data.length > 0) {
+                const anio = detalle.data[0].transferencia.archivo.anio_registro_archivo;
+                if (anio) {
+                    this.cargarSeries(anio);
+                }
+            }
+        });
+    }
+
+    cargarSeries(anio: string):void {
+        console.log('entro');
+
+        this.seriesSubseriesService.getListadoSeries(anio).subscribe(series => {
+            this.series = series;
+            console.log(series);
+        });
+    }
+
+    cargarSubseries(idSerie: number):void {
+        this.seriesSubseriesService.getListadoSubseries(idSerie).subscribe(subseries => {
+            this.subseries = subseries;
         });
     }
 
@@ -63,6 +108,14 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
         this.editingItemId = item.id_detalle_transferencia;
         // Crear una copia del item para editar
         this.editingItem = { ...item };
+        // Cargar series y subseries para el año y serie actuales
+       /*  const anio = item.serie?.anio_inicio_serie?.toString() || '';
+        if (anio) {
+            this.cargarSeries(anio);
+        }
+        if (item.serie?.id_serie) {
+            this.cargarSubseries(item.serie.id_serie);
+        } */
     }
 
     // Método para confirmar los cambios
@@ -77,8 +130,8 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
 
                 this.httpDetalleTransferencia.setUpdateDetalleTransferencia(this.editingItemId, {
                     seccion:  this.editingItem.seccion_detalle_transferencia,
-                    serie:    this.editingItem.serie_detalle_transferencia,
-                    subserie: this.editingItem.subserie_detalle_transferencia,
+                    serie:    this.editingItem.serie.id_serie,
+                    subserie: this.editingItem.subserie.id_subserie,
                     cajas:    this.editingItem.cantidad_cajas_detalle_transferencia,
                     carpetas: this.editingItem.cantidad_carpetas_detalle_transferencia,
                     otros:    this.editingItem.cantidad_otros_detalle_transferencia,
@@ -91,6 +144,29 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
 
         // Limpiar el estado de edición
         this.cancelarEdicion();
+    }
+
+    // Cuando cambia la serie en el select
+    onSerieChange(idSerie: number) {
+        this.cargarSubseries(idSerie);
+        if (this.editingItem) {
+            const serie = this.series.data.find(s => s.id_serie == idSerie);
+            if (serie) {
+                this.editingItem.serie = { ...serie };
+                // Limpiar subserie seleccionada
+                this.editingItem.subserie = { id_subserie: 0, codigo_subserie: 0, nombre_subserie: '', id_serie: idSerie, fecha_creacion_subserie: new Date(), fecha_actualizacion_subserie: new Date(), id_estado: 1 };
+            }
+        }
+    }
+
+    // Cuando cambia la subserie en el select
+    onSubserieChange(idSubserie: number) {
+        if (this.editingItem) {
+            const subserie = this.subseries.data.find(s => s.id_subserie == idSubserie);
+            if (subserie) {
+                this.editingItem.subserie = { ...subserie };
+            }
+        }
     }
 
     // Método para cancelar la edición

@@ -47,25 +47,31 @@
                       <!-- Serie -->
                       <td>
                           <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
-                              {{ detalle.serie_detalle_transferencia }}
+                              {{ detalle.serie?.nombre_serie }}
                           </span>
-                          <input
-                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
-                              type="text"
-                              class="form-control"
-                              [(ngModel)]="editingItem!.serie_detalle_transferencia">
+                          <select *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                                  class="form-select"
+                                  [(ngModel)]="editingItem!.serie.id_serie"
+                                  (ngModelChange)="onSerieChange($event)"
+                                  name="serieSelect">
+                              <option value="">Seleccione</option>
+                              <option *ngFor="let serie of series.data" [value]="serie.id_serie">{{ serie.nombre_serie }}</option>
+                          </select>
                       </td>
 
                       <!-- Subserie -->
                       <td>
                           <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
-                              {{ detalle.subserie_detalle_transferencia }}
+                              {{ detalle.subserie?.nombre_subserie }}
                           </span>
-                          <input
-                              *ngIf="editingItemId === detalle.id_detalle_transferencia"
-                              type="text"
-                              class="form-control"
-                              [(ngModel)]="editingItem!.subserie_detalle_transferencia">
+                          <select *ngIf="editingItemId === detalle.id_detalle_transferencia"
+                                  class="form-select"
+                                  [(ngModel)]="editingItem!.subserie.id_subserie"
+                                  (ngModelChange)="onSubserieChange($event)"
+                                  name="subserieSelect">
+                              <option value="">Seleccione</option>
+                              <option *ngFor="let subserie of subseries.data" [value]="subserie.id_subserie">{{ subserie.nombre_subserie }}</option>
+                          </select>
                       </td>
 
                       <!-- Cajas -->

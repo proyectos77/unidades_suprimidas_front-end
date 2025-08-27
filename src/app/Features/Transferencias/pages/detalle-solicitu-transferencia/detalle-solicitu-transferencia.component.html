@@ -42,8 +42,8 @@
                       <tr *ngFor="let detalle of detalle.data "><!-- | buscadorListadodetallees:filterPost -->
                           <td>{{ detalle.id_transferencia }}</td>
                           <td>{{ detalle.seccion_detalle_transferencia }}</td>
-                          <td>{{ detalle.serie_detalle_transferencia }}</td>
-                          <td>{{ detalle.subserie_detalle_transferencia }}</td>
+                          <td>{{ detalle.serie?.nombre_serie }}</td>
+                          <td>{{ detalle.subserie?.nombre_subserie }}</td>
                           <td>{{ detalle.cantidad_cajas_detalle_transferencia }}</td>
                           <td>{{ detalle.cantidad_carpetas_detalle_transferencia }}</td>
                           <td>{{ detalle.cantidad_otros_detalle_transferencia }}</td>

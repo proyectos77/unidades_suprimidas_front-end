@@ -20,6 +20,7 @@ export interface Datum {
   idUsuarioRevisor:              number;
   anio:                         string;
   unidad:                       string;
+  dependencia:                  string;
   totalCajas:                   number;
   totalCarpetas:                number;
   totalFolios:                  number;

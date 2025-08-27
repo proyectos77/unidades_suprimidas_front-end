@@ -10,8 +10,8 @@ export interface Data {
   id_detalle_transferencia:                  number;
   id_transferencia:                          number;
   seccion_detalle_transferencia:             number;
-  serie_detalle_transferencia:               string;
-  subserie_detalle_transferencia:            string;
+  idSerie:                                   number;
+  idSubserie:                                number;
   cantidad_cajas_detalle_transferencia:      number;
   cantidad_carpetas_detalle_transferencia:   number;
   cantidad_otros_detalle_transferencia:      number;

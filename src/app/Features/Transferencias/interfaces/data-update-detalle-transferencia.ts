@@ -1,7 +1,7 @@
 export interface DataUpdateDetalleTransferencia {
   seccion:  string;
-  serie:    string;
-  subserie: string;
+  serie:    number;
+  subserie: number;
   cajas:    number;
   carpetas: number;
   otros:    number;

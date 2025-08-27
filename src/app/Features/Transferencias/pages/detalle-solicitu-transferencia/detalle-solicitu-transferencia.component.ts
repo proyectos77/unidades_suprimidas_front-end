@@ -104,6 +104,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
   listadoDetalles(){
       this.httpDetalleTransferencia.listadoDetalleTransferencia(this.idTransferencia).subscribe(detalle => {
           this.detalle = detalle;
+
           let totalTransferido: number = 0;
 
           detalle.data.forEach(element => {

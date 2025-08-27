@@ -30,7 +30,7 @@ export default class HeaderComponent implements OnInit {
     usuario():void{
 
         let datoUsuario = this.httpAuth.datosSesion();
-        console.log(datoUsuario);
+
 
         this.nombreUsuario = datoUsuario.nombre;
         this.rol = datoUsuario.rol;

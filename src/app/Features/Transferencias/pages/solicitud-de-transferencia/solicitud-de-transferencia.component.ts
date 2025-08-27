@@ -7,6 +7,9 @@ import { LsitadoArchivoPorUnidad } from '../../interfaces/lsitado-archivo-por-un
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreSolicitudTransferencia } from '../../interfaces/store-solicitud-transferencia';
 import { Subject, takeUntil } from 'rxjs';
+import { SeriesSubseriesService } from '../../services/series-subseries.service';
+import { ListadoSeries } from '../../interfaces/listado-series';
+import { ListadoSubseries } from '../../interfaces/listado-subseries';
 
 @Component({
   selector: 'app-solicitud-de-transferencia',
@@ -40,20 +43,35 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
     public solicitudesAbjuntas: any = [];
     public solicitudesLegibles: any[] = [];
     public mostrarForm: boolean = false;
-
-
+    public series: ListadoSeries = {
+        statusCode: 0,
+        titulo: '',
+        mensaje: '',
+        icono: '',
+        data: []
+    };
+    public subseries: ListadoSubseries = {
+        statusCode: 0,
+        titulo: '',
+        mensaje: '',
+        icono: '',
+        data: []
+    };
 
 
     constructor(
         private form: FormBuilder,
         private httpTransferencias: TransferenciasService,
-        private sweet: SweetAlertService
+        private sweet: SweetAlertService,
+        private httpSeriesService: SeriesSubseriesService
     ) {}
 
     ngOnInit(): void {
         this.listadoUnidades();
         this.formularioSolicitudTransferencia();
         this.escucharCambiosUnidad();
+        this.escucharCambiosAnioArchivo();
+        this.escucharCambioSerie();
 
         this.formTransferencia.get('id_archivo')?.valueChanges.subscribe((idArchivo) =>{
             this.mostrarForm = (idArchivo == null || idArchivo == '') ? false : true;
@@ -99,6 +117,42 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         });
     }
 
+    escucharCambiosAnioArchivo(): void {
+        this.formTransferencia.get('id_archivo')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((idArchivo) => {
+            const archivo = this.listadoArchivoUnidad.data.find(a => a.id_archivo == idArchivo);
+            if (archivo) {
+                this.listadoSeries(archivo.anio);
+            }
+        });
+    }
+
+    listadoSeries(anio:string):void{
+        this.httpSeriesService.getListadoSeries(anio).subscribe(series => {
+            this.series = series;
+        });
+    }
+
+    escucharCambioSerie(): void {
+        this.formTransferencia.get('serie')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((idSerie) => {
+            const serie = this.series.data.find(s => s.id_serie == idSerie);
+            if (serie) {
+                this.listadoSubseries(serie.id_serie);
+            }
+        });
+    }
+
+    listadoSubseries(idSerie:number):void{
+        this.httpSeriesService.getListadoSubseries(idSerie).subscribe(subseries => {
+            if (subseries.data.length > 0) {
+                this.subseries = subseries;
+            }else{
+                this.formTransferencia.get('subserie')?.reset('');
+                this.formTransferencia.get('subserie')?.disable();
+            }
+
+        });
+    }
+
     listadoUnidades(): void {
         this.httpTransferencias.getAllUnidadesConArchivo().subscribe(unidades => {
             this.listadoUnidadesConArchivo = unidades;
@@ -136,12 +190,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         formData.append('id_archivo', form.id_archivo);
         formData.append('seccion', form.seccion);
         formData.append('serie', form.serie);
-        formData.append('subserie', form.subserie);
+        formData.append('subserie', form.subserie == 'undefined' ? 0 : form.subserie);
         formData.append('cantidad_cajas', form.cantidad_cajas);
         formData.append('cantidad_carpetas', form.cantidad_carpetas);
         formData.append('cantidad_folios', form.cantidad_folios);
-        formData.append('cantidad_otros', form.cantidad_otros);
-        formData.append('cantidad_tomos', form.cantidad_tomos);
+        formData.append('cantidad_otros', (form.cantidad_otros == '' || form.cantidad_otros == null) ? 0 : form.cantidad_otros);
+        formData.append('cantidad_tomos', (form.cantidad_tomos == '' || form.cantidad_tomos == null) ? 0 : form.cantidad_tomos);
 
         /* this.documentos.forEach((file) => {
             formData.append('documentos[]', file);
@@ -162,12 +216,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
           id_archivo: data.get('id_archivo'),
           seccion: data.get('seccion'),
           serie: data.get('serie'),
-          subserie: data.get('subserie'),
+          subserie: data.get('subserie') == 'undefined' ? 0 : data.get('subserie'),
           cantidad_cajas: data.get('cantidad_cajas'),
           cantidad_carpetas: data.get('cantidad_carpetas'),
           cantidad_folios: data.get('cantidad_folios'),
-          cantidad_otros: (data.get('cantidad_otros') == '') ? 0 : data.get('cantidad_otros'),
-          cantidad_tomos: (data.get('cantidad_tomos') == '') ? 0 : data.get('cantidad_tomos'),
+          cantidad_otros: (data.get('cantidad_otros') == '' || data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
+          cantidad_tomos: (data.get('cantidad_tomos') == '' || data.get('cantidad_tomos') == null) ? 0 : data.get('cantidad_tomos'),
           /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
         };
 

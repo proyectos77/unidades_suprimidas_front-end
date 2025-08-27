@@ -8,6 +8,7 @@ import { SweetAlertService } from '../../../../Core/services/sweet-alert.service
 import { RouterLink, RouterModule } from '@angular/router';
 import { BuscadorListadoUnidadesPipe } from '../../../../Shared/Pipes/buscador-listado-unidades.pipe';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../../../Auth/services/login.service';
 
 
 declare var bootstrap: any;
@@ -41,6 +42,8 @@ export default class ListadoUnidadesComponent implements OnInit{
     public unidad!: DatumUnidad;
 
     public filterPost: string = '';
+    public rolUser: number = 0;
+    private dependencia: number = 0;
 
     // Filtros de dependencias
     public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
@@ -49,11 +52,24 @@ export default class ListadoUnidadesComponent implements OnInit{
     constructor(
         private httUnidades: UnidadesService,
         private sweet: SweetAlertService,
-        private dependenciaService: DependenciaServiceService
-    ){}
+        private dependenciaService: DependenciaServiceService,
+        private httpLogin: LoginService
+    ){
+        const sesion = this.httpLogin.datosSesion();
+        this.rolUser = sesion.idTipoUsuario;
+        this.dependencia = sesion.idDependencia;
+
+
+    }
 
     ngOnInit(): void {
-        this.getAllUnidades(this.pagina);
+        if (this.rolUser != 1) {
+          console.log(this.dependencia);
+
+            this.getAllUnidades(this.pagina, this.dependencia);
+        }else{
+            this.getAllUnidades(this.pagina);
+        }
         this.listadoDependenciasPadre();
     }
 
