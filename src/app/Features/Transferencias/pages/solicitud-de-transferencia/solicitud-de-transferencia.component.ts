@@ -10,6 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { SeriesSubseriesService } from '../../services/series-subseries.service';
 import { ListadoSeries } from '../../interfaces/listado-series';
 import { ListadoSubseries } from '../../interfaces/listado-subseries';
+import { LoginService } from '../../../../Auth/services/login.service';
 
 @Component({
   selector: 'app-solicitud-de-transferencia',
@@ -63,11 +64,12 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         private form: FormBuilder,
         private httpTransferencias: TransferenciasService,
         private sweet: SweetAlertService,
-        private httpSeriesService: SeriesSubseriesService
+        private httpSeriesService: SeriesSubseriesService,
+        private httpLogin: LoginService
     ) {}
 
     ngOnInit(): void {
-        this.listadoUnidades();
+        this.listadoUnidades(this.httpLogin.datosSesion().idDependencia);
         this.formularioSolicitudTransferencia();
         this.escucharCambiosUnidad();
         this.escucharCambiosAnioArchivo();
@@ -153,8 +155,8 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         });
     }
 
-    listadoUnidades(): void {
-        this.httpTransferencias.getAllUnidadesConArchivo().subscribe(unidades => {
+    listadoUnidades(idDependencia: number): void {
+        this.httpTransferencias.getAllUnidadesConArchivo(idDependencia).subscribe(unidades => {
             this.listadoUnidadesConArchivo = unidades;
         });
     }
@@ -205,28 +207,36 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
     }
 
     adjuntarArchivo(): void {
-        const data = this.dataForm();
+                const data = this.dataForm();
 
-        // Agregar a la lista original
-        this.solicitudesAbjuntas.push(data);
+                // Agregar a la lista original
+                this.solicitudesAbjuntas.push(data);
 
-        // Convertir FormData a objeto legible para la tabla
-        const legible: any = {
-          id_detalle_unidad: data.get('id_detalle_unidad'),
-          id_archivo: data.get('id_archivo'),
-          seccion: data.get('seccion'),
-          serie: data.get('serie'),
-          subserie: data.get('subserie') == 'undefined' ? 0 : data.get('subserie'),
-          cantidad_cajas: data.get('cantidad_cajas'),
-          cantidad_carpetas: data.get('cantidad_carpetas'),
-          cantidad_folios: data.get('cantidad_folios'),
-          cantidad_otros: (data.get('cantidad_otros') == '' || data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
-          cantidad_tomos: (data.get('cantidad_tomos') == '' || data.get('cantidad_tomos') == null) ? 0 : data.get('cantidad_tomos'),
-          /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
-        };
+                // Buscar el nombre de la serie y subserie seleccionada
+                const serieId = Number(data.get('serie'));
+                const subserieId = Number(data.get('subserie'));
+                const serieObj = this.series.data.find(s => s.id_serie === serieId);
+                const subserieObj = this.subseries.data.find(s => s.id_subserie === subserieId);
 
-        this.solicitudesLegibles.push(legible);
-        this.limpiarCamposEspecificos();
+                // Convertir FormData a objeto legible para la tabla
+                const legible: any = {
+                    id_detalle_unidad: data.get('id_detalle_unidad'),
+                    id_archivo: data.get('id_archivo'),
+                    seccion: data.get('seccion'),
+                    serie: data.get('serie'),
+                    nombre_serie: serieObj ? serieObj.nombre_serie : '',
+                    subserie: data.get('subserie') == 'undefined' ? 0 : data.get('subserie'),
+                    nombre_subserie: subserieObj ? subserieObj.nombre_subserie : '',
+                    cantidad_cajas: data.get('cantidad_cajas'),
+                    cantidad_carpetas: data.get('cantidad_carpetas'),
+                    cantidad_folios: data.get('cantidad_folios'),
+                    cantidad_otros: (data.get('cantidad_otros') == '' || data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
+                    cantidad_tomos: (data.get('cantidad_tomos') == '' || data.get('cantidad_tomos') == null) ? 0 : data.get('cantidad_tomos'),
+                    /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
+                };
+
+                this.solicitudesLegibles.push(legible);
+                this.limpiarCamposEspecificos();
     }
 
     limpiarForm(): void {

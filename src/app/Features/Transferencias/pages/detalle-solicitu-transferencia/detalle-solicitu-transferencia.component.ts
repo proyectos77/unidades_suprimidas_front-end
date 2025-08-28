@@ -49,6 +49,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
       private sweet: SweetAlertService,
       private httpTransferencia: TransferenciasService,
       private httpLogin: LoginService,
+      private routerRegresa: Router
   ) {
       this.permiso = this.httpLogin.tienePermiso([1,3]);
   }
@@ -169,6 +170,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
               this.httpTransferencia.updateEstadoSolicitudTransferencia(this.idSolicitudTransferencia, data).subscribe(respuesta => {
                   this.sweet.alertaGeneral(respuesta.icono, respuesta.titulo, respuesta.mensaje);
                   this.estadoSolicitud = 4;
+                  this.routerRegresa.navigateByUrl('/main/transferencias/listadoSolicitudes');
               })
           }
       })
@@ -182,6 +184,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
               this.httpTransferencia.updateEstadoSolicitudTransferencia(this.idSolicitudTransferencia, data).subscribe(respuesta => {
                   this.sweet.alertaGeneral(respuesta.icono, respuesta.titulo, respuesta.mensaje);
                   this.estadoSolicitud = 5;
+                  this.routerRegresa.navigateByUrl('/main/transferencias/listadoSolicitudes');
               });
           }
       });

@@ -13,6 +13,7 @@ import { GetListadoAnios } from '../../interfaces/get-listado-anios';
 import { RespuestaRegistroArchivo } from '../../interfaces/respuesta-registro-archivo';
 import { StoreArchivoDetalleUnidad } from '../../interfaces/store-archivo-detalle-unidad';
 import { elementAt } from 'rxjs';
+import { LoginService } from '../../../../Auth/services/login.service';
 
 @Component({
   selector: 'app-registro-archivo-unidad',
@@ -43,11 +44,12 @@ export default class RegistroArchivoUnidadComponent {
       private formulario: FormBuilder,
       private sweet: SweetAlertService,
       private httpDetalleUnidad: DetalleUnidadService,
-      private httArchivo: ArchivoDetalleUnidadService
+      private httArchivo: ArchivoDetalleUnidadService,
+      private httpLogin: LoginService
     ) {}
 
     ngOnInit(): void {
-        this.listadoUnidadesConDetalle();
+        this.listadoUnidadesConDetalle(this.httpLogin.datosSesion().idDependencia);
         this.formArchivo = this.formularioArchivo();
         this.listaAnios();
         this.formArchivo.get('id_detalle')?.valueChanges.subscribe((idDetalle) => {
@@ -80,8 +82,8 @@ export default class RegistroArchivoUnidadComponent {
       }));
     }
 
-    listadoUnidadesConDetalle(): void {
-      this.httUnidades.listUnidadesConDetalle().subscribe((listadoUnidades) => {
+    listadoUnidadesConDetalle(idDependencia: number): void {
+      this.httUnidades.listUnidadesConDetalle(idDependencia).subscribe((listadoUnidades) => {
         console.log(listadoUnidades);
 
         this.unidadesSelect = listadoUnidades;

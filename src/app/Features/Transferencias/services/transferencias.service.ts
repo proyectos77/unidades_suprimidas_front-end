@@ -22,8 +22,8 @@ export class TransferenciasService {
         private http: HttpClient
     ) { }
 
-    getAllUnidadesConArchivo():Observable<ListadoUnidadesConArchivo>{
-        let urlFinal = this.url + '/selectUnidadesArchivo';
+    getAllUnidadesConArchivo(idDependencia: number):Observable<ListadoUnidadesConArchivo>{
+        let urlFinal = this.url + '/selectUnidadesArchivo/' + idDependencia;
         return this.http.get<ListadoUnidadesConArchivo>(urlFinal);
     }
 
@@ -46,6 +46,11 @@ export class TransferenciasService {
         let urlFinal = this.url + '/solicitudesTransferencias/' + idSolicitud;
 
         return this.http.put<ResultadoUpdateEstadoSolicitud>(urlFinal, data);
+    }
+
+    updateCorreccionSolicitudTransferencia(idSolicitud: number):Observable<ResultadoUpdateEstadoSolicitud>{
+        let urlFinal = this.url + '/solicitudesTransferencias/' + idSolicitud;
+        return this.http.put<ResultadoUpdateEstadoSolicitud>(urlFinal, { estado: 3 });
     }
 
     getInformacionSolicitudTransferencia(idSolicitudTransferencia: number):Observable<InformacionSolicitud>{

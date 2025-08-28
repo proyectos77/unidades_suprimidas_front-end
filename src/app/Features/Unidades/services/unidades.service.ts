@@ -48,8 +48,8 @@ export class UnidadesService {
         return this.httpUnidades.patch<RespuestaUpdateUnidad>(urlFinal, {estado:estado});
     }
 
-    listUnidadesSelect():Observable<GetListUnidadesSelect>{
-        let urlFinal = this.urlList + '/selectUnidades';
+    listUnidadesSelect(idDependencia: number):Observable<GetListUnidadesSelect>{
+        let urlFinal = this.urlList + '/selectUnidades/' + idDependencia;
         return this.httpUnidades.get<GetListUnidadesSelect>(urlFinal);
     }
 
@@ -58,8 +58,8 @@ export class UnidadesService {
         return this.httpUnidades.get<GetInformacionUnidad>(urlFinal);
     }
 
-    listUnidadesConDetalle():Observable<GetListUnidadesConDetalle>{
-        let urlFinal = this.urlList + '/selectUnidadConDetalle';
+    listUnidadesConDetalle(idDependencia: number):Observable<GetListUnidadesConDetalle>{
+        let urlFinal = this.urlList + '/selectUnidadConDetalle/' + idDependencia;
         return this.httpUnidades.get<GetListUnidadesConDetalle>(urlFinal);
     }
 

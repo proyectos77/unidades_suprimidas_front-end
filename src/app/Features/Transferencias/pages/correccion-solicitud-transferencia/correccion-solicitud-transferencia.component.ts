@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DetalleTransferenciasService } from '../../services/detalle-transferencias.service';
@@ -10,6 +10,8 @@ import { UrlDocumentosPipe } from '../../../../Shared/Pipes/url-documentos.pipe'
 import { SeriesSubseriesService } from '../../services/series-subseries.service';
 import { ListadoSeries } from '../../interfaces/listado-series';
 import { ListadoSubseries } from '../../interfaces/listado-subseries';
+import { TransferenciasService } from '../../services/transferencias.service';
+
 
 @Component({
   selector: 'app-correccion-solicitud-transferencia',
@@ -19,7 +21,8 @@ import { ListadoSubseries } from '../../interfaces/listado-subseries';
 })
 export default class CorreccionSolicitudTransferenciaComponent implements OnInit {
 
-    private idSolicitudTransferencia: number = 0;
+    public  archivoSeleccionado: File | null = null;
+    private idTransferenciaEnviado: number = 0;
     public editingItemId: number | null = null;
     public editingItem: Datum | null = null;
 
@@ -42,6 +45,7 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
     public nombreDocumentoModal: string = '';
     public urlDocumentoModal: string = '';
     public idTransferencia: number = 0;
+    public idSolicitud: number = 0;
 
     public series: ListadoSeries = {
         statusCode: 0,
@@ -62,21 +66,27 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
         private router: ActivatedRoute,
         private httpDetalleTransferencia: DetalleTransferenciasService,
         private sweet: SweetAlertService,
-        private seriesSubseriesService: SeriesSubseriesService
+        private seriesSubseriesService: SeriesSubseriesService,
+        private httpTransferencia: TransferenciasService,
+        private routerRegresa: Router
     ) {
-        this.idSolicitudTransferencia = parseInt(this.router.snapshot.paramMap.get('idTransferencia') || '0');
+        this.idTransferenciaEnviado = parseInt(this.router.snapshot.paramMap.get('idTransferencia') || '0');
+        console.log('id_enviado:', this.idTransferenciaEnviado);
     }
 
 
     ngOnInit(): void {
-        console.log(this.idSolicitudTransferencia);
-        this.consultaDetalleTransferencia(this.idSolicitudTransferencia);
+        console.log(this.idTransferenciaEnviado);
+        this.consultaDetalleTransferencia(this.idTransferenciaEnviado);
     }
 
-    consultaDetalleTransferencia(idSolicitudTransferencia: number){
-        this.httpDetalleTransferencia.listadoDetalleTransferencia(idSolicitudTransferencia).subscribe(detalle => {
+    consultaDetalleTransferencia(idTransferenciaEnviado: number){
+        this.httpDetalleTransferencia.listadoDetalleTransferencia(idTransferenciaEnviado).subscribe(detalle => {
+          console.log(detalle);
+
             this.detalle = detalle
             this.idTransferencia = detalle.data[0].id_transferencia;
+            this.idSolicitud = detalle.data[0].transferencia.solicitudes[0].id_solicitud_transferencia;
             this.listadoDocumentos();
             // Cargar series del primer detalle si existe
             if (detalle.data.length > 0) {
@@ -106,16 +116,8 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
     // Método para iniciar la edición de un item
     editarItem(item: Datum): void {
         this.editingItemId = item.id_detalle_transferencia;
-        // Crear una copia del item para editar
         this.editingItem = { ...item };
-        // Cargar series y subseries para el año y serie actuales
-       /*  const anio = item.serie?.anio_inicio_serie?.toString() || '';
-        if (anio) {
-            this.cargarSeries(anio);
-        }
-        if (item.serie?.id_serie) {
-            this.cargarSubseries(item.serie.id_serie);
-        } */
+
     }
 
     // Método para confirmar los cambios
@@ -183,23 +185,23 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
                 this.httpDetalleTransferencia.deleteDetalleTransferencia(id).subscribe(response => {
                 console.log('Detalle eliminado:', response);
                 // Actualizar la lista después de eliminar
-                this.consultaDetalleTransferencia(this.idSolicitudTransferencia);
+                this.consultaDetalleTransferencia(this.idTransferenciaEnviado);
             });
         }
-
-
     }
 
     listadoDocumentos(){
-      this.httpDetalleTransferencia.listadoDocumentosDetalle(this.idTransferencia).subscribe(documentos => {
-          this.documentos = documentos;
-    });
+        this.httpDetalleTransferencia.listadoDocumentosDetalle(this.idTransferencia).subscribe(documentos => {
+            this.documentos = documentos;
+            if (documentos.data.length === 0) {
+                this.sweet.alertaGeneral('info', 'Información', 'No se encontraron documentos para esta transferencia.');
+            }
+        });
     }
 
     abrirModalDocumento(idDocumento: number): void {
         const modal = document.getElementById('modalVerDocumento');
 
-        console.log('modal:', modal);
         if (modal) {
             modal.classList.add('show');
             modal.style.display = 'block';
@@ -211,6 +213,29 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
             this.nombreDocumentoModal = documento.nombre_documento;
             this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`;
         });
+    }
+
+    abrirModalAgregarDocumentos(idDocumento: number): void {
+        const modal = document.getElementById('modalAgregarDocumento');
+
+        if (modal) {
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('role', 'dialog');
+        }
+    }
+
+    cerrarModalAgregarDocumentos(): void {
+        const modal = document.getElementById('modalAgregarDocumento');
+        if (modal) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            modal.removeAttribute('aria-modal');
+            modal.removeAttribute('role');
+        }
+        this.nombreDocumentoModal = '';
+        this.urlDocumentoModal = '';
     }
 
     cerrarModalDocumento(): void {
@@ -225,5 +250,50 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
         this.urlDocumentoModal = '';
     }
 
+    // Eliminar documento adjunto
+    eliminarDocumentoAdjunto(idDocumentoTransferencia: number): void {
+        this.httpDetalleTransferencia.deleteDocumentoTransferencia(idDocumentoTransferencia).subscribe(response => {
+            this.sweet.alertaGeneral(response.status, response.titulo, response.mensaje);
+            this.listadoDocumentos();
+        });
+    }
+
+    // Seleccionar archivo desde input
+    onArchivoSeleccionado(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            this.archivoSeleccionado = input.files[0];
+        } else {
+            this.archivoSeleccionado = null;
+        }
+    }
+
+    // Registrar documento adjunto
+    registrarDocumentoAdjunto(): void {
+        if (!this.archivoSeleccionado) {
+            this.sweet.alertaGeneral('warning', 'Sin archivo', 'Debe seleccionar un archivo para adjuntar.');
+            return;
+        }
+
+        this.httpDetalleTransferencia.registrarDocumentoTransferencia(this.idTransferencia, this.archivoSeleccionado)
+            .subscribe(response => {
+              console.log(response);
+
+                this.sweet.alertaGeneral(response.status, response.titulo, response.mensaje);
+                this.listadoDocumentos();
+                this.cerrarModalAgregarDocumentos();
+
+            });
+    }
+
+    cambiarEstadoSolicitud(): void {
+      console.log(this.idSolicitud);
+
+        this.httpTransferencia.updateCorreccionSolicitudTransferencia(this.idSolicitud).subscribe(response => {
+          console.log(response);
+            this.sweet.alertaGeneral(response.icono, response.titulo, response.mensaje);
+            this.routerRegresa.navigateByUrl('/main/transferencias/listadoSolicitudes');
+        });
+    }
 
 }

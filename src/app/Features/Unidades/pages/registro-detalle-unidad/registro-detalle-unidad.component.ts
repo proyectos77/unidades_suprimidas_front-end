@@ -11,6 +11,7 @@ import { GetListUnidadesSelect } from "../../interfaces/get-list-unidades-select
 import { SweetAlertService } from "../../../../Core/services/sweet-alert.service";
 import { StoreDetalleUnidad } from "../../interfaces/sotre-detalleUnidad";
 import { DetalleUnidadService } from "../../services/detalleUnidad.service";
+import { LoginService } from "../../../../Auth/services/login.service";
 
 @Component({
   selector: "app-registro-detalle-unidad",
@@ -28,15 +29,19 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         icono: "",
         data: [],
     };
+    private dependenciaUser: number = 0;
     constructor(
         private httUnidades: UnidadesService,
         private formulario: FormBuilder,
         private sweet: SweetAlertService,
-        private httpDetalleUnidad: DetalleUnidadService
-    ) {}
+        private httpDetalleUnidad: DetalleUnidadService,
+        private httpLogin: LoginService
+    ) {
+        this.dependenciaUser = this.httpLogin.datosSesion().idDependencia;
+    }
 
     ngOnInit(): void {
-        this.listadoUnidades();
+        this.listadoUnidades(this.dependenciaUser);
         this.formDetalle = this.formularioDetalleUnidad();
     }
 
@@ -54,8 +59,8 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         }));
     }
 
-    listadoUnidades(): void {
-        this.httUnidades.listUnidadesSelect().subscribe((listadoUnidades) => {
+    listadoUnidades(idDependencia: number): void {
+        this.httUnidades.listUnidadesSelect(idDependencia).subscribe((listadoUnidades) => {
             this.unidadesSelect = listadoUnidades;
         });
     }
@@ -83,7 +88,7 @@ export default class RegistroDetalleUnidadComponent implements OnInit {
         this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe((detalle) => {
             this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
             this.limpiarForm();
-            this.listadoUnidades();
+            this.listadoUnidades(this.dependenciaUser);
         });
     }
 

@@ -40,5 +40,20 @@ export class DetalleTransferenciasService {
   deleteDetalleTransferencia(id: number): Observable<any> {
       let urlFinal = this.url + '/detalleTransferencia/' + id;
       return this.http.patch<any>(urlFinal, { estado: 2 });
+    }
+
+    // Eliminar documento adjunto de transferencia
+  deleteDocumentoTransferencia(idDocumentoTransferencia: number): Observable<any> {
+      const urlFinal = this.url + '/documentosTransferencia/' + idDocumentoTransferencia;
+      return this.http.patch<any>(urlFinal, { estado: 2 });
+  }
+
+  // Registrar documento adjunto a transferencia
+  registrarDocumentoTransferencia(idTransferencia: number, archivo: File): Observable<any> {
+      const urlFinal = this.url + '/documento';
+      const formData = new FormData();
+      formData.append('id_transferencia', idTransferencia.toString());
+      formData.append('documento', archivo);
+      return this.http.post<any>(urlFinal, formData);
   }
 }

@@ -153,11 +153,13 @@
           <p style="font-size: 2rem; font-weight: bold;">Documentos adjuntos</p>
           <div class="col-md-6">
               <div class="list-group">
-                  <a style="font-size: 1.3rem;" class="list-group-item list-group-item-action" *ngFor="let documento of documentos.data" (click)="abrirModalDocumento(documento.id_documento)">{{ documento.documento.nombre_documento }}</a>
+                  <div class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let documento of documentos.data">
+                      <span style="font-size: 1.3rem; cursor:pointer;" (click)="abrirModalDocumento(documento.id_documento)">{{ documento.documento.nombre_documento }}</span>
+                      <button type="button" class="btn btn-sm btn-danger ms-2"  style="font-size: 1rem; margin-right: 1rem;" title="Eliminar documento adjunto" (click)="eliminarDocumentoAdjunto(documento.id_documento_transferencia); $event.stopPropagation()">
+                          <i class="fas fa-times"></i>
+                      </button>
+                  </div>
               </div>
-              <!-- <ul>
-                <li *ngFor="let documento of documentos.data">{{ }}</li>
-              </ul> -->
           </div>
       </div>
 
@@ -175,8 +177,22 @@
               </li> -->
           </ul>
       <!-- </nav> -->
+
+
+      <div class="row">
+          <div class="col-md-12 d-flex justify-content-end">
+              <button type="button" class="btn btn-warning" style="font-size: 1.3rem; margin-right: 2rem;" (click)="abrirModalAgregarDocumentos(0)">Agregar Documento</button>
+              <button type="button" class="btn btn-primary" style="font-size: 1.3rem;" (click)="cambiarEstadoSolicitud()">Solicitar Revisión</button>
+          </div>
+      </div>
+
   </div>
+
+
+
 </div>
+
+
 
 
 <!-- Modal para ver documento -->
@@ -189,6 +205,25 @@
             </div>
             <div class="modal-body" style="height: 80vh;">
                 <iframe [src]="urlDocumentoModal | urlDocumentos" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal para agregar documento -->
+<div class="modal fade" id="modalAgregarDocumento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar documentos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrarModalAgregarDocumentos()"></button>
+            </div>
+            <div class="modal-body">
+              <input type="file" class="form-control" style="font-size: 1.3rem;" (change)="onArchivoSeleccionado($event)"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="font-size: 1.2rem;" data-bs-dismiss="modal" (click)="cerrarModalAgregarDocumentos()">Cerrar</button>
+                <button type="button" class="btn btn-primary" style="font-size: 1.2rem;" (click)="registrarDocumentoAdjunto()">Guardar documento</button>
             </div>
         </div>
     </div>

@@ -64,8 +64,6 @@ export default class ListadoUnidadesComponent implements OnInit{
 
     ngOnInit(): void {
         if (this.rolUser != 1) {
-          console.log(this.dependencia);
-
             this.getAllUnidades(this.pagina, this.dependencia);
         }else{
             this.getAllUnidades(this.pagina);
