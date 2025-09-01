@@ -15,7 +15,6 @@ import { BuscadorTransferenciaPorArchivoPipe } from '../../../../Shared/Pipes/bu
       CommonModule,
       NgxChartsModule,
       BuscadorTransferenciaPorArchivoPipe,
-      RouterLink
   ],
   templateUrl: './listado-transferencias-archivo.component.html',
   styleUrl: './listado-transferencias-archivo.component.css'

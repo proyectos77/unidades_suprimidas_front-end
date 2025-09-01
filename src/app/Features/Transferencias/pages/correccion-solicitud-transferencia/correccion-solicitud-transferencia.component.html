@@ -47,7 +47,7 @@
                       <!-- Serie -->
                       <td>
                           <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
-                              {{ detalle.serie?.nombre_serie }}
+                              {{ detalle.serie.nombre_serie }}
                           </span>
                           <select *ngIf="editingItemId === detalle.id_detalle_transferencia"
                                   class="form-select"
@@ -62,7 +62,7 @@
                       <!-- Subserie -->
                       <td>
                           <span *ngIf="editingItemId !== detalle.id_detalle_transferencia">
-                              {{ detalle.subserie?.nombre_subserie }}
+                              {{ detalle.subserie.nombre_subserie }}
                           </span>
                           <select *ngIf="editingItemId === detalle.id_detalle_transferencia"
                                   class="form-select"
