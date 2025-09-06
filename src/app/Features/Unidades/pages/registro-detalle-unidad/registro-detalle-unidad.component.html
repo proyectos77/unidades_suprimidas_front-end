@@ -74,28 +74,29 @@
               </div>
 
               <div class="col-md-4 form-group">
+                  <label for="" class="form-label"> Plan de reorganización DIORG</label>
+                  <input type="text" class="form-control" formControlName="planReorganizacionDiorg">
+                 <!--  @if (this.formDetalle.get('planReorganizacionDiorg')?.touched && formDetalle.get('planReorganizacionDiorg')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo plan de reorganización DIORG</small>
+                      </div>
+                  } -->
+              </div>
+
+             <!--  <div class="col-md-4 form-group">
                   <label for="" class="form-label"> Puesto de mando adelantado</label>
                   <input class="form-control" type="text" formControlName="puestoMandoAdelantado">
-              </div>
+              </div> -->
           </div>
 
-          <div class="row mt-5">
+          <!-- <div class="row mt-5">
               <div class="col-md-4 form-group">
                   <label for="" class="form-label"> Puesto de mando atrasado</label>
                   <input type="text" class="form-control" formControlName="puestoMandoAtrasado">
               </div>
 
-              <div class="col-md-4 form-group">
-                  <label for="" class="form-label">* Plan de reorganización DIORG</label>
-                  <input type="text" class="form-control" formControlName="planReorganizacionDiorg">
-                  @if (this.formDetalle.get('planReorganizacionDiorg')?.touched && formDetalle.get('planReorganizacionDiorg')?.errors?.['required']){
-                      <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo plan de reorganización DIORG</small>
-                      </div>
-                  }
-              </div>
 
-          </div>
+          </div> -->
 
           <div class="row mt-5">
               <div class="col-md-12 form-group">

@@ -50,9 +50,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
       private httpTransferencia: TransferenciasService,
       private httpLogin: LoginService,
       private routerRegresa: Router
-  ) {
-      this.permiso = this.httpLogin.tienePermiso([1,3]);
-  }
+  ) {}
 
 
   private route = inject(ActivatedRoute);
@@ -83,6 +81,11 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
 
 
   ngOnInit(): void {
+      let estadoPermiso = this.httpLogin.datosSesion().idTipoUsuario;
+      if (estadoPermiso == 1 || estadoPermiso == 3) {
+          this.permiso = true;
+      }
+
       let parametro2 = this.route.snapshot.paramMap.get('idSolicitudTransferencia');
       this.idSolicitudTransferencia = (parametro2 !== null) ? parseInt(parametro2) : 0;
 
@@ -95,6 +98,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
           this.estadoSolicitud = solicitud.data[0].estado_solicitud_transferencia;
           this.idTransferencia = solicitud.data[0].id_transferencia;
           this.observacion = solicitud.data[0].observacion_solicitud_transferencia;
+        console.log('estado = ' + this.estadoSolicitud);
 
           this.listadoDetalles();
           this.listadoDocumentos();
@@ -104,6 +108,8 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
 
   listadoDetalles(){
       this.httpDetalleTransferencia.listadoDetalleTransferencia(this.idTransferencia).subscribe(detalle => {
+          console.log(detalle);
+
           this.detalle = detalle;
 
           let totalTransferido: number = 0;
@@ -147,6 +153,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
       this.httpDetalleTransferencia.verDocumento(idDocumento).subscribe(documento => {
           this.nombreDocumentoModal = documento.nombre_documento;
           this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`;
+          /* this.urlDocumentoModal = `http://172.22.3.102/storage/${documento.url_documento}`; */
       });
   }
 

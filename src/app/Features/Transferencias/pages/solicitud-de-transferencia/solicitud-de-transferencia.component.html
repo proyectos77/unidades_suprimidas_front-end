@@ -58,6 +58,7 @@
                                 <th>Carpetas</th>
                                 <th>Folios</th>
                                 <th>Otros</th>
+                                <th>Tomos</th>
                                 <th>Eliminar</th>
                                 <!-- <th>Documentos</th> -->
                               </tr>
@@ -73,7 +74,7 @@
                                   <td>{{ item.cantidad_folios }}</td>
                                   <td>{{ item.cantidad_otros || '-' }}</td>
                                   <td>{{ item.cantidad_tomos || '-' }}</td>
-                                  <td> <button type="button" class="btn btn-danger" style="height: 2rem; padding: 0 .5rem; margin: 0;" (click)="eliminar(i)"><i class="fas fa-minus"></i></button></td>
+                                  <td class="text-center"> <button type="button" class="btn btn-danger" style="height: 2rem; padding: 0 .5rem; margin: 0;" (click)="eliminar(i)"><i class="fas fa-minus"></i></button></td>
                                   <!-- <td>
                                     <ul class="mb-0">
                                       <li *ngFor="let doc of item.documentos">{{ doc.name }}</li>

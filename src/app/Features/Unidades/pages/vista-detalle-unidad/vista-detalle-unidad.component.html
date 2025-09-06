@@ -116,7 +116,7 @@
                   </div>
               </div>
 
-              <div class="contentVistaInfoUnidad">
+              <!-- <div class="contentVistaInfoUnidad">
                   <div class="itenInformacion">
                       <p class="item__text"><span>Puesto de mando adelantado: </span></p>
                   </div>
@@ -124,9 +124,9 @@
                   <div class="itenInformacion">
                       <p class="item__text">{{ informacionUnidad.data.detalle_unidad.puesto_mando_adelantado_detalle }}</p>
                   </div>
-              </div>
+              </div> -->
 
-              <div class="contentVistaInfoUnidad">
+              <!-- <div class="contentVistaInfoUnidad">
                   <div class="itenInformacion">
                       <p class="item__text"><span>Puesto de mando atrasado: </span></p>
                   </div>
@@ -134,7 +134,7 @@
                   <div class="itenInformacion">
                       <p class="item__text">{{ informacionUnidad.data.detalle_unidad.puesto_mando_atrasado_detalle }}</p>
                   </div>
-              </div>
+              </div> -->
 
              <!--  <div class="contentVistaInfoUnidad">
                   <div class="itenInformacion">
@@ -206,9 +206,9 @@
                 <table class="table table-hover table-bordered text-center">
                     <thead style="font-size: 1.4rem;" class="table-dark">
                         <tr>
-                          <th colspan="5">Total Archivo</th>
-                          <th colspan="5" class="bg-success">Total Transferido</th>
-                          <th colspan="5" class="bg-warning">Total Pendiente</th>
+                          <th colspan="6">Total Archivo</th>
+                          <th colspan="6" class="bg-success">Total Transferido</th>
+                          <th colspan="6" class="bg-warning">Total Pendiente</th>
                           <th>Opciones</th>
                         </tr>
                         <tr>
@@ -217,17 +217,20 @@
                           <th>Carpetas</th>
                           <th>Folios</th>
                           <th>Otros</th>
+                          <th>Tomos</th>
+
                           <th class="bg-success">Cajas</th>
                           <th class="bg-success">Carpetas</th>
                           <th class="bg-success">Folios</th>
-
                           <th class="bg-success">Otros</th>
+                          <th class="bg-success">Tomos</th>
                           <th class="bg-success">Porcentaje</th>
+
                           <th class="bg-warning">Cajas</th>
                           <th class="bg-warning">Carpetas</th>
                           <th class="bg-warning">Folios</th>
-
                           <th class="bg-warning">Otros</th>
+                          <th class="bg-warning">Tomos</th>
                           <th class="bg-warning">Porcentaje</th>
                           <th></th>
                         </tr>
@@ -239,19 +242,21 @@
                             <td>{{ archivo.numero_cajas_archivos }}</td>
                             <td>{{ archivo.numero_carpetas_archivo }}</td>
                             <td>{{ archivo.numero_folios_archivo }}</td>
-
                             <td>{{ archivo.numero_otros_archivo }}</td>
+                            <td>{{ archivo.numero_tomos_archivo }}</td>
+
                             <td class="bg-success">{{ archivo.cantidad_cajas_transferencia }}</td>
                             <td class="bg-success">{{ archivo.cantidad_carpetas_transferencia }}</td>
                             <td class="bg-success">{{ archivo.cantidad_folios_transferencia }}</td>
-
                             <td class="bg-success">{{ archivo.cantidad_otros_transferencia }}</td>
+                            <td class="bg-success">{{ archivo.cantidad_tomos_transferencia }}</td>
                             <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
+
                             <td class="bg-warning">{{ archivo.cantidad_cajas_faltante }}</td>
                             <td class="bg-warning">{{  archivo.cantidad_carpetas_faltante }}</td>
                             <td class="bg-warning">{{ archivo.cantidad_folios_faltante }}</td>
-
                             <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
+                            <td class="bg-warning">{{ archivo.cantidad_tomos_faltante }}</td>
                             <td class="bg-warning">{{ archivo.porcentaje_faltante | number:'1.0-0'  }}%</td>
                             <td>
                               <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/listadoTransferenciasPorArchivo', archivo.id_archivo]">

@@ -28,8 +28,8 @@
               <thead class="text-center table-dark">
                   <tr>
                       <th>ID</th>
-                      <th>Nombre</th>
                       <th>Unidad superior jerárquicamente</th>
+                      <th>Nombre</th>
                       <th>Sigla</th>
                       <th>Unidad que asume</th>
                       <th>Departamento</th>
@@ -41,8 +41,8 @@
               <tbody class="text-center">
                   <tr *ngFor="let unidad of listaUnidades.data | buscadorListadoUnidades:filterPost">
                       <td>{{ unidad.id_unidad }}</td>
-                      <td class="text-start">{{ unidad.nombre }}</td>
                       <td>{{ unidad.unidad_superior_jerarquicamente }}</td>
+                      <td>{{ unidad.nombre }}</td>
                       <td>{{ unidad.sigla }}</td>
                       <td>{{ unidad.unidad_que_asume_archivo_unidad }}</td>
                       <td>{{ unidad.departamento }}</td>

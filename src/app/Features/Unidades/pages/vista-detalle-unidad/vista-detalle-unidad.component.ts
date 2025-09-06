@@ -157,17 +157,25 @@ export default class VistaDetalleUnidadComponent implements OnInit {
 
   getArchivoUnidad(idDetalleUnidad: number, page:number):void{
       this.httpUnidad.detalleArchivoPorUnidad(idDetalleUnidad, page).subscribe(archivo => {
-          this.data = [
-              {
-                  'name': 'Archivo Transferido',
-                  'value' : archivo.data[0].porcentaje_transferencia
-              },
-              {
-                  'name': 'Archivo Pendiente',
-                  'value' : archivo.data[0].porcentaje_faltante
-              }
-          ];
-          this.informacionArchivoUnidad = archivo;
+          if (archivo.data.length === 0) {
+              console.log('entro');
+
+              this.sweet.alertaGeneral('info', 'No se encontraron registros', 'No hay archivos registrados para esta unidad');
+          }else{
+              this.data = [
+                  {
+                      'name': 'Archivo Transferido',
+                      'value' : archivo.data[0].porcentaje_transferencia
+                  },
+                  {
+                      'name': 'Archivo Pendiente',
+                      'value' : archivo.data[0].porcentaje_faltante
+                  }
+              ];
+              this.informacionArchivoUnidad = archivo;
+          }
+
+
       });
   }
 

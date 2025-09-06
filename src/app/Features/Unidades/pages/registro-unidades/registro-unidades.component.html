@@ -14,7 +14,7 @@
           </div>
           <div class="row mt-4">
               <div class="col-md-6 form-group">
-                  <label for="" class="form-label">* Nombre unidad</label>
+                  <label for="" class="form-label">* Nombre unidad (Suprimida)</label>
                   <input class="form-control" type="text" formControlName="nombre" placeholder="">
                   @if (this.formularioUnidad.get('nombre')?.touched && formularioUnidad.get('nombre')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
@@ -37,7 +37,7 @@
 
           <div class="row mt-5">
               <div class="col-md-6 form-group">
-                  <label for="" class="form-label">* Sigla unidad</label>
+                  <label for="" class="form-label">* Sigla unidad (Suprimida)</label>
                   <input class="form-control" type="text" formControlName="sigla" placeholder="">
                   @if (this.formularioUnidad.get('sigla')?.touched && formularioUnidad.get('sigla')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">

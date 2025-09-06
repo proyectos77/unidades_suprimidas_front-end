@@ -34,6 +34,7 @@
                           <th>Cajas</th>
                           <th>Carpetas</th>
                           <th>Otros</th>
+                          <th>Tomos</th>
                           <th>Folio</th>
                           <th>Porcentaje</th>
                       </tr>
@@ -43,12 +44,13 @@
                           <td>{{ detalle.id_transferencia }}</td>
                           <td>{{ detalle.seccion_detalle_transferencia }}</td>
                           <td>{{ detalle.serie.nombre_serie }}</td>
-                          <td>{{ detalle.subserie.nombre_subserie }}</td>
+                          <td>{{ detalle?.subserie?.nombre_subserie }}</td>
                           <td>{{ detalle.cantidad_cajas_detalle_transferencia }}</td>
                           <td>{{ detalle.cantidad_carpetas_detalle_transferencia }}</td>
                           <td>{{ detalle.cantidad_otros_detalle_transferencia }}</td>
+                          <td>{{ detalle.cantidad_tomos_detalle_transferencia }}</td>
                           <td>{{ detalle.cantidad_folios_detalle_transferencia }}</td>
-                          <td>{{ detalle.porcentaje_detalle_transferencia }}</td>
+                          <td>{{ detalle.porcentaje_detalle_transferencia }} %</td>
                       </tr>
                   </tbody>
               </table>
@@ -73,7 +75,7 @@
                     <li *ngFor="let documento of documentos.data">{{ }}</li>
                   </ul> -->
               </div>
-              <div class="col-md-6 d-flex justify-content-end align-items-end" *ngIf="estadoSolicitud === 3 && permiso">
+              <div class="col-md-6 d-flex justify-content-end align-items-end" *ngIf="estadoSolicitud == 3 && permiso == true">
                   <button type="button" class="btn btn-primary" style="height: 3rem; margin-right: 1rem;" (click)="aprobarSolicitud()">Aprobar solicitud</button>
                   <button type="button" class="btn btn-danger" style="height: 3rem;" (click)="rechazarSolicitud()">Rechazar solicitud</button>
               </div>

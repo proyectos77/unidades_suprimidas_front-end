@@ -147,6 +147,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         this.httpSeriesService.getListadoSubseries(idSerie).subscribe(subseries => {
             if (subseries.data.length > 0) {
                 this.subseries = subseries;
+                this.formTransferencia.get('subserie')?.enable();
             }else{
                 this.formTransferencia.get('subserie')?.reset('');
                 this.formTransferencia.get('subserie')?.disable();
