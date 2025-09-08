@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { GetInformacionUnidad } from '../../interfaces/get-informacion-unidad';
 import { UnidadesService } from '../../services/unidades.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListadoArchivoPorUnidad } from '../../interfaces/listado-archivo-por-unidad';
-import { CommonModule, NgFor } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-archivo-unidad.pipe';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
+import { LoginService } from '../../../../Auth/services/login.service';
+import { Modal } from 'bootstrap';
+import { StoreActualizarArchivoRegistrado } from '../../interfaces/store-actualizar-archivo-registrado';
+import { ArchivoDetalleUnidadService } from '../../services/archivo-detalle-unidad.service';
 
 @Component({
   selector: 'app-vista-detalle-unidad',
@@ -20,7 +24,9 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
     FormsModule,
     BuscadorArchivoUnidadPipe,
     CommonModule,
-    NgxChartsModule
+    NgxChartsModule,
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
@@ -28,6 +34,9 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
   // vienen definidas dentro de NgxChartsModule.
 })
 export default class VistaDetalleUnidadComponent implements OnInit {
+
+  private modalInstance: Modal | null = null;
+  private modalActualizar = viewChild<ElementRef>('modalActualizarArchivo');
 
   public data: any[] = [];
 
@@ -126,16 +135,23 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   }
 
   public filterPost: string = '';
+  public perfilUsuario:number = 0;
+  public formularioArchivo!: FormGroup;
 
   constructor(
       private httpUnidad: UnidadesService,
       private sweet: SweetAlertService,
       private route: ActivatedRoute,
-      private router: Router
+      private router: Router,
+      private httpLogin: LoginService,
+      private formulario: FormBuilder,
+      private httpArchivo: ArchivoDetalleUnidadService
   ) {}
 
   ngOnInit(): void {
       this.getInformacionUnidad();
+      this.perfilUsuario = this.httpLogin.datosSesion().idTipoUsuario;
+      this.formularioArchivo = this.form();
   }
 
   getInformacionUnidad(): void {
@@ -174,8 +190,6 @@ export default class VistaDetalleUnidadComponent implements OnInit {
               ];
               this.informacionArchivoUnidad = archivo;
           }
-
-
       });
   }
 
@@ -183,5 +197,60 @@ export default class VistaDetalleUnidadComponent implements OnInit {
     return `${value}%`;
   }
 
+  abrirModal(cajas: number, carpetas: number, folios: number, otros: number, tomos: number):void {
+      const modal = this.modalActualizar();
+
+      if (modal) {
+          this.formularioArchivo.setValue({
+              cajas: cajas,
+              carpetas: carpetas,
+              folios: folios,
+              otros: otros,
+              tomos: tomos,
+          });
+          this.modalInstance = new Modal(modal.nativeElement);
+          this.modalInstance.show();
+      }
+  }
+
+
+  form():FormGroup{
+      return this.formulario.group({
+          cajas: [0],
+          carpetas: [0],
+          folios: [0],
+          otros: [0],
+          tomos: [0],
+
+      });
+  }
+
+  actualizarArchivo():void{
+      const data = this.dataActualizarArchivo();
+      idArchivoRegistrado: this.informacionArchivoUnidad.data[0].id_archivo
+
+      this.httpArchivo.updateArchivo(data, this.informacionArchivoUnidad.data[0].id_archivo).subscribe(archivo =>{
+          if (archivo.statusCode === 200) {
+              this.sweet.alertaGeneral(archivo.icono, archivo.titulo, archivo.mensaje);
+              this.getArchivoUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, 1);
+          }else{
+              this.sweet.alertaGeneral(archivo.icono, archivo.titulo, archivo.mensaje);
+          }
+
+          this.closeModal();
+      });
+  }
+
+  closeModal():void{
+      if (this.modalInstance) {
+          this.modalInstance.hide();
+      }
+  }
+
+  dataActualizarArchivo(): StoreActualizarArchivoRegistrado{
+      return {
+          ...this.formularioArchivo.value,
+      };
+  }
 
 }

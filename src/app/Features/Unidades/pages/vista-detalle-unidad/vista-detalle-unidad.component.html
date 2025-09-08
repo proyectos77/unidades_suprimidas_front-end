@@ -10,20 +10,20 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Unidad</button>
+              <button class="nav-link " id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Unidad</button>
           </li>
           <li class="nav-item" role="presentation">
               <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Detalle</button>
           </li>
           <li class="nav-item" role="presentation">
-              <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab"  aria-controls="messages" aria-selected="false">Archivos</button>
+              <button class="nav-link active" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab"  aria-controls="messages" aria-selected="false">Archivos</button>
           </li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
 
-          <div class="tab-pane active content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="tab-pane  content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
 
               <div class="contentVistaInfoUnidad">
@@ -173,7 +173,7 @@
           </div>
 
 
-          <div class="tab-pane content-list" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+          <div class="tab-pane content-list active" id="messages" role="tabpanel" aria-labelledby="messages-tab">
               <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
 
               <div class="contentGrafica">
@@ -262,6 +262,10 @@
                               <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/listadoTransferenciasPorArchivo', archivo.id_archivo]">
                                   <i class="fa-solid fa-magnifying-glass-plus"></i>
                               </button>
+
+                              <button *ngIf="perfilUsuario === 1" type="button" title="Ver informacion completa" class="btn btn-success" style="margin-left: 1rem; font-size: 1rem; color: white;" (click)="abrirModal(archivo.numero_cajas_archivos, archivo.numero_carpetas_archivo, archivo.numero_folios_archivo, archivo.numero_otros_archivo, archivo.numero_tomos_archivo)">
+                                  <i class="fas fa-pen"></i>
+                              </button>
                             </td>
                         </tr>
                     </tbody>
@@ -270,6 +274,59 @@
           </div>
       </div>
 
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade"  #modalActualizarArchivo data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Actualizar Archivo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="" [formGroup]="formularioArchivo">
+              <div class="row">
+                  <div class="col-md-6">
+                      <label for="" class="form-label">Cajas</label>
+                      <input type="number" class="form-control" formControlName="cajas">
+                  </div>
+
+                  <div class="col-md-6">
+                      <label for="" class="form-label">Carpetas</label>
+                      <input type="number" class="form-control" formControlName="carpetas">
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-6">
+                      <label for="" class="form-label">Folios</label>
+                      <input type="number" class="form-control" formControlName="folios">
+                  </div>
+
+                  <div class="col-md-6">
+                      <label for="" class="form-label">Otros</label>
+                      <input type="number" class="form-control" formControlName="otros">
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-6">
+                      <label for="" class="form-label">Tomos</label>
+                      <input type="number" class="form-control" formControlName="tomos">
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="actualizarArchivo()">Actualizar</button>
+      </div>
+    </div>
   </div>
 </div>
 

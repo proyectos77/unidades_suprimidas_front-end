@@ -13,6 +13,7 @@ import { ListadoSubseries } from '../../interfaces/listado-subseries';
 import { TransferenciasService } from '../../services/transferencias.service';
 
 
+
 @Component({
   selector: 'app-correccion-solicitud-transferencia',
   imports: [NgIf, NgFor, FormsModule, RouterLink, UrlDocumentosPipe],
@@ -20,6 +21,7 @@ import { TransferenciasService } from '../../services/transferencias.service';
   styleUrl: './correccion-solicitud-transferencia.component.css'
 })
 export default class CorreccionSolicitudTransferenciaComponent implements OnInit {
+
 
     public  archivoSeleccionado: File | null = null;
     private idTransferenciaEnviado: number = 0;
