@@ -6,11 +6,19 @@
 
     <div class="header__opcion">
         <div class="row">
-          <div class="col-md-10 header__opcion-datos">
+          <div class="col-md-6">
+            <div *ngIf="mostrarMenuSuperUsuario" class="notificaciones__contenedor">
+                <span class="notificaciones" *ngIf="notificaciones.data.total_hoy != 0"><span> Hoy </span> <span> {{ notificaciones.data.total_hoy }} </span></span>
+                <span class="notificaciones bg-warning" *ngIf="notificaciones.data.total_semana != 0"> <span> Semana </span> <span> {{ notificaciones.data.total_semana }}</span></span>
+                <span class="notificaciones bg-danger" *ngIf="notificaciones.data.total_mes != 0"> <span> Mes </span> <span> {{ notificaciones.data.total_mes }}</span></span>
+            </div>
+          </div>
+          <div class="col-md-5 header__opcion-datos">
               <p style="color: white;">{{ nombreUsuario }}</p>
               <p style="color: white;">{{ rol }}</p>
           </div>
-          <div class="col-md-2">
+
+          <div class="col-md-1">
             <div class="dropdown">
                 <button class="header__opcion-btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" style="all: unset;" aria-expanded="false" >
                     <i class="fas fa-user fa-2x fa-fw"></i>

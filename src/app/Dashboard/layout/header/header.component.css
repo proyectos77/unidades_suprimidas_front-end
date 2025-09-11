@@ -20,6 +20,7 @@
 }
 
 .header__opcion{
+    width: 30%;
     margin-right: 10rem;
 }
 
@@ -70,4 +71,23 @@
 
 }
 
+.notificaciones__contenedor{
+
+   display: flex;
+   justify-content: space-between;
+  padding: .5rem .5rem;
+}
+
+.notificaciones{
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px var(--gris);
+  padding: .3rem .3rem;
+  border-radius: .5rem;
+  width: calc(33.3% - .2rem);
+  font-size: 1.1rem;
+}
 
