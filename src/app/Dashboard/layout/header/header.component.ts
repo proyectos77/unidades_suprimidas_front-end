@@ -36,9 +36,7 @@ export default class HeaderComponent implements OnInit {
 
     ngOnInit(): void {
         this.usuario();
-        console.log(this.mostrarMenuSuperUsuario);
-
-            if (this.mostrarMenuSuperUsuario) {
+          if (this.mostrarMenuSuperUsuario) {
                 this.getNotificaiones();
                 this.intervalId = setInterval(() => {
                     this.getNotificaiones();

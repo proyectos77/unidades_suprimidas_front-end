@@ -9,7 +9,7 @@ import { GetNotificaciones } from '../interfaces/get-notificaciones';
 })
 export class NotificacionesService {
 
-  private url:string = environment.apiUrl + '/notificaciones/';
+  private url:string = environment.apiUrl + '/notificaciones';
 
   constructor(private http: HttpClient) { }
 

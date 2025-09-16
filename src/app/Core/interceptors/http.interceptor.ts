@@ -9,7 +9,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const token = sessionStorage.getItem('token');
   const sweet = inject(SweetAlertService); // Para mostrar la alerta
 
-  const request = token && ['POST', 'PUT', 'PATCH', 'GET'].includes(req.method)
+  const request = token && ['POST', 'PUT', 'PATCH'].includes(req.method)
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
     : req;
 
