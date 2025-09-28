@@ -9,7 +9,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const token = sessionStorage.getItem('token');
   const sweet = inject(SweetAlertService); // Para mostrar la alerta
 
-  const request = token && ['POST', 'PUT', 'PATCH'].includes(req.method)
+  const request = token && ['POST', 'PUT', 'PATCH', 'GET'].includes(req.method)
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
     : req;
 
@@ -18,7 +18,11 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       const err = error?.error;
 
       if (err && err.statusCode && err.mensaje) {
-          sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
+
+          if (err.statusCode === 401) {
+              sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
+              window.location.href = '/login';
+          }
       } else {
           sweet.alertaGeneral('error', 'Error desconocido', 'Ocurrió un error inesperado');
       }

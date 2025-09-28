@@ -213,8 +213,8 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
 
         this.httpDetalleTransferencia.verDocumento(idDocumento).subscribe(documento => {
             this.nombreDocumentoModal = documento.nombre_documento;
-            this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`;
-            /* this.urlDocumentoModal = `http://172.22.3.102/storage/${documento.url_documento}`; */
+            /* this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`; */
+            this.urlDocumentoModal = `http://172.22.3.102/storage/${documento.url_documento}`;
         });
     }
 

@@ -40,7 +40,7 @@ export default class HeaderComponent implements OnInit {
                 this.getNotificaiones();
                 this.intervalId = setInterval(() => {
                     this.getNotificaiones();
-                }, 60000); // 60000 ms = 1 minuto
+                }, 666000); // 60000 ms = 1 minuto
             }
 
     }
