@@ -198,6 +198,7 @@
         <div class="col-md-6">
             <label for="" class="form-label">* Documentos</label>
             <input class="form-control" type="file" multiple (change)="seleccionDeArchivo($event)"accept=".pdf,.docx,.jpg,.png"/>
+            <div class="form-text" style="font-size: 1.2rem;">(Formatos: Fuid, Acta de entrega)</div>
 
             @if (this.formTransferencia.get('documentos')?.touched && formTransferencia.get('documentos')?.errors?.['required']){
                 <div class="invalid-feedback" style="display: block;">

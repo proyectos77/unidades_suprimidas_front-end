@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { DependenciaServiceService } from '../../../Usuarios/services/dependencia-service.service';
 import { DatumUnidad, GetAllUnidades } from '../../interfaces/get-all-unidades';
 import { UnidadesService } from '../../services/unidades.service';
@@ -9,7 +9,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { BuscadorListadoUnidadesPipe } from '../../../../Shared/Pipes/buscador-listado-unidades.pipe';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../../../Auth/services/login.service';
-
+import { Modal } from 'bootstrap';
 
 declare var bootstrap: any;
 @Component({
@@ -47,7 +47,10 @@ export default class ListadoUnidadesComponent implements OnInit{
 
     // Filtros de dependencias
     public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
+    public observacion: string = '';
 
+    private modalInstance: Modal | null = null;
+    private modalActualizar = viewChild<ElementRef>('buscarObservacion');
 
     constructor(
         private httUnidades: UnidadesService,
@@ -132,6 +135,38 @@ export default class ListadoUnidadesComponent implements OnInit{
         this.nivelesDependencias = [];
         this.listadoDependenciasPadre();
         this.getAllUnidades(1);
+    }
+
+    buscarPorObservacion(): void {
+        if (this.observacion.trim() === '') {
+            this.sweet.alertaGeneral('warning', 'Campo vacío', 'Por favor ingrese una observación para buscar.');
+            return;
+        }
+
+        this.httUnidades.busquedaPorObservacion(this.observacion, this.dependencia).subscribe(unidades => {
+            if (unidades.statusCode == 200) {
+               this.listaUnidades = unidades;
+            }
+
+            this.closeModal();
+
+        });
+    }
+
+    abrirModalBuscarObservacion():void {
+        this.observacion = '';
+        const modal = this.modalActualizar();
+        if (modal) {
+            this.modalInstance = new Modal(modal.nativeElement);
+            this.modalInstance.show();
+        }
+
+    }
+
+    closeModal():void{
+        if (this.modalInstance) {
+            this.modalInstance.hide();
+        }
     }
 
 }

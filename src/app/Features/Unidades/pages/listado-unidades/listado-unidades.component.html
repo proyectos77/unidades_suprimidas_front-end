@@ -15,12 +15,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-10 mb-2">
+                <div class="col-12 col-md-9 mb-2">
                     <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" placeholder="Filtro" [(ngModel)] = "filterPost">
                 </div>
 
-                <div class="col-12 col-md-2">
-                    <button type="button" class="btn btn-primary" (click)="limpiarFiltros()">Limpiar filtro</button>
+                <div class="col-12 col-md-3">
+                    <button type="button" class="btn btn-primary" style="margin-right: 2rem;" (click)="limpiarFiltros()">Limpiar filtro</button>
+                    <button type="button" class="btn btn-primary" (click)="abriModalBuscarObservacion()">Buscar Observacion</button>
                 </div>
             </div>
       <div class="table-usuarios table-responsive content-list mt-5">
@@ -48,8 +49,8 @@
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
                       <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida'}">{{ unidad.estado }}</td><td>
-                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem; font-size: 1rem;" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" style="font-size: 1rem;" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: 1rem; font-size: 1rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button>
+                          <button type="button" title="Activar/Inactivar" class="btn btn-secondary" style="font-size: 1rem;" *ngIf="rolUser == 1" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
                           <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
                       </td>
                   </tr>
@@ -69,6 +70,27 @@
               </li>
           </ul>
       </nav>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" #buscarObservacion  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Buscar por Observacion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <label for="" class="form-label">Observacion</label>
+          <textarea name="" id="" class="form-control" rows="3" [(ngModel)]="observacion"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="buscarPorObservacion()">Buscar</button>
+      </div>
+    </div>
   </div>
 </div>
 

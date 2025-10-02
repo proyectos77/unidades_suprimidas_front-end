@@ -72,4 +72,9 @@ export class UnidadesService {
         let urlFinal = this.urlList + '/archivoPorUnidad/'+idDetalleUnidad+'?page=' + page;
         return this.httpUnidades.get<ListadoArchivoPorUnidad>(urlFinal);
     }
+
+    busquedaPorObservacion(observacion: string, idDependencia: number):Observable<GetAllUnidades>{
+        let urlFinal = this.urlList + '/observacion/' + observacion + '?idDependencia=' + idDependencia;
+        return this.httpUnidades.get<GetAllUnidades>(urlFinal);
+    }
 }
