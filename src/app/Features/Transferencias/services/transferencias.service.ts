@@ -11,6 +11,7 @@ import ListadoSolicitudesTransferenciasComponent from '../pages/listado-solicitu
 import { ResultadoUpdateEstadoSolicitud } from '../interfaces/resultado-update-estado-solicitud';
 import { DataUpdateSolicitud } from '../interfaces/data-update-solicitud';
 import { InformacionSolicitud } from '../interfaces/informacion-solicitud';
+import { ListadoTiposOtros } from '../interfaces/listado-tipos-otros';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,11 @@ export class TransferenciasService {
     getInformacionSolicitudTransferencia(idSolicitudTransferencia: number):Observable<InformacionSolicitud>{
         let urlFinal = this.url + '/solicitudesTransferencias/' + idSolicitudTransferencia;
         return this.http.get<InformacionSolicitud>(urlFinal);
+    }
+
+     listadoTiposOtros(): Observable<ListadoTiposOtros> {
+        const urlFinal = this.url + '/otros';
+        return this.http.get<ListadoTiposOtros>(urlFinal);
     }
 
 }

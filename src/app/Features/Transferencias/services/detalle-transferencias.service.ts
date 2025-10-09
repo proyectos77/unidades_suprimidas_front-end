@@ -7,6 +7,7 @@ import { ListadoDocumentosDetalle } from '../interfaces/listado-documentos-detal
 import { InformacionDocumento } from '../interfaces/informacion-documento';
 import { RespuestaUpdateDetalleTransferencia } from '../interfaces/respuesta-update-detalle-transferencia';
 import { DataUpdateDetalleTransferencia } from '../interfaces/data-update-detalle-transferencia';
+import { ListadoTiposOtros } from '../interfaces/listado-tipos-otros';
 
 @Injectable({
   providedIn: 'root'

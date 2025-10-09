@@ -157,21 +157,19 @@
                           }
                       </div>
 
-                      <div class="col-md-4">
+                      <!-- <div class="col-md-4">
                           <label for="" class="form-label"> Cantidad otros</label>
                           <input type="number" class="form-control" formControlName="cantidad_otros" title="(USB,CDS, DISKETTE, DISCOS, ETC)">
                           <div class="form-text" style="font-size: 1.2rem;">(USB,CDS, DISKETTE, DISCOS, ETC)</div>
 
-                      </div>
-                  </div>
-
-                  <div class="row mt-5" *ngIf="mostrarForm">
-
+                      </div> -->
                       <div class="col-md-4">
                           <label for="" class="form-label"> Cantidad tomos</label>
                           <input type="number" class="form-control" formControlName="cantidad_tomos">
                       </div>
+                  </div>
 
+                  <div class="row mt-5" *ngIf="mostrarForm">
                       <div class="col-md-4">
                           <label for="" class="form-label">* Cantidad de folios</label>
                           <input type="number" class="form-control" formControlName="cantidad_folios">
@@ -183,11 +181,27 @@
                           }
                       </div>
 
+                      <div class="col-md-4">
+                          <label for="" class="form-label">Otro</label>
+                          <select class="form-select" formControlName="otro">
+                              <option value="">Seleccione</option>
+                              <option *ngFor="let otro of tiposOtros.data" value="{{ otro.id_tipo_otro }}">{{ otro.nombre_tipo_otro }}</option>
+                          </select>
+                          <div class="form-text" style="font-size: 1rem;">{{ detalleOtro }}</div>
+                      </div>
 
+                      <div class="col-md-2" *ngIf="formTransferencia.get('otro')?.value">
+                          <label for="" class="form-label">Cantidad otro</label>
+                          <div class="input-group" style="">
+                              <input type="text" class="form-control" aria-label="Recipient" formControlName="cantidad_otro" >
+                              <button class="btn btn-outline-secondary btn-sin-hover" type="button" id="button-addon2" (click)="agregarOtro()"><i class="fas fa-plus-circle fa-lg text-success"></i></button>
+                          </div>
+                      </div>
 
-                      <div class="col-md-4 d-flex align-items-end justify-content-end">
+                      <div class="col-md-2 d-flex align-items-center justify-content-end ">
                           <button type="button" class="btn btn-warning" (click)="validarForm()">Agregar +</button><!-- <i class="fas fa-plus fa-lg fa-fw"></i> -->
                       </div>
+
                   </div>
               </div>
           </form>

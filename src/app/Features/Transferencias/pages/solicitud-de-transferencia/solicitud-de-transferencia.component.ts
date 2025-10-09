@@ -11,6 +11,8 @@ import { SeriesSubseriesService } from '../../services/series-subseries.service'
 import { ListadoSeries } from '../../interfaces/listado-series';
 import { ListadoSubseries } from '../../interfaces/listado-subseries';
 import { LoginService } from '../../../../Auth/services/login.service';
+import { DetalleTransferencia } from '../../../../Core/interfaces/listado-transferencias-por-archivo';
+import { ListadoTiposOtros } from '../../interfaces/listado-tipos-otros';
 
 @Component({
   selector: 'app-solicitud-de-transferencia',
@@ -59,6 +61,18 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         data: []
     };
 
+    public tiposOtros: ListadoTiposOtros ={
+        statusCode: 0,
+        titulo: '',
+        mensaje: '',
+        icono: '',
+        data: []
+    }
+
+    public detalleOtro: string = '';
+    private cantidadOtro: number = 0;
+        public mostrarCantidadOtro: boolean = false;
+    public otroAgregado: boolean = false;
 
     constructor(
         private form: FormBuilder,
@@ -78,6 +92,16 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         this.formTransferencia.get('id_archivo')?.valueChanges.subscribe((idArchivo) =>{
             this.mostrarForm = (idArchivo == null || idArchivo == '') ? false : true;
         })
+            // Escuchar cambios en el select de 'otro' para mostrar el input de cantidad
+            this.formTransferencia.get('otro')?.valueChanges.subscribe((valor) => {
+                if (valor) {
+                    this.mostrarCantidadOtro = true;
+                    this.formTransferencia.get('cantidad_otro')?.enable();
+                } else {
+                    this.mostrarCantidadOtro = false;
+                    this.formTransferencia.get('cantidad_otro')?.disable();
+                }
+            });
 
     }
 
@@ -98,8 +122,9 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             cantidad_carpetas: ['', [Validators.required]],
             cantidad_folios: ['', [Validators.required]],
             documentos: [''],
-            cantidad_otros: [''],
-            cantidad_tomos: ['']
+            cantidad_otro: [''],
+            cantidad_tomos: [''],
+            otro: [''],
         }));
     }
 
@@ -124,6 +149,7 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             const archivo = this.listadoArchivoUnidad.data.find(a => a.id_archivo == idArchivo);
             if (archivo) {
                 this.listadoSeries(archivo.anio);
+                this.listadoOtros();
             }
         });
     }
@@ -168,6 +194,13 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         });
     }
 
+    listadoOtros():void{
+      this.httpTransferencias.listadoTiposOtros().subscribe(otros => {
+          this.tiposOtros = otros;
+      });
+    }
+
+
     seleccionDeArchivo(event: Event): void {
         const input = event.target as HTMLInputElement;
         if (input.files) {
@@ -197,12 +230,9 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         formData.append('cantidad_cajas', form.cantidad_cajas);
         formData.append('cantidad_carpetas', form.cantidad_carpetas);
         formData.append('cantidad_folios', form.cantidad_folios);
-        formData.append('cantidad_otros', (form.cantidad_otros == '' || form.cantidad_otros == null) ? 0 : form.cantidad_otros);
+        formData.append('cantidad_otro', (this.cantidadOtro == 0) ? '0' : this.cantidadOtro.toString());
         formData.append('cantidad_tomos', (form.cantidad_tomos == '' || form.cantidad_tomos == null) ? 0 : form.cantidad_tomos);
-
-        /* this.documentos.forEach((file) => {
-            formData.append('documentos[]', file);
-        }); */
+        formData.append('detalle_otro', this.detalleOtro);
 
         return formData;
     }
@@ -231,8 +261,9 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
                     cantidad_cajas: data.get('cantidad_cajas'),
                     cantidad_carpetas: data.get('cantidad_carpetas'),
                     cantidad_folios: data.get('cantidad_folios'),
-                    cantidad_otros: (data.get('cantidad_otros') == '' || data.get('cantidad_otros') == null) ? 0 : data.get('cantidad_otros'),
+                    cantidad_otros: (this.cantidadOtro == 0) ? 0 : this.cantidadOtro,
                     cantidad_tomos: (data.get('cantidad_tomos') == '' || data.get('cantidad_tomos') == null) ? 0 : data.get('cantidad_tomos'),
+                    descripcion_otro: this.detalleOtro.slice(0, -2),
                     /* documentos: data.getAll('documentos[]') // Para mostrar los nombres de los archivos */
                 };
 
@@ -303,23 +334,42 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
         });
     }
 
-    eliminar(index: number){
-        console.log('entro');
+    agregarOtro(): void {
+        const otroControl = this.formTransferencia.get('otro');
+        const cantidadOtroControl = this.formTransferencia.get('cantidad_otro');
+        if (otroControl && cantidadOtroControl) {
+            // Convierte el valor a número si es necesario
+            const otroId = Number(otroControl.value);
+            const cantidadOtro = cantidadOtroControl.value;
+            const otroObj = this.tiposOtros.data.find(o => o.id_tipo_otro === otroId);
+            const nombreOtro = otroObj ? otroObj.nombre_tipo_otro : '';
+            this.detalleOtro += `${nombreOtro}: ${cantidadOtro}, `;
+            this.cantidadOtro += Number(cantidadOtro);
+            cantidadOtroControl.reset('');
+            otroControl.reset('');
 
+
+        }
+    }
+
+    eliminar(index: number){
         this.solicitudesAbjuntas.splice(index, 1);
         this.solicitudesLegibles.splice(index, 1);
     }
 
     limpiarCamposEspecificos() {
+        this.detalleOtro = '';
         const campos = [
-          'seccion',
-          'serie',
-          'subserie',
-          'cantidad_cajas',
-          'cantidad_carpetas',
-          'cantidad_folios',
-          'cantidad_otros',
-          'cantidad_tomos'
+            'seccion',
+            'serie',
+            'subserie',
+            'cantidad_cajas',
+            'cantidad_carpetas',
+            'cantidad_folios',
+            'cantidad_otros',
+            'cantidad_tomos',
+            'otro',
+            'cantidad_otro'
         ];
 
         campos.forEach(campo => {
@@ -331,5 +381,6 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
             control.setErrors(null);    // Limpia errores actuales si los tuviera
           }
         });
+                    this.mostrarCantidadOtro = false;
     }
 }

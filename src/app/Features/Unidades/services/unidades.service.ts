@@ -74,7 +74,7 @@ export class UnidadesService {
     }
 
     busquedaPorObservacion(observacion: string, idDependencia: number):Observable<GetAllUnidades>{
-        let urlFinal = this.urlList + '/observacion/' + observacion + '?idDependencia=' + idDependencia;
+        let urlFinal = this.urlList + '/observacion/' + observacion + '/idDependencia=' + idDependencia;
         return this.httpUnidades.get<GetAllUnidades>(urlFinal);
     }
 }

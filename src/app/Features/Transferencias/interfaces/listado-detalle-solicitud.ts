@@ -116,6 +116,7 @@ export interface Datum {
   cantidad_cajas_detalle_transferencia:      number;
   cantidad_carpetas_detalle_transferencia:   number;
   cantidad_otros_detalle_transferencia:      number;
+  descripcion_otro_detalle_transferencia:    string;
   cantidad_tomos_detalle_transferencia:      number;
   cantidad_folios_detalle_transferencia:     number;
   porcentaje_detalle_transferencia:          string;

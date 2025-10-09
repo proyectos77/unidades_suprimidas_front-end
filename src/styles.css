@@ -181,6 +181,12 @@ tbody{
     padding: .5rem .7rem;
 }
 
+.btn-sin-hover:hover,
+.btn-sin-hover:focus {
+  background-color: transparent !important;
+  color: inherit !important;
+  border-color: var(--bs-border-color) !important; /* mantiene el borde */
+}
 
 
 /***********************************************************
