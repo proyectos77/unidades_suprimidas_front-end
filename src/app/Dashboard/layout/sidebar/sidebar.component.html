@@ -14,13 +14,13 @@
               </ul>
           </li>
  -->
-          <li class="menu__item" routerLinkActive="active" *ngIf="rolUser != '4'">
-              <a>Unidades</a>
+          <li class="menu__item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
+              <a>Unidades Suprimidas</a>
               <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Listado de unidades</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active">Registro de unidades</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active">Registro detalle unidad</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active">Registro archivo unidad</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/listadoUnidades']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: false }">Listado de unidades suprimidas</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro de unidades</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro detalle unidad</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro archivo unidad</li>
               </ul>
           </li>
 
@@ -36,15 +36,25 @@
           </li>
 
           <!-- menu para unidades activas -->
-          <li class="menu__item" routerLinkActive="active" *ngIf="rolUser == '4'">
+          <li class="menu__item" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
               <a>Unidades Activas</a>
               <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Listado de unidades</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Registro Archivo</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Listado unidades activas</li>
+
+                  <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Registrar Archivo</li>
+                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Registro Archivo</li> -->
                   <!-- <li class="submenu__item" [routerLink]="['/main/transferencias/listadoSolicitudes']" routerLinkActive="Active">Listado de solicitudes</li> -->
                   <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active">Registro de unidades</li>
                   <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active">Registro detalle unidad</li>
                   <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active">Registro archivo unidad</li> -->
+              </ul>
+          </li>
+
+          <li class="menu__item" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
+              <a>Organigrama ejercito</a>
+              <ul class="submenu">
+                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Listado unidades activas</li> -->
+
               </ul>
           </li>
       </ul>

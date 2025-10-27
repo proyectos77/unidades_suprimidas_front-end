@@ -98,12 +98,13 @@ export default class ListadoUnidadesComponent implements OnInit{
         // Aquí podrías llamar a filtrarUnidades() si quieres filtrar automáticamente
     }
 
-    getAllUnidades(pagina: number, idDependencia: number = 0):void{
-        this.httUnidades.getAllUnidades(pagina, idDependencia).subscribe(unidades =>{
+    getAllUnidades(pagina: number = 1, idDependencia: number = 0):void{
+        this.httUnidades.getAllUnidades(pagina, idDependencia, this.filterPost).subscribe(unidades =>{
             if (unidades.data.length == 0) {
               this.pagina = 0
             }else{
                 this.listaUnidades = unidades
+                this.pagina = unidades.infoPagination.pagina;
             }
         });
     }
@@ -135,6 +136,12 @@ export default class ListadoUnidadesComponent implements OnInit{
         this.nivelesDependencias = [];
         this.listadoDependenciasPadre();
         this.getAllUnidades(1);
+    }
+
+    filtroTexto(filtro: string): void {
+        this.filterPost = filtro;
+        this.pagina = 0;
+        this.getAllUnidades();
     }
 
     buscarPorObservacion(): void {

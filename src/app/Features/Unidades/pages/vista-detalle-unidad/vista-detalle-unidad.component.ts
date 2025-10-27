@@ -26,7 +26,7 @@ import { ArchivoDetalleUnidadService } from '../../services/archivo-detalle-unid
     CommonModule,
     NgxChartsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
@@ -39,6 +39,8 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   private modalActualizar = viewChild<ElementRef>('modalActualizarArchivo');
 
   public data: any[] = [];
+  public unidadSuprimida: boolean = false;
+  public unidadActiva: boolean = false;
 
   view: [number, number] = [800, 150]; // Dimensiones [ancho, alto]
 
@@ -74,6 +76,9 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       unidad_superior_jerarquicamente_unidad: '',
       unidad_que_asume_archivo_unidad: '',
       id_municipio: 0,
+      id_usuario: null,
+      padre_unidad: null,
+      codigo_unidad_activa: '',
       fecha_creacion_unidad: '',
       fecha_actualizacion_unidad: '',
       id_estado: 0,
@@ -117,6 +122,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           id_estado: 0,
         },
       },
+            padre: undefined
     },
   };
 
@@ -145,7 +151,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       private router: Router,
       private httpLogin: LoginService,
       private formulario: FormBuilder,
-      private httpArchivo: ArchivoDetalleUnidadService
+      private httpArchivo: ArchivoDetalleUnidadService,
   ) {}
 
   ngOnInit(): void {
@@ -162,11 +168,18 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           next: (informacion) => {
               if (informacion.statusCode === 200) {
                   this.informacionUnidad = informacion;
-                  this.getArchivoUnidad(informacion.data.detalle_unidad.id_detalle, 1);
+                  this.getArchivoUnidad(informacion.data.detalle_unidad?.id_detalle ?? 0, 1);
+                  if (informacion.data.id_estado == 6) {
+                      this.unidadSuprimida = true;
+                      this.unidadActiva = false;
+                  }else{
+                      this.unidadSuprimida = false;
+                      this.unidadActiva = true;
+                  }
               }
           },
           error: (error) => {
-              this.router.navigate(['/main/unidades/listadoUnidades']);
+              window.history.back();
           },
       });
   }
@@ -230,9 +243,9 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       idArchivoRegistrado: this.informacionArchivoUnidad.data[0].id_archivo
 
       this.httpArchivo.updateArchivo(data, this.informacionArchivoUnidad.data[0].id_archivo).subscribe(archivo =>{
-          if (archivo.statusCode === 200) {
+              if (archivo.statusCode === 200) {
               this.sweet.alertaGeneral(archivo.icono, archivo.titulo, archivo.mensaje);
-              this.getArchivoUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, 1);
+              this.getArchivoUnidad(this.informacionUnidad.data.detalle_unidad?.id_detalle ?? 0, 1);
           }else{
               this.sweet.alertaGeneral(archivo.icono, archivo.titulo, archivo.mensaje);
           }
@@ -251,6 +264,11 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       return {
           ...this.formularioArchivo.value,
       };
+  }
+
+
+  regresar() {
+      window.history.back();
   }
 
 }

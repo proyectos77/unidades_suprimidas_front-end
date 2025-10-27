@@ -1,0 +1,15 @@
+.elementoActivo{
+  /* background-color: var(--verdePrincipal); */
+  color: green;
+  font-weight: bold;
+}
+
+.elemnetoInactivo{
+  color: var(--rojo);
+  font-weight: bold;
+}
+
+.form-select{
+  font-size: 1.3rem !important;
+  padding: .5rem !important;
+}

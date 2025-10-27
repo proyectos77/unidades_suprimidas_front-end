@@ -33,6 +33,9 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
       public seccionEditarDetalle:boolean = false;
       public seccionEditarArchivo:boolean = false;
       public tab: string = 'unidad-tab';
+      public campoPadreUnidad: boolean = false;
+      public activasDetalle: boolean = false;
+      public unidadConDetalle: boolean = false;
 
       public departamentos:GetAllDepartamentos = {
           'icono': '',
@@ -55,55 +58,59 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
         mensaje: '',
         icono: '',
         data: {
-          id_unidad: 0,
-          nombre_unidad: '',
-          sigla_unidad: '',
-          unidad_superior_jerarquicamente_unidad: '',
-          unidad_que_asume_archivo_unidad	: '',
-          id_municipio: 0,
-          fecha_creacion_unidad: '',
-          fecha_actualizacion_unidad: '',
+      id_unidad: 0,
+      nombre_unidad: '',
+      sigla_unidad: '',
+      unidad_superior_jerarquicamente_unidad: '',
+      unidad_que_asume_archivo_unidad: '',
+      id_municipio: 0,
+      id_usuario: null,
+      padre_unidad: null,
+      codigo_unidad_activa: '',
+      fecha_creacion_unidad: '',
+      fecha_actualizacion_unidad: '',
+      id_estado: 0,
+      detalle_unidad: {
+        id_detalle: 0,
+        acto_administrativo_creacion_detalle: '',
+        acto_administrativo_desactivacion_detalle: '',
+        fecha_creacion_unidad_detalle: '',
+        fecha_desactivacion_unidad_detalle: '',
+        puesto_mando_adelantado_detalle: '',
+        puesto_mando_atrasado_detalle: '',
+        plan_reorganizacion_diorg_detalle: '',
+        observacion_detalle: '',
+        id_unidad: 0,
+        fecha_creacion_detalle: '',
+        fecha_actualizacion_detalle: '',
+        id_estado: 0,
+        archivo: {
+          id_archivo: 0,
+          numero_cajas_archivos: 0,
+          numero_carpetas_archivo: 0,
+          numero_folios_archivo: 0,
+          id_detalle: 0,
+          fecha_creacion_archivo: '',
+          fecha_actualizacion_archivo: '',
+          id_estado: 0
+        },
+      },
+      municipio: {
+        id_municipio: 0,
+        nombre_municipio: '',
+        id_departamento: 0,
+        fecha_creacion_municipio: '',
+        fecha_actualizacion_municipio: '',
+        id_estado: 0,
+        departamentos: {
+          id_departamento: 0,
+          nombre_departamento: '',
+          fecha_creacion_departamento: '',
+          fecha_actualizacion_departamento: '',
           id_estado: 0,
-          detalle_unidad: {
-            id_detalle: 0,
-            acto_administrativo_creacion_detalle: '',
-            acto_administrativo_desactivacion_detalle: '',
-            fecha_creacion_unidad_detalle: '',
-            fecha_desactivacion_unidad_detalle: '',
-            puesto_mando_adelantado_detalle: '',
-            puesto_mando_atrasado_detalle: '',
-            plan_reorganizacion_diorg_detalle: '',
-            observacion_detalle: '',
-            id_unidad: 0,
-            fecha_creacion_detalle: '',
-            fecha_actualizacion_detalle: '',
-            id_estado: 0,
-            archivo: {
-              id_archivo:                  0,
-              numero_cajas_archivos:       0,
-              numero_carpetas_archivo:     0,
-              numero_folios_archivo:       0,
-              id_detalle:                  0,
-              fecha_creacion_archivo:      '',
-              fecha_actualizacion_archivo: '',
-              id_estado:                   0
-            },
-          },
-          municipio: {
-            id_municipio: 0,
-            nombre_municipio: '',
-            id_departamento: 0,
-            fecha_creacion_municipio: '',
-            fecha_actualizacion_municipio: '',
-            id_estado: 0,
-            departamentos: {
-              id_departamento: 0,
-              nombre_departamento: '',
-              fecha_creacion_departamento: '',
-              fecha_actualizacion_departamento: '',
-              id_estado: 0,
-            },
-          },
+        },
+      },
+            padre: undefined
         },
       };
 
@@ -131,7 +138,7 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           return this.form.group({
               nombre: ['', [Validators.required]],
               sigla: ['', [Validators.required]],
-              padreUnidad: ['', [Validators.required]],
+              padreUnidad: [''],
               departamentos: ['', [Validators.required]],
               idMunicipio: ['', [Validators.required]]
           });
@@ -144,8 +151,9 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
               actoAdministrativoDesactivacion: [null, Validators.required],
               fechaCreacionUnidad: [null, Validators.required],
               fechaDesactivacionUnidad: [null, Validators.required],
-              puestoMandoAdelantado: [null, Validators.required],
-              puestoMandoAtrasado: [null, Validators.required],
+              planReorganizacionDiorg: [null, Validators.required],
+              /* puestoMandoAdelantado: [null, Validators.required],
+              puestoMandoAtrasado: [null, Validators.required], */
               observacion: [null, Validators.required],
           });
       }
@@ -177,18 +185,34 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
       ngOnChanges(changes: SimpleChanges): void {
         if (changes['unidad'] && this.unidad && this.unidad.id_unidad != 0) {
             this.cargarDatosFormulario(this.unidad);
-            this.consultaDetalleUnidad();
         }
       }
 
       cargarDatosFormulario(unidad: DatumUnidad):void{
-          this.formularioEditarUnidad.patchValue({
+
+          if (unidad.estado === 'Suprimida') {
+              this.campoPadreUnidad = true;
+              this.formularioEditarUnidad.patchValue({
               'nombre': unidad.nombre,
               'sigla': unidad.sigla,
               'padreUnidad': unidad.unidad_que_asume_archivo_unidad,
               'departamentos': unidad.idDepartamento,
               'idMunicipio': unidad.idMunicipio
-          });
+            });
+            this.consultaDetalleUnidad();
+          }else{
+              this.formularioEditarUnidad.patchValue({
+              'nombre': unidad.nombre,
+              'sigla': unidad.sigla,
+              'departamentos': unidad.idDepartamento,
+              'idMunicipio': unidad.idMunicipio
+            });
+            this.consultaDetalleUnidad();
+            /* this.seccionEditarDetalle = true;
+            this.seccionEditarArchivo = true; */
+          }
+
+
       }
 
       consultaDetalleUnidad():void{
@@ -196,25 +220,30 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
               next: (informacion) => {
                   if (informacion.statusCode === 200) {
                       this.informacionUnidad = informacion;
-                     /*  this.ngAfterViewInit(); */
+                      this.unidadConDetalle = true;
                       this.seccionEditarDetalle = true;
-                      this.seccionEditarArchivo = true;
+                      this.activasDetalle = false;
                       this.formularioEditarDetalleUnidad.patchValue({
-                          'nombreUnidad': this.informacionUnidad.data.nombre_unidad,
-                          'actoAdministrativoCreacion': this.informacionUnidad.data.detalle_unidad.acto_administrativo_creacion_detalle,
-                          'actoAdministrativoDesactivacion': this.informacionUnidad.data.detalle_unidad.acto_administrativo_desactivacion_detalle,
-                          'fechaCreacionUnidad': this.informacionUnidad.data.detalle_unidad.fecha_creacion_unidad_detalle,
-                          'fechaDesactivacionUnidad': this.informacionUnidad.data.detalle_unidad.fecha_desactivacion_unidad_detalle,
-                          'puestoMandoAdelantado': this.informacionUnidad.data.detalle_unidad.puesto_mando_adelantado_detalle,
-                          'puestoMandoAtrasado': this.informacionUnidad.data.detalle_unidad.puesto_mando_atrasado_detalle,
-                          'observacion': this.informacionUnidad.data.detalle_unidad.observacion_detalle,
+                          'nombreUnidad': this.informacionUnidad.data?.nombre_unidad,
+                          'actoAdministrativoCreacion': this.informacionUnidad.data?.detalle_unidad?.acto_administrativo_creacion_detalle,
+                          'actoAdministrativoDesactivacion': this.informacionUnidad.data?.detalle_unidad?.acto_administrativo_desactivacion_detalle,
+                          'fechaCreacionUnidad': this.informacionUnidad.data?.detalle_unidad?.fecha_creacion_unidad_detalle,
+                          'fechaDesactivacionUnidad': this.informacionUnidad.data?.detalle_unidad?.fecha_desactivacion_unidad_detalle,
+                          'puestoMandoAdelantado': this.informacionUnidad.data?.detalle_unidad?.puesto_mando_adelantado_detalle,
+                          'puestoMandoAtrasado': this.informacionUnidad.data?.detalle_unidad?.puesto_mando_atrasado_detalle,
+                          'observacion': this.informacionUnidad.data?.detalle_unidad?.observacion_detalle,
+                          'planReorganizacionDiorg': this.informacionUnidad.data?.detalle_unidad?.plan_reorganizacion_diorg_detalle
                       });
                   }
               },
               error: (error) => {
                   console.log(error);
-                  this.seccionEditarDetalle = false;
-                  /* this.ngAfterViewInit(); */
+                  if (this.unidad.estado === 'Suprimida') {
+                      this.seccionEditarDetalle = false;
+                  }else{
+                      this.activasDetalle = true;
+                      this.seccionEditarDetalle = false;
+                  }
               },
           });
       }
@@ -226,12 +255,12 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           if (this.formularioEditarUnidad.invalid) {
               this.sweet.alertaCamposInvalidosFormularios();
               this.tab = 'unidad-tab';
-              /* this.ngAfterViewInit(); */
+
               error = true;
               return Object.values(this.formularioEditarUnidad.controls).forEach(controlls =>{
                   controlls.markAllAsTouched();
               });
-          }else if (this.seccionEditarArchivo == true && this.formularioEditarDetalleUnidad.invalid) {
+          }else if (this.seccionEditarDetalle == true && this.formularioEditarDetalleUnidad.invalid) {
               this.sweet.alertaCamposInvalidosFormularios();
               this.tab = 'detalle-tab';
               error = true;
@@ -242,12 +271,12 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
 
           const dataFormUnidad = this.crearDataUnidadFormulario();
 
-          if (this.seccionEditarArchivo == true) {
+          if (this.seccionEditarDetalle == true) {
               const dataFormDetalleUnidad = this.crearDataDetalleFormulario();
-
+              const detalle$ = this.unidad.estado != 'Suprimida' && this.unidadConDetalle === false ? this.httpDetalleUnidad.storeDetalleUnidad(dataFormDetalleUnidad) : this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data?.detalle_unidad?.id_detalle, dataFormDetalleUnidad);
               forkJoin({
                   unidadEditar: this.httpUnidades.updateUnidad(dataFormUnidad, this.unidad.id_unidad),
-                  detalle: this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, dataFormDetalleUnidad)
+                  detalle: detalle$
               }).subscribe(({ unidadEditar, detalle }) => {
                   if (unidadEditar.statusCode === 200 && detalle.statusCode === 200) {
                       this.sweet.alertaGeneral('success', 'Actualización exitosa', 'La unidad y su detalle fueron actualizados correctamente.');
@@ -267,7 +296,8 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
 
       crearDataDetalleFormulario():StoreDetalleUnidad{
           const data = {
-              ...this.formularioEditarDetalleUnidad.value
+              ...this.formularioEditarDetalleUnidad.value,
+              idUnidad: this.unidad.id_unidad
           }
           return data;
       }
@@ -288,14 +318,14 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           })
       }
 
-      editarDetalleUnidad(data: StoreDetalleUnidad):void{
+      /* editarDetalleUnidad(data: StoreDetalleUnidad):void{
           this.httpDetalleUnidad.updateDetalleUnidad(this.informacionUnidad.data.detalle_unidad.id_detalle, data).subscribe(detalle =>{
               this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
               if (detalle.statusCode == 200) {
                   this.cerrarModales();
               }
           });
-      }
+      } */
 
       cerrarModales():void{
           this.formularioEditarDetalleUnidad.reset();
@@ -314,4 +344,9 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
               homeTab.click();
           }
       } */
+
+      desplegarAgregarDetalle():void{
+          this.seccionEditarDetalle = true;
+          this.seccionEditarArchivo = true;
+      }
 }

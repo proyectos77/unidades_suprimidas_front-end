@@ -11,6 +11,7 @@ import { GetInformacionUnidad } from '../interfaces/get-informacion-unidad';
 import { GetListUnidadesConDetalle } from '../interfaces/get-list-unidades-con-detalle';
 import { GetListadoAnios } from '../interfaces/get-listado-anios';
 import { ListadoArchivoPorUnidad } from '../interfaces/listado-archivo-por-unidad';
+import { GetAllListadoUnidadesActivas } from '../interfaces/get-all-listado-unidades-activas';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,27 @@ import { ListadoArchivoPorUnidad } from '../interfaces/listado-archivo-por-unida
 export class UnidadesService {
 
     private url = environment.apiUrl + '/unidades';
+    private urlUnidadesSuprimidas = environment.apiUrl + '/listadoUnidadesSuprimidas';
     private urlList = environment.apiUrl;
     constructor(private httpUnidades: HttpClient) { }
 
 
-    getAllUnidades(pagina: number, idDependencia: number):Observable<GetAllUnidades>{
+    getAllUnidades(pagina: number, idDependencia: number, filtro: string):Observable<GetAllUnidades>{
 
         let urlFinal;
         if (idDependencia == 0) {
-            urlFinal =  this.url + '?page=' + pagina
+            if (filtro != '') {
+                urlFinal =  this.urlUnidadesSuprimidas + '/' + filtro;
+            }else{
+                urlFinal =  this.urlUnidadesSuprimidas + '?page=' + pagina
+            }
+
         }else{
+            if (filtro != '') {
+                urlFinal =  'PorDependencia/' + idDependencia + '/' + filtro;
+            }else{
+                urlFinal =  this.url + '?page=' + pagina
+            }
             urlFinal =  this.url + 'PorDependencia/' + idDependencia + '?page=' + pagina;
         }
 
@@ -76,5 +88,16 @@ export class UnidadesService {
     busquedaPorObservacion(observacion: string, idDependencia: number):Observable<GetAllUnidades>{
         let urlFinal = this.urlList + '/observacion/' + observacion + '/idDependencia=' + idDependencia;
         return this.httpUnidades.get<GetAllUnidades>(urlFinal);
+    }
+
+    listadoUnidadesActivas(pagina: number, filtro: string):Observable<GetAllListadoUnidadesActivas>{
+        let urlFinal = '';
+        if (filtro != '') {
+          urlFinal = this.urlList + '/listadoUnidadesActivas/' + filtro;
+        }else{
+          urlFinal = this.urlList + '/listadoUnidadesActivas?page=' + pagina;
+        }
+
+        return this.httpUnidades.get<GetAllListadoUnidadesActivas>(urlFinal);
     }
 }

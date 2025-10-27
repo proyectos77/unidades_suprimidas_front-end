@@ -10,6 +10,10 @@ export const routes: Routes = [
 
     { path: 'listadoTransferenciasPorArchivo/:id', loadComponent: () => import('./pages/listado-transferencias-archivo/listado-transferencias-archivo.component')},
 
+    { path: 'unidadesActivas', loadComponent: () => import('./pages/listado-unidades-activas/listado-unidades-activas.component') },
+
+
+
     /* { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},
 
      */

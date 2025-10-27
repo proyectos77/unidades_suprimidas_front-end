@@ -10,16 +10,16 @@ export interface GetAllUnidades {
 export interface DatumUnidad {
   id_unidad:        number;
   nombre:           string;
-  unidad_superior_jerarquicamente: string;
+  unidad_superior_jerarquicamente: null | string;
   sigla:            string;
-  unidad_que_asume_archivo_unidad: string;
-  departamento:     string;
-  idDepartamento:   number;
-  municipio:        string;
-  idMunicipio:      number;
-  estado:           string;
+  unidad_que_asume_archivo_unidad: null | string;
+  departamento:     null |string;
+  idDepartamento:   null | number;
+  municipio:        null | string;
+  idMunicipio:      null | number;
+  estado:           null | string;
   idEstado:         number;
-  id_dependencia?: number; // Nuevo campo para el filtro
+  id_dependencia?:  null | number; // Nuevo campo para el filtro
 }
 
 export interface InfoPagination {

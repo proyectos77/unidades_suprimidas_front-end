@@ -29,7 +29,7 @@
                             }
                         </div>
 
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group" *ngIf="campoPadreUnidad == true">
                             <input class="form-control" type="text" formControlName="padreUnidad" placeholder="* Padre unidad">
                             @if (this.formularioEditarUnidad.get('padreUnidad')?.touched && formularioEditarUnidad.get('padreUnidad')?.errors?.['required']){
                                 <div class="invalid-feedback" style="display: block;">
@@ -106,17 +106,7 @@
                             }
                         </div>
 
-                        <div class="col-md-4 form-group">
-                            <label for="" class="form-label">* Acto administrativo de desactivacion</label>
-                            <input class="form-control" type="text" formControlName="actoAdministrativoDesactivacion">
-                            @if (this.formularioEditarDetalleUnidad.get('actoAdministrativoDesactivacion')?.touched && formularioEditarDetalleUnidad.get('actoAdministrativoDesactivacion')?.errors?.['required']){
-                                <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo acto administrativo de desactivacion</small>
-                                </div>
-                            }
-                        </div>
-
-                        <div class="col-md-4 form-group">
+                         <div class="col-md-4 form-group">
                             <label for="" class="form-label">* Fecha creacion de la unidad</label>
                             <input type="date" class="form-control" formControlName="fechaCreacionUnidad">
                             @if (this.formularioEditarDetalleUnidad.get('fechaCreacionUnidad')?.touched && formularioEditarDetalleUnidad.get('fechaCreacionUnidad')?.errors?.['required']){
@@ -125,31 +115,41 @@
                                 </div>
                             }
                         </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="" class="form-label">* Acto administrativo de supresión</label>
+                            <input class="form-control" type="text" formControlName="actoAdministrativoDesactivacion">
+                            @if (this.formularioEditarDetalleUnidad.get('actoAdministrativoDesactivacion')?.touched && formularioEditarDetalleUnidad.get('actoAdministrativoDesactivacion')?.errors?.['required']){
+                                <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo acto administrativo de supresión</small>
+                                </div>
+                            }
+                        </div>
                     </div>
 
                     <div class="row mt-5">
 
                         <div class="col-md-4 form-group">
-                            <label for="" class="form-label">* Fecha desactivacion de la unidad</label>
+                            <label for="" class="form-label">* Fecha supresión de la unidad</label>
                             <input class="form-control" type="date" formControlName="fechaDesactivacionUnidad">
                             @if (this.formularioEditarDetalleUnidad.get('fechaDesactivacionUnidad')?.touched && formularioEditarDetalleUnidad.get('fechaDesactivacionUnidad')?.errors?.['required']){
                                 <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo fecha desactivacion unidad</small>
+                                    <small class="text-danger">Es necesario el campo fecha supresión unidad</small>
                                 </div>
                             }
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="" class="form-label">* Puesto de mando adelantado</label>
-                            <input class="form-control" type="text" formControlName="puestoMandoAdelantado">
-                            @if (this.formularioEditarDetalleUnidad.get('puestoMandoAdelantado')?.touched && formularioEditarDetalleUnidad.get('puestoMandoAdelantado')?.errors?.['required']){
+                            <label for="" class="form-label">* Plan de reorganización DIORG</label>
+                            <input class="form-control" type="text" formControlName="planReorganizacionDiorg">
+                            @if (this.formularioEditarDetalleUnidad.get('planReorganizacionDiorg')?.touched && formularioEditarDetalleUnidad.get('planReorganizacionDiorg')?.errors?.['required']){
                                 <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo puesto de mando adelantado</small>
+                                    <small class="text-danger">Es el plan de reorganizacion DIORG</small>
                                 </div>
                             }
                         </div>
 
-                        <div class="col-md-4 form-group">
+                        <!-- <div class="col-md-4 form-group">
                             <label for="" class="form-label">* Puesto de mando atrasado</label>
                             <input type="text" class="form-control" formControlName="puestoMandoAtrasado">
                             @if (this.formularioEditarDetalleUnidad.get('puestoMandoAtrasado')?.touched && formularioEditarDetalleUnidad.get('puestoMandoAtrasado')?.errors?.['required']){
@@ -157,7 +157,7 @@
                                     <small class="text-danger">Es necesario el campo puesto de mando atrasado</small>
                                 </div>
                             }
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="row mt-5">
@@ -177,6 +177,7 @@
 
             <div class="modal-footer p-3">
                 <div class="content-from__btn">
+                    <button type="button" class="btn btn-warning" *ngIf="activasDetalle === true" (click)="desplegarAgregarDetalle()">Agregar Detalle</button>
                     <button type="button" class="btn btn-primary" (click)="validarFormulario()">Editar</button>
                     <button type="button" class="btn btn-secondary" (click)="cerrarModales()">Cerrar</button>
                 </div>

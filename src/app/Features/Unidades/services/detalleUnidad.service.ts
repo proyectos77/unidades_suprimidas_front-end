@@ -17,7 +17,7 @@ export class DetalleUnidadService {
         return this.httpDetalle.post<RepuestaRegistroDetalleUnidad>(this.url,data);
     }
 
-    updateDetalleUnidad(id: number, data: StoreDetalleUnidad): Observable<RespuestaUpdateDetalleUnidad> {
+    updateDetalleUnidad(id: number | undefined, data: StoreDetalleUnidad): Observable<RespuestaUpdateDetalleUnidad> {
         return this.httpDetalle.put<RespuestaUpdateDetalleUnidad>(`${this.url}/${id}`, data);
     }
 

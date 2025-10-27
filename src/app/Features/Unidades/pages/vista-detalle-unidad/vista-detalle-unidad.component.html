@@ -3,7 +3,7 @@
   <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
       <h3>Información de la unidad</h3>
       <div class="content-btn-regresar">
-          <button type="button" class="btn btn-primary" [routerLink]="['/main/unidades/listadoUnidades']">Regresar</button>
+          <button type="button" class="btn btn-primary" (click)="regresar()">Regresar</button>
       </div>
   </div>
   <div class="card-body card-body-page">
@@ -24,7 +24,7 @@
       <div class="tab-content">
 
           <div class="tab-pane  content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
-              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              <h4>{{ informacionUnidad.data.nombre_unidad }}</h4>
 
               <div class="contentVistaInfoUnidad">
                   <div class="itenInformacion">
@@ -36,26 +36,34 @@
                   </div>
               </div>
 
-              <div class="contentVistaInfoUnidad">
+              <div class="contentVistaInfoUnidad" *ngIf="unidadActiva == true">
+                  <div class="itenInformacion" >
+                      <p class="item__text"><span>Unidad superior Unidad superior jerárquicamente:</span></p>
+                  </div>
+
+                  <div class="itenInformacion" *ngIf="unidadActiva == true">
+                    <p>{{ informacionUnidad.data.padre?.nombre_unidad }}</p>
+                  </div>
+              </div>
+
+              <div class="contentVistaInfoUnidad" *ngIf="unidadSuprimida == true">
                   <div class="itenInformacion" >
                       <p class="item__text"><span>Divicion:</span></p>
                   </div>
 
-                  <div class="itenInformacion" >
+                  <div class="itenInformacion" *ngIf="unidadSuprimida == true">
                     <p>{{ informacionUnidad.data.unidad_superior_jerarquicamente_unidad }}</p>
                   </div>
-
               </div>
 
-               <div class="contentVistaInfoUnidad">
+               <div class="contentVistaInfoUnidad" *ngIf="unidadSuprimida == true">
                   <div class="itenInformacion" >
                       <p class="item__text"><span>Unidad que asumio el archivo:</span></p>
                   </div>
 
-                  <div class="itenInformacion" >
+                  <div class="itenInformacion" *ngIf="unidadSuprimida == true">
                     <p>{{ informacionUnidad.data.unidad_que_asume_archivo_unidad }}</p>
                   </div>
-
               </div>
              <!--
                {{ informacionUnidad.data.padre_unidad }}</p>
@@ -72,7 +80,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.acto_administrativo_creacion_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_creacion_detalle }}</p>
                   </div>
               </div>
 
@@ -82,7 +90,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.fecha_creacion_unidad_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.fecha_creacion_unidad_detalle }}</p>
                   </div>
               </div>
 
@@ -92,7 +100,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.acto_administrativo_desactivacion_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_desactivacion_detalle }}</p>
                   </div>
               </div>
 
@@ -102,7 +110,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.fecha_desactivacion_unidad_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.fecha_desactivacion_unidad_detalle }}</p>
                   </div>
               </div>
 
@@ -112,7 +120,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.plan_reorganizacion_diorg_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.plan_reorganizacion_diorg_detalle }}</p>
                   </div>
               </div>
 
@@ -152,7 +160,7 @@
                   </div>
 
                   <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.observacion_detalle }}</p>
+                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.observacion_detalle }}</p>
                   </div>
               </div>
 
