@@ -11,6 +11,7 @@ import { ListadoDependenciasHijas } from '../interfaces/listado-dependencias-hij
 export class DependenciaServiceService {
 
   private url = environment.apiUrl + '/dependencias';
+  private urlUnidadesActivas = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -22,4 +23,5 @@ export class DependenciaServiceService {
     let urlFinal = this.url + '/' + idPadre
     return this.http.get<ListadoDependenciasHijas>(urlFinal);
   }
+
 }

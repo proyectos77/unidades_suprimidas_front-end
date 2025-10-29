@@ -10,21 +10,28 @@ import { DatumUnidad } from '../../interfaces/get-all-unidades';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { LoginService } from '../../../../Auth/services/login.service';
 import { BuscadorListadoUnidadesActivasPipe } from '../../../../Shared/Pipes/buscador-listado-unidades-activas.pipe';
+import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
+
 declare var bootstrap: any;
+declare var bootstrapArchivo: any;
+
 @Component({
   selector: 'app-listado-unidades-activas',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent],
   templateUrl: './listado-unidades-activas.component.html',
   styleUrl: './listado-unidades-activas.component.css'
 })
  export default class ListadoUnidadesActivasComponent implements OnInit {
 
     public bootstrapModal: any;
+    public bootstrapModalRegistroArchivo: any;
     public pagina:number = 1;
     public totalRegistros:number = 0;
     public registrosPorPagina:number = 0;
     public totalPaginas:number = 0;
     public unidad!: DatumUnidad;
+    public unidadArchivo!: number;
+    private padre: number = 0;
     public listaUnidades: GetAllListadoUnidadesActivas = {
         'statusCode': 0,
         'titulo': '',
@@ -43,7 +50,7 @@ declare var bootstrap: any;
     public rolUser: number = 0;
     private dependencia: number = 0;
 
-    public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
+    public padresUnidad: Array<{ opciones: any[]; seleccion: any }> = [];
     public observacion: string = '';
 
     private modalInstance: Modal | null = null;
@@ -57,10 +64,11 @@ declare var bootstrap: any;
 
    ngOnInit(): void {
         this.getLListadoUnidadesActivas();
+        this.listadoDependenciasPadre();
    }
 
    getLListadoUnidadesActivas(pagina: number = 1):void{
-        this.httpUnidades.listadoUnidadesActivas(pagina, this.filterPost).subscribe( (unidades) => {
+        this.httpUnidades.listadoUnidadesActivas(pagina, this.filterPost, this.padre).subscribe( (unidades) => {
             this.listaUnidades = unidades;
             this.pagina = unidades.infoPagination.pagina;
         });
@@ -82,7 +90,11 @@ declare var bootstrap: any;
 
    limpiarFiltros(): void {
         this.filterPost = '';
+        this.padre = 0;
+        this.listadoDependenciasPadre();
         this.getLListadoUnidadesActivas();
+
+
        /*  this.nivelesDependencias = this.nivelesDependencias.map(nivel => ({ ...nivel, seleccion: null }));
         this.nivelesDependencias = [];
         this.listadoDependenciasPadre();
@@ -110,6 +122,69 @@ declare var bootstrap: any;
         this.bootstrapModal = new bootstrap.Modal(modal);
         this.unidad = unidad;
         this.bootstrapModal.show();
+    }
+
+    abrirModalRegistroArchivo(unidadArchivo: DatumUnidad):void{
+        const modalArchivo = document.getElementById('modalRegistroArchivoUnidadActiva');
+        this.bootstrapModalRegistroArchivo = new bootstrap.Modal(modalArchivo);
+        this.unidadArchivo = unidadArchivo.id_unidad;
+        this.bootstrapModalRegistroArchivo.show();
+    }
+
+    buscarPorObservacion(): void {
+        if (this.observacion.trim() === '') {
+            this.sweet.alertaGeneral('warning', 'Campo vacío', 'Por favor ingrese una observación para buscar.');
+            return;
+        }
+
+        this.httpUnidades.buscarPorObservacionUnidadActiva(this.observacion).subscribe(unidades => {
+            console.log(unidades);
+
+            if (unidades.statusCode == 200) {
+               this.listaUnidades = unidades;
+            }
+
+            this.closeModal();
+
+        });
+    }
+
+    closeModal():void{
+        if (this.modalInstance) {
+            this.modalInstance.hide();
+        }
+    }
+
+
+    listadoDependenciasPadre():void{
+        this.httpUnidades.getListadoPadresUnidadesActivas().subscribe(unidadesPadre => {
+            this.padresUnidad = [
+                { opciones: unidadesPadre.data, seleccion: null }
+            ];
+        });
+    }
+
+    onSeleccionarDependencia(nivelIndex: number, event: Event): void {
+        const selectElement = event.target as HTMLSelectElement;
+        const idPadre: number = parseInt(selectElement.value, 10);
+        this.padre = idPadre;
+        this.getLListadoUnidadesActivas();
+
+        this.padresUnidad[nivelIndex].seleccion = idPadre;
+        this.padresUnidad = this.padresUnidad.slice(0, nivelIndex + 1);
+        this.httpUnidades.getListadoPadresHijasActivas(idPadre).subscribe(hijos => {
+          console.log(hijos);
+
+          if (hijos.data && hijos.data.length > 0) {
+              this.padresUnidad.push({ opciones: hijos.data, seleccion: null });
+          }
+        });
+       /*  this.getAllUnidades(this.pagina, idPadre);
+        this.getIdDependenciaSeleccionada(idPadre);
+
+
+         */
+        // Aquí podrías llamar a filtrarUnidades() si quieres filtrar automáticamente
     }
 
 }

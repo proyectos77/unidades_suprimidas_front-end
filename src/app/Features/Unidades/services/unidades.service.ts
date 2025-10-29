@@ -12,6 +12,10 @@ import { GetListUnidadesConDetalle } from '../interfaces/get-list-unidades-con-d
 import { GetListadoAnios } from '../interfaces/get-listado-anios';
 import { ListadoArchivoPorUnidad } from '../interfaces/listado-archivo-por-unidad';
 import { GetAllListadoUnidadesActivas } from '../interfaces/get-all-listado-unidades-activas';
+import { RespuestaRegistroArchivoUnidadActiva } from '../interfaces/respuesta-registro-archivo-unidad-activa';
+import { SetRegistroArchivoUnidadActiva } from '../interfaces/set-registro-archivo-unidad-activa';
+import { GetRutaUnidadActiva } from '../interfaces/get-ruta-unidad-activa';
+import { ListadoUnidadesPadreActivas } from '../interfaces/listado-unidades-padre-activas';
 
 @Injectable({
   providedIn: 'root'
@@ -90,14 +94,42 @@ export class UnidadesService {
         return this.httpUnidades.get<GetAllUnidades>(urlFinal);
     }
 
-    listadoUnidadesActivas(pagina: number, filtro: string):Observable<GetAllListadoUnidadesActivas>{
+    listadoUnidadesActivas(pagina: number, filtro: string, idPadre: number):Observable<GetAllListadoUnidadesActivas>{
         let urlFinal = '';
         if (filtro != '') {
           urlFinal = this.urlList + '/listadoUnidadesActivas/' + filtro;
+        }else if (idPadre != 0) {
+          urlFinal = this.urlList + '/listadoUnidadesActivasPorPadre/' + idPadre;
         }else{
           urlFinal = this.urlList + '/listadoUnidadesActivas?page=' + pagina;
         }
 
         return this.httpUnidades.get<GetAllListadoUnidadesActivas>(urlFinal);
     }
+
+    storeRegistroArchivoUnidadActiva(data: SetRegistroArchivoUnidadActiva[]):Observable<RespuestaRegistroArchivoUnidadActiva>{
+        let urlFinal = this.urlList + '/archivoUnidadesActivas';
+        return this.httpUnidades.post<RespuestaRegistroArchivoUnidadActiva>(urlFinal, data);
+    }
+
+    rutaUnidadActiva(idUnidad: number):Observable<GetRutaUnidadActiva>{
+        let urlFinal = this.urlList + '/rutaunidadactiva/' + idUnidad;
+        return this.httpUnidades.get<GetRutaUnidadActiva>(urlFinal);
+    }
+
+    buscarPorObservacionUnidadActiva(observacion: string):Observable<GetAllListadoUnidadesActivas>{
+        let urlFinal = this.urlList + '/observacionUnidadActiva/' + observacion;
+        return this.httpUnidades.get<GetAllListadoUnidadesActivas>(urlFinal);
+    }
+
+    getListadoPadresUnidadesActivas():Observable<ListadoUnidadesPadreActivas>{
+        let urlFinal = this.urlList + '/unidadPadreActivas';
+        return this.httpUnidades.get<ListadoUnidadesPadreActivas>(urlFinal);
+    }
+
+    getListadoPadresHijasActivas(idPadre: number):Observable<ListadoUnidadesPadreActivas>{
+        let urlFinal = this.urlList + '/listadoUnidadesHijasActivas/' + idPadre;
+        return this.httpUnidades.get<ListadoUnidadesPadreActivas>(urlFinal);
+    }
+
 }
