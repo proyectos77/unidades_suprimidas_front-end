@@ -18,6 +18,11 @@ export const routes: Routes = [
         loadChildren: () => import('../Features/Transferencias/transferencias.routes')
     },
 
+    {
+        path: 'organigrama', loadComponent:() => import('./layout/main/main.component'),
+        loadChildren: () => import('../Features/Organigrama/organigrama.routes')
+    },
+
 
     {path: '', redirectTo: 'unidades', pathMatch:'full'}
 

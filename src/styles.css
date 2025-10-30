@@ -76,6 +76,12 @@ h4{
     margin-bottom: 2rem;
 }
 
+h5{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
 .btn{
     font-size: 1.6rem;
     border: unset;

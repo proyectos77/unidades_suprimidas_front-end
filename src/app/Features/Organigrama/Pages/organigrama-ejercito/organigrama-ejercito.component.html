@@ -1,0 +1,66 @@
+
+<div class="card cardContenido" >
+  <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+      <h3>Organigrama Ejercito</h3>
+  </div>
+  <div class="card-body card-body-page">
+
+      <div class="row">
+          <div class="col-md-12 d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary ms-2" (click)="resetAll()">Restablecer</button>
+          </div>
+      </div>
+      <!-- Accordion encadenado para navegar la jerarquía -->
+      <div class="row mb-3 mt-5">
+        <div class="col-12">
+          <div class="accordion" id="accordionNiveles">
+            <div class="accordion-item" *ngFor="let nivel of padresUnidad; let i = index">
+              <h5 class="accordion-header" id="heading{{i}}">
+                <button class="accordion-button collapsed texto-acordeon" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i" [style.background-color]="nivel.seleccion ? colorSeleccionNivel(i) : null" [style.color]="nivel.seleccion ? '#fff' : null">
+                  Nivel {{ i + 1 }} - {{ nombreSeleccionNivel(i) }}
+                </button>
+              </h5>
+              <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i" data-bs-parent="#accordionNiveles">
+                <div class="accordion-body p-0">
+                  <div class="d-flex justify-content-end pe-2">
+                    <button type="button" class="btn btn-sm btn-link" (click)="cerrarNivel(i)">Cerrar nivel</button>
+                  </div>
+                  <div class="list-group list-group-flush">
+                    <button type="button" class="list-group-item list-group-item-action" *ngFor="let dep of nivel.opciones" (click)="seleccionarDependencia(i, dep.id_unidad, dep)" [class.active]="nivel.seleccion === dep.id_unidad">
+                      {{ dep.nombre_unidad }} - {{ dep.sigla_unidad }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información de la unidad seleccionada (rama activa) -->
+      <div *ngIf="selectedUnidad" class="mt-5" >
+        <h5>Unidad seleccionada</h5>
+            <div class="card">
+          <div class="card-body">
+            <p><strong>ID:</strong> {{ selectedUnidad.id_unidad }}</p>
+            <p><strong>Nombre:</strong> {{ (selectedUnidad.nombre_unidad || selectedUnidad.nombre) }}<span *ngIf="selectedUnidad.sigla"> ({{ selectedUnidad.sigla }})</span></p>
+            <p *ngIf="selectedUnidad.departamento"><strong>Departamento:</strong> {{ selectedUnidad.departamento }}</p>
+            <p *ngIf="selectedUnidad.municipio"><strong>Municipio:</strong> {{ selectedUnidad.municipio }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!selectedUnidad" class="mt-4 text-muted">
+        Seleccione una unidad en los desplegables para ver la rama aquí.
+      </div>
+
+  </div>
+</div>
+
+
+
+<!-- <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad>
+ -->
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+
