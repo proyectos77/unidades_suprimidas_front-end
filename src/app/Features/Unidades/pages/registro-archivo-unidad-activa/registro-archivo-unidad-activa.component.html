@@ -1,0 +1,34 @@
+
+<div class="card cardContenido" >
+    <div class="card-header card-header-paddin d-flex justify-content-between align-items-center">
+        <h3>Registro Archivo unidad activa</h3>
+        <div class="content-btn-regresar">
+          <button type="button" class="btn btn-primary" (click)="regresar()">Regresar</button>
+      </div>
+    </div>
+    <div class="card-body card-body-page">
+        <p>Ruta: <span style="font-size: 1.2rem;"> {{ rutaUnidad }} </span></p>
+
+        <div class="row mt-lg-5">
+                <div class="col-md-8">
+                  <select name="" id="selectAnio" class="form-select">
+                    <option value="">Seleccione el año a registrar</option>
+                    <option *ngFor="let anio of anios?.data" [value]="anio.id_archivo">{{ anio.anio }}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-center justify-content-end ">
+                    <button type="button" class="btn btn-primary" (click)="abrirModalRegistroAnio()">Crear nuevo año</button><!-- (click)="crearNuevoAnioArchivo()" -->
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+<app-registro-anio-archivo-unidad-activa *ngIf="cargarModalAnio === true" [idDetalleUnidad]="idUnidadSeleccinada" (event)="prueba($event)">
+</app-registro-anio-archivo-unidad-activa>
+  <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
+
+

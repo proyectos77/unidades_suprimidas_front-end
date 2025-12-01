@@ -20,6 +20,7 @@ export interface Datum {
   estado:                          string;
   idEstado:                        number;
   padre_unidad:                    PadreUnidad | null;
+  id_detalle:                      number | null;
 }
 
 /* export enum Estado {

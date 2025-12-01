@@ -1,6 +1,6 @@
 import { Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { ListadoTiposOtros } from '../../../Transferencias/interfaces/listado-tipos-otros';
 import { ListadoUnidadesConArchivo } from '../../../Transferencias/interfaces/listado-unidades-con-archivo';
@@ -25,12 +25,16 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
     @Input() idUnidadActiva!: number;
     public formularioRegistroArchivo!:  FormGroup;
+    public formularioAnioArchivo!: FormGroup;
     public detalleOtro: string = '';
     private destroy$ = new Subject<void>();
     public mostrarCantidadOtro: boolean = false;
     public otroAgregado: boolean = false;
     public solicitudesAbjuntas: SetRegistroArchivoUnidadActiva [] = [];
     public rutaUnidad: string = '';
+
+    public anioSeleccionado: boolean = false;
+    public mostrarRegistroAnioArchivo: boolean = false;
 
     public tiposOtros: ListadoTiposOtros ={
         statusCode: 0,
@@ -80,6 +84,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     ngOnInit(): void {
         this.formularioRegistroArchivo = this.formulario();
 
+
         this.formularioRegistroArchivo.get('tipoOtro')?.valueChanges.subscribe((valor) => {
             if (valor) {
                 this.mostrarCantidadOtro = true;
@@ -118,6 +123,17 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             anioRegistro: [''],
             tipoOtro: [''],
         });
+    }
+
+    formularioRegistroAnioArchivo():FormGroup{
+        return this.form.group({
+            anioRegistro: ['', Validators.required],
+            cantidadCajas: ['', Validators.required],
+            cantidadCarpetas: ['', Validators.required],
+            cantidadFolios: ['', Validators.required],
+            cantidadOtros: [''],
+            cantidadTomos: [''],
+      });
     }
 
     rutaUnidadActiva(): void {
@@ -191,7 +207,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         }
     }
 
-
     listadoSeries(anio:string):void{
         this.httpSeriesService.getListadoSeries(anio).subscribe(series => {
             this.series = series;
@@ -215,7 +230,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
           this.tiposOtros = otros;
       });
     }
-
 
     adjuntarArchivo(): void {
                 const data = this.createDataForm();
@@ -283,6 +297,9 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         this.rutaUnidad = '';
         this.cantidadOtro = 0;
         this.mostrarCantidadOtro = false;
+
+        this.anioSeleccionado = false;
+        this.mostrarRegistroAnioArchivo = false;
     }
 
     limpiarCamposEspecificos() {
@@ -315,5 +332,9 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         this.solicitudesLegibles.splice(index, 1);
     }
 
+    crearNuevoAnioArchivo(): void {
+        this.mostrarRegistroAnioArchivo = true;
+        this.formularioAnioArchivo = this.formularioRegistroAnioArchivo();
+    }
 
 }

@@ -1,0 +1,87 @@
+
+<!-- Modal -->
+<div class="modal fade" id="modalRegistroAnioUnidadActiva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Registro archivo unidad activa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button> <!-- (click)="limpiarForm()" -->
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="formularioAnioArchivo">
+              <div class="row mt-5">
+                  <div class="col-md-4">
+                      <label for="">* Año</label>
+                      <select name="" id="" class="form-select" formControlName="anio_registro_archivo">
+                          <option value="">Seleccione el año a registrar</option>
+                          <option *ngFor="let anio of anios.data" [value]="anio">{{ anio }}</option>
+                      </select>
+
+                      @if (this.formularioAnioArchivo.get('anio_registro_archivo')?.touched && formularioAnioArchivo.get('anio_registro_archivo')?.errors?.['required']){
+                          <div class="invalid-feedback" style="display: block;">
+                              <small class="text-danger">Es necesario el año</small>
+                          </div>
+                      }
+                  </div>
+
+                  <div class="col-md-4">
+                      <label for="" class="form-label">* Cajas</label>
+                      <input type="number" class="form-control" formControlName="numero_cajas">
+
+                      @if (this.formularioAnioArchivo.get('numero_cajas')?.touched && formularioAnioArchivo.get('numero_cajas')?.errors?.['required']){
+                          <div class="invalid-feedback" style="display: block;">
+                              <small class="text-danger">Las cajas son obligatorias</small>
+                          </div>
+                      }
+                  </div>
+
+                  <div class="col-md-4">
+                      <label for="" class="form-label">* Carpetas</label>
+                      <input type="number" class="form-control" formControlName="numero_carpetas">
+                      @if (this.formularioAnioArchivo.get('numero_carpetas')?.touched && formularioAnioArchivo.get('numero_carpetas')?.errors?.['required']){
+                          <div class="invalid-feedback" style="display: block;">
+                              <small class="text-danger">Las carpetas son obligatorias</small>
+                          </div>
+                      }
+                  </div>
+              </div>
+
+              <div class="row mt-5">
+                  <div class="col-md-4">
+                      <label for="" class="form-label">Otros</label>
+                      <input type="number" class="form-control" formControlName="otros">
+                  </div>
+
+                  <div class="col-md-4">
+                      <label for="" class="form-label">Tomos</label>
+                      <input type="number" class="form-control" formControlName="tomos">
+                  </div>
+
+                  <div class="col-md-4">
+                      <label for="" class="form-label">* Folios</label>
+                      <input type="number" class="form-control" formControlName="numero_folio">
+
+                      @if (this.formularioAnioArchivo.get('numero_folio')?.touched && formularioAnioArchivo.get('numero_folio')?.errors?.['required']){
+                          <div class="invalid-feedback" style="display: block;">
+                              <small class="text-danger">Los folios son obligatorios</small>
+                          </div>
+                      }
+                  </div>
+              </div>
+
+              <div class="row mt-5" *ngIf="campoAcumulado === true">
+                  <div class="col-md-4">
+                      <label for="" class="form-label">* Acumulado de vigencias (cajas)</label>
+                      <input type="number" class="form-control" formControlName="acumuladoVigenciasCajas">
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cancelar</button> <!-- (click)="limpiarForm()" -->
+        <button type="button" class="btn btn-primary" (click)="validarFormulario()">Registrar</button> <!-- (click)="enviarRegistros()" -->
+      </div>
+    </div>
+  </div>
+</div>
+  

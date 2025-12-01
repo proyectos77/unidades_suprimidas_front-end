@@ -11,13 +11,14 @@ import { SweetAlertService } from '../../../../Core/services/sweet-alert.service
 import { LoginService } from '../../../../Auth/services/login.service';
 import { BuscadorListadoUnidadesActivasPipe } from '../../../../Shared/Pipes/buscador-listado-unidades-activas.pipe';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
+import { RegistroAnioArchivoUnidadActivaComponent } from "../../components/registro-anio-archivo-unidad-activa/registro-anio-archivo-unidad-activa.component";
 
 declare var bootstrap: any;
 declare var bootstrapArchivo: any;
 
 @Component({
   selector: 'app-listado-unidades-activas',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent, RegistroAnioArchivoUnidadActivaComponent],
   templateUrl: './listado-unidades-activas.component.html',
   styleUrl: './listado-unidades-activas.component.css'
 })
@@ -94,11 +95,6 @@ declare var bootstrapArchivo: any;
         this.listadoDependenciasPadre();
         this.getLListadoUnidadesActivas();
 
-
-       /*  this.nivelesDependencias = this.nivelesDependencias.map(nivel => ({ ...nivel, seleccion: null }));
-        this.nivelesDependencias = [];
-        this.listadoDependenciasPadre();
-        this.getAllUnidades(1); */
     }
 
     abrirModalBuscarObservacion():void {
@@ -151,6 +147,7 @@ declare var bootstrapArchivo: any;
 
     closeModal():void{
         if (this.modalInstance) {
+          
             this.modalInstance.hide();
         }
     }

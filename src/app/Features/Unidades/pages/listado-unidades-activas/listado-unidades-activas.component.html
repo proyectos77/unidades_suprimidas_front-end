@@ -47,8 +47,12 @@
                       <td>{{ unidad.sigla }}</td>
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
-                      <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida'}">{{ unidad.estado }}</td>
-                      <td style="font-size: 1.6rem;"><i class="fa-solid fa-box-archive text-secondary" (click)="abrirModalRegistroArchivo(unidad)"></i></td>
+                      <td
+                          [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida'}">{{ unidad.estado }}
+                      </td>
+                      <td style="font-size: 1.6rem;">
+                          <i class="fa-solid fa-box-archive text-secondary" [routerLink]="['/main/unidades/registroArchivoUnidadesActivas', unidad.id_unidad]"></i>
+                      </td>
                       <td [width]="115">
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: .5rem; font-size: .8rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button><!-- (click)="abrirModal(unidad)" -->
                           <button type="button" title="Activar/Inactivar" class="btn btn-danger" style="font-size: .8rem;" *ngIf="rolUser == 1" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
@@ -98,6 +102,7 @@
 
 <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getLListadoUnidadesActivas(1)"></app-modal-editar-unidad>
 <app-registro-archivo-unidad-activa [idUnidadActiva]="unidadArchivo"></app-registro-archivo-unidad-activa>
+
   <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
 
 
