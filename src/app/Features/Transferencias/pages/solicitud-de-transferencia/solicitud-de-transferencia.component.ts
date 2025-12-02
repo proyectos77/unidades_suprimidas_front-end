@@ -327,6 +327,8 @@ export default class SolicitudDeTransferenciaComponent implements OnInit, OnDest
 
     registroSolicitudTransferencia(data: FormData): void {
         this.httpTransferencias.storeSolicitudTransferencia(data).subscribe((solicitud) => {
+            console.log(solicitud.icono);
+
             this.sweet.alertaGeneral(solicitud.icono, solicitud.titulo, solicitud.mensaje);
             if (solicitud.statusCode == 200) {
                 this.limpiarForm();

@@ -24,6 +24,8 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
               window.location.href = '/login';
           }else if (err.statusCode === 404) {
               sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
+          }else if (err.statusCode === 422) {
+              sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
           }
       } else {
           sweet.alertaGeneral('error', 'Error desconocido', 'Ocurrió un error inesperado');
