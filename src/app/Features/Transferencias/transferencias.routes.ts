@@ -15,7 +15,7 @@ export const routes: Routes = [
     /* { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},
 
      */
-    {path: '', redirectTo: 'solicitudTrasferencias', pathMatch:'full'}
+    {path: '', redirectTo: 'listadoSolicitudes', pathMatch:'full'}
 
 ];
 
