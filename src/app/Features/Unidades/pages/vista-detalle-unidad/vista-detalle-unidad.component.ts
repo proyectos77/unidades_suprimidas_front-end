@@ -143,6 +143,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   public filterPost: string = '';
   public perfilUsuario:number = 0;
   public formularioArchivo!: FormGroup;
+  private idArchivoRegistradoParaActualizar: number = 0;
 
   constructor(
       private httpUnidad: UnidadesService,
@@ -187,20 +188,30 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   getArchivoUnidad(idDetalleUnidad: number, page:number):void{
       this.httpUnidad.detalleArchivoPorUnidad(idDetalleUnidad, page).subscribe(archivo => {
           if (archivo.data.length === 0) {
-              console.log('entro');
+
 
               this.sweet.alertaGeneral('info', 'No se encontraron registros', 'No hay archivos registrados para esta unidad');
           }else{
-              this.data = [
-                  {
-                      'name': 'Archivo Transferido',
-                      'value' : archivo.data[0].porcentaje_transferencia
-                  },
-                  {
-                      'name': 'Archivo Pendiente',
-                      'value' : archivo.data[0].porcentaje_faltante
-                  }
-              ];
+
+            const registros = archivo.data;
+            const totalTransferido = registros.reduce((acc, item) => acc + Number(item.porcentaje_transferencia),0);
+            const totalPendiente = registros.reduce((acc, item) => acc + Number(item.porcentaje_faltante),0);
+
+            const totalGeneral = totalTransferido + totalPendiente;
+
+            const porcentajeTransferido = Number(((totalTransferido / totalGeneral) * 100).toFixed(1));
+            const porcentajePendiente = Number(((totalPendiente / totalGeneral) * 100).toFixed(1));
+
+            this.data = [
+              {
+                name: 'Archivo Transferido',
+                value: porcentajeTransferido
+              },
+              {
+                name: 'Archivo Pendiente',
+                value: porcentajePendiente
+              }
+            ];
               this.informacionArchivoUnidad = archivo;
           }
       });
@@ -210,7 +221,8 @@ export default class VistaDetalleUnidadComponent implements OnInit {
     return `${value}%`;
   }
 
-  abrirModal(cajas: number, carpetas: number, folios: number, otros: number, tomos: number):void {
+  abrirModal(cajas: number, carpetas: number, folios: number, otros: number, tomos: number, idArchivoRegistradoParaActualizar: number):void {
+      this.idArchivoRegistradoParaActualizar = idArchivoRegistradoParaActualizar;
       const modal = this.modalActualizar();
 
       if (modal) {
@@ -240,9 +252,9 @@ export default class VistaDetalleUnidadComponent implements OnInit {
 
   actualizarArchivo():void{
       const data = this.dataActualizarArchivo();
-      idArchivoRegistrado: this.informacionArchivoUnidad.data[0].id_archivo
 
-      this.httpArchivo.updateArchivo(data, this.informacionArchivoUnidad.data[0].id_archivo).subscribe(archivo =>{
+
+      this.httpArchivo.updateArchivo(data, this.idArchivoRegistradoParaActualizar).subscribe(archivo =>{
               if (archivo.statusCode === 200) {
               this.sweet.alertaGeneral(archivo.icono, archivo.titulo, archivo.mensaje);
               this.getArchivoUnidad(this.informacionUnidad.data.detalle_unidad?.id_detalle ?? 0, 1);

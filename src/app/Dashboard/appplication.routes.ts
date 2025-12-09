@@ -24,7 +24,7 @@ export const routes: Routes = [
     },
 
 
-    {path: '', redirectTo: 'unidades', pathMatch:'full'}
+    {path: '', redirectTo: 'transferencias', pathMatch:'full'}
 
 ];
 

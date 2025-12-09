@@ -13,7 +13,6 @@
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered" >
               <thead class="text-center table-dark">
                   <tr>
-                      <th>ID</th>
                       <th class="text-start">Dependencia</th>
                       <th class="text-start">Unidad</th>
                       <th>Año</th>
@@ -34,7 +33,6 @@
               <tbody class="text-center">
 
                   <tr *ngFor="let solicitud of solicitud.data | buscadorListadoSolicitudes:filterPost">
-                      <td>{{ solicitud.idSolicitudTransferencia }}</td>
                       <td>{{ solicitud.dependencia }}</td>
                       <td>{{ solicitud.unidad }}</td>
 
