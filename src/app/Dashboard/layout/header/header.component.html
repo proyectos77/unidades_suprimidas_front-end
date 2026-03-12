@@ -5,52 +5,54 @@
   </div>
 
   <div class="header__opcion">
-        <div class="row">
-          <!-- Notificaciones -->
-          <div class="col-md-6">
-            <div *ngIf="mostrarMenuSuperUsuario" class="notificaciones__contenedor">
-              <span class="notificaciones" *ngIf="notificaciones.data.total_hoy != 0">
-                <span> Hoy </span>
-                <span> {{ notificaciones.data.total_hoy }} </span>
-              </span>
-              <span class="notificaciones bg-warning" *ngIf="notificaciones.data.total_semana != 0">
-                <span> Semana </span>
-                <span> {{ notificaciones.data.total_semana }}</span>
-              </span>
-              <span class="notificaciones bg-danger" *ngIf="notificaciones.data.total_mes != 0">
-                <span> Mes </span>
-                <span> {{ notificaciones.data.total_mes }}</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- Usuario -->
-          <div class="col-md-5 header__opcion-datos">
-            <p style="color: white;">{{ nombreUsuario }}</p>
-            <p style="color: white;">{{ rol }}</p>
-          </div>
-
-          <!-- Dropdown -->
-          <div class="col-md-1">
-            <div class="dropdown">
-              <button class="btn p-0 border-0 header__opcion-btn" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i class="fas fa-user fa-2x fa-fw"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="dropdownMenuButton">
-                <li class="submenu__item">
-                  <a class="dropdown-item" href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
-                </li>
-                <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
-                  <a class="dropdown-item" [routerLink]="['/main/usuarios']">Listado de usuarios</a>
-                </li>
-                <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
-                  <a class="dropdown-item" [routerLink]="['/main/usuarios/registroUsuarios']">Registro de usuarios</a>
-                </li>
-              </ul>
-            </div>
-          </div>
+    <div class="row">
+      <!-- Notificaciones -->
+      <div class="col-md-6">
+        <div *ngIf="mostrarMenuSuperUsuario" class="notificaciones__contenedor">
+          <span class="notificaciones" *ngIf="notificaciones.data.total_hoy != 0">
+            <span> Hoy </span>
+            <span> {{ notificaciones.data.total_hoy }} </span>
+          </span>
+          <span class="notificaciones bg-warning" *ngIf="notificaciones.data.total_semana != 0">
+            <span> Semana </span>
+            <span> {{ notificaciones.data.total_semana }}</span>
+          </span>
+          <span class="notificaciones bg-danger" *ngIf="notificaciones.data.total_mes != 0">
+            <span> Mes </span>
+            <span> {{ notificaciones.data.total_mes }}</span>
+          </span>
         </div>
+      </div>
+
+      <!-- Usuario -->
+      <div class="col-md-5 header__opcion-datos">
+        <p style="color: white;">{{ nombreUsuario }}</p>
+        <p style="color: white;">{{ rol }}</p>
+      </div>
+
+      <div class="col-md-1 ">
+        <div class="user-menu">
+          <button class="btn p-0 border-0 header__opcion-btn mt-3 text-center">
+            <i class="fas fa-user fa-2x fa-fw icono-user"></i>
+          </button>
+
+
+          <ul class="submenu">
+            <li class="submenu__item">
+              <a class="" href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
+            </li>
+
+            <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
+              <a [routerLink]="['/main/usuarios']">Listado de usuarios</a>
+            </li>
+
+            <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
+              <a [routerLink]="['/main/usuarios/registroUsuarios']">Registro de usuarios</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>

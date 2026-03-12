@@ -84,8 +84,6 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
 
     consultaDetalleTransferencia(idTransferenciaEnviado: number){
         this.httpDetalleTransferencia.listadoDetalleTransferencia(idTransferenciaEnviado).subscribe(detalle => {
-          console.log(detalle);
-
             this.detalle = detalle
             this.idTransferencia = detalle.data[0].id_transferencia;
             this.idSolicitud = detalle.data[0].transferencia.solicitudes[0].id_solicitud_transferencia;
@@ -278,25 +276,39 @@ export default class CorreccionSolicitudTransferenciaComponent implements OnInit
             return;
         }
 
-        this.httpDetalleTransferencia.registrarDocumentoTransferencia(this.idTransferencia, this.archivoSeleccionado)
-            .subscribe(response => {
-              console.log(response);
+        this.httpDetalleTransferencia.registrarDocumentoTransferencia(this.idTransferencia, this.archivoSeleccionado).subscribe({
+          next: (response) => {
 
-                this.sweet.alertaGeneral(response.status, response.titulo, response.mensaje);
-                this.listadoDocumentos();
-                this.cerrarModalAgregarDocumentos();
+            this.sweet.alertaGeneral(
+              response.status,
+              response.titulo,
+              response.mensaje
+            );
 
-            });
+            this.listadoDocumentos();
+            this.cerrarModalAgregarDocumentos();
+          },
+
+          error: (error) => {
+            // El interceptor ya mostró el mensaje
+            console.log('Error controlado por interceptor', error);
+          }
+        });
     }
 
     cambiarEstadoSolicitud(): void {
-      console.log(this.idSolicitud);
+            // Validar que haya documentos adjuntos
+            if (!this.documentos.data || this.documentos.data.length === 0) {
+                this.sweet.alertaGeneral('warning', 'Documentos requeridos', 'Debe adjuntar al menos un documento antes de solicitar la revisión.');
+                return;
+            }
 
-        this.httpTransferencia.updateCorreccionSolicitudTransferencia(this.idSolicitud).subscribe(response => {
-          console.log(response);
-            this.sweet.alertaGeneral(response.icono, response.titulo, response.mensaje);
-            this.routerRegresa.navigateByUrl('/main/transferencias/listadoSolicitudes');
-        });
-    }
+            console.log(this.idSolicitud);
+            this.httpTransferencia.updateCorreccionSolicitudTransferencia(this.idSolicitud).subscribe(response => {
+                console.log(response);
+                this.sweet.alertaGeneral(response.icono, response.titulo, response.mensaje);
+                this.routerRegresa.navigateByUrl('/main/transferencias/listadoSolicitudes');
+            });
+        }
 
 }

@@ -99,6 +99,7 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
           this.idTransferencia = solicitud.data[0].id_transferencia;
           this.observacion = solicitud.data[0].observacion_solicitud_transferencia;
         console.log('estado = ' + this.estadoSolicitud);
+        console.log('observacion = ' + this.observacion);
 
           this.listadoDetalles();
           this.listadoDocumentos();

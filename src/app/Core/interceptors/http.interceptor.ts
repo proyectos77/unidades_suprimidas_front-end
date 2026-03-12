@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SweetAlertService } from '../services/sweet-alert.service';
+import { log } from 'node:console';
 
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
@@ -16,6 +17,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   return next(request).pipe(
     catchError((error) => {
       const err = error?.error;
+      console.log(err.statusCode);
 
       if (err && err.statusCode && err.mensaje) {
 

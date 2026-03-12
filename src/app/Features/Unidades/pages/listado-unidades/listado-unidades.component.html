@@ -40,6 +40,9 @@
                   </tr>
               </thead>
               <tbody class="text-center">
+                  <tr *ngIf="listaUnidades.data.length === 0">
+                      <td colspan="9">{{ listaUnidades.mensaje || 'No hay registros para mostrar.' }}</td>
+                  </tr>
                   <tr *ngFor="let unidad of listaUnidades.data">
                       <td>{{ unidad.id_unidad }}</td>
                       <td>{{ unidad.unidad_superior_jerarquicamente }}</td>

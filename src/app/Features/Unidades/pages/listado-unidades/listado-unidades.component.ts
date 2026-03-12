@@ -86,7 +86,6 @@ export default class ListadoUnidadesComponent implements OnInit{
         const selectElement = event.target as HTMLSelectElement;
         const idPadre: number = parseInt(selectElement.value, 10);
         this.getAllUnidades(this.pagina, idPadre);
-        /* this.getIdDependenciaSeleccionada(idPadre); */
 
         this.nivelesDependencias[nivelIndex].seleccion = idPadre;
         this.nivelesDependencias = this.nivelesDependencias.slice(0, nivelIndex + 1);
@@ -101,9 +100,14 @@ export default class ListadoUnidadesComponent implements OnInit{
     getAllUnidades(pagina: number = 1, idDependencia: number = 0):void{
         this.httUnidades.getAllUnidades(pagina, idDependencia, this.filterPost).subscribe(unidades =>{
             if (unidades.data.length == 0) {
-              this.pagina = 0
+                this.listaUnidades = {
+                    ...this.listaUnidades,
+                    data: [],
+                    mensaje: 'No hay registros para mostrar.'
+                };
+                this.pagina = 0;
             }else{
-                this.listaUnidades = unidades
+                this.listaUnidades = unidades;
                 this.pagina = unidades.infoPagination.pagina;
             }
         });
