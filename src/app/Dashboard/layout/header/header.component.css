@@ -1,6 +1,6 @@
 .header{
     /* background-image: url(../../../../../public/imagenes/pagina/fondoLogin.png); */
-    background-color: var(--negro);
+    background-color: var(--colorBanner-Menu);
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -8,7 +8,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 3rem;
+    padding: 2rem 3rem;
+
 }
 
 .header__texto {
@@ -19,6 +20,12 @@
     width: 100%;
 }
 
+.titulo__header{
+   color: var(--blanco);
+   font-family: var(--titulos);
+    font-weight: 900;
+    font-size: 2.1rem;
+}
 .header__opcion{
     width: 30%;
     margin-right: 10rem;
