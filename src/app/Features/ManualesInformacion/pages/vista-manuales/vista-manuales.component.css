@@ -1,0 +1,55 @@
+.card-document {
+    height: 100px;
+    background-color: #e9dede; /* fondo como el de tu imagen */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-document i {
+    font-size: 60px;
+    color: #f19999; /* color del icono */
+}
+
+.etiqueta-formato-documento{
+    font-size: 1.3rem;
+    color: #d97d7d; /* color del texto */
+    background-color: #e9dede;
+    font-weight: bold;
+    padding: .3rem 1rem;
+    border-radius: .3rem;
+}
+
+.card-video {
+    height: 100px;
+    background-color: #a0d5e4; /* fondo como el de tu imagen */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-video i {
+    font-size: 60px;
+    color: #4498ec; /* color del icono */
+}
+
+
+.etiqueta-formato-video{
+    font-size: 1.3rem;
+    color: #4498ec; /* color del texto */
+    background-color: #a0d5e4;
+    font-weight: bold;
+    padding: .3rem 1rem;
+    border-radius: .3rem;
+}
+
+.card-filtro{
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.card-filtro:hover {
+    transform: scale(1.05);
+}

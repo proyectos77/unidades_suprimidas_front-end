@@ -95,7 +95,7 @@
                 <button type="button" class="btn-close" (click)="cerrarModalDocumento()"></button>
             </div>
             <div class="modal-body" style="height: 80vh;">
-                <iframe [src]="urlDocumentoModal | urlDocumentos" width="100%" height="100%" frameborder="0"></iframe>
+                <iframe *ngIf="urlDocumentoModal" [src]="urlDocumentoModal | safeUrl" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
     </div>

@@ -23,6 +23,11 @@ export const routes: Routes = [
         loadChildren: () => import('../Features/Organigrama/organigrama.routes')
     },
 
+    {
+        path: 'manualUsuario', loadComponent:() => import('./layout/main/main.component'),
+        loadChildren: () => import('../Features/ManualesInformacion/manuales.routes')
+    },
+
 
     {path: '', redirectTo: 'transferencias', pathMatch:'full'}
 

@@ -25,35 +25,40 @@
         </div>
       </div>
 
-      <!-- Usuario -->
-      <div class="col-md-5 header__opcion-datos">
-        <p style="color: white;">{{ nombreUsuario }}</p>
-        <p style="color: white;">{{ rol }}</p>
-      </div>
-
-      <div class="col-md-1 ">
-        <div class="user-menu">
-          <button class="btn p-0 border-0 header__opcion-btn mt-3 text-center">
-            <i class="fas fa-user fa-2x fa-fw icono-user"></i>
-          </button>
-
-
-          <ul class="submenu">
-            <li class="submenu__item">
-              <a class="" href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
-            </li>
-
-            <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
-              <a [routerLink]="['/main/usuarios']">Listado de usuarios</a>
-            </li>
-
-            <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
-              <a [routerLink]="['/main/usuarios/registroUsuarios']">Registro de usuarios</a>
-            </li>
-          </ul>
-
+        <!-- Usuario -->
+        <div class="col-md-5 header__opcion-datos">
+            <p style="color: white;">{{ nombreUsuario }}</p>
+            <p style="color: white;">{{ rol }}</p>
         </div>
-      </div>
+
+        <div class="col-md-1 ">
+            <div class="user-menu">
+                <button class="btn p-0 border-0 header__opcion-btn mt-3 text-center">
+                  <i class="fas fa-user fa-2x fa-fw icono-user"></i>
+                </button>
+
+                <ul class="submenu">
+                    <li class="submenu__item">
+                        <a class="" href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
+                    </li>
+
+                    <li class="submenu__item">
+                        <a class="" [routerLink]="['/main/manualUsuario/manuales']">Manual de usuario</a>
+                    </li>
+
+                    <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
+                        <a [routerLink]="['/main/usuarios']">Listado de usuarios</a>
+                    </li>
+
+                    <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
+                        <a [routerLink]="['/main/usuarios/registroUsuarios']">Registro de usuarios</a>
+                    </li>
+                    <li class="submenu__item">
+                        <a class="" [routerLink]="['/main/manualUsuario/informacion']">Informacion del sistema</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
   </div>
 </div>

@@ -12,10 +12,11 @@ import { SweetAlertService } from '../../../../Core/services/sweet-alert.service
 import { DataUpdateSolicitud } from '../../interfaces/data-update-solicitud';
 import { UsuariosServicesService } from '../../../Usuarios/services/usuarios-services.service';
 import { LoginService } from '../../../../Auth/services/login.service';
+import { SafeUrlPipe } from '../../../../Shared/Pipes/safe-url.pipe.ts.pipe';
 
 @Component({
   selector: 'app-detalle-solicitu-transferencia',
-  imports: [RouterLink, NgFor, NgxChartsModule, ReactiveFormsModule, UrlDocumentosPipe, NgIf],
+  imports: [RouterLink, NgFor, NgxChartsModule, ReactiveFormsModule, UrlDocumentosPipe, NgIf, SafeUrlPipe],
   templateUrl: './detalle-solicitu-transferencia.component.html',
   styleUrl: './detalle-solicitu-transferencia.component.css'
 })
@@ -140,6 +141,8 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
   }
 
   abrirModalDocumento(idDocumento: number): void {
+
+      // 🔥 ABRIR MODAL
       const modal = document.getElementById('modalVerDocumento');
       if (modal) {
           modal.classList.add('show');
@@ -148,13 +151,31 @@ export default class DetalleSolicituTransferenciaComponent implements OnInit {
           modal.setAttribute('role', 'dialog');
       }
 
+      this.httpDetalleTransferencia.verDocumento(idDocumento).subscribe({
+        next: (documento) => {
+            this.nombreDocumentoModal = documento.nombre_documento;
 
+            const rutaCodificada = documento.url_documento
+              .split('/')
+              .map((segmento: string) => encodeURIComponent(segmento))
+              .join('/');
 
+              this.urlDocumentoModal = `http://172.22.3.102/api/documentos/${rutaCodificada}`;
 
-      this.httpDetalleTransferencia.verDocumento(idDocumento).subscribe(documento => {
-          this.nombreDocumentoModal = documento.nombre_documento;
-          /* this.urlDocumentoModal = `http://localhost:8000/storage/${documento.url_documento}`; */
-          this.urlDocumentoModal = `http://172.22.3.102/storage/${documento.url_documento}`;
+            console.log('URL documento:', this.urlDocumentoModal);
+        },
+
+        error: (error) => {
+            console.error('Error al obtener documento:', error);
+
+            this.nombreDocumentoModal = '';
+            this.urlDocumentoModal = '';
+
+            if (modal) {
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+            }
+        }
       });
   }
 
