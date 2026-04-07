@@ -1,0 +1,44 @@
+<!-- <ul class="list-unstyled">
+  <li *ngFor="let folder of folders">
+
+    <div (click)="toggle(folder)" class="folder-item">
+      {{ folder.expanded ? '📂' : '📁' }} {{ folder.name }}
+    </div>
+
+    <div *ngIf="folder.expanded && folder.children.length > 0" class="ms-4">
+      <app-archivo-unidad-activa
+        [folders]="folder.children">
+      </app-archivo-unidad-activa>
+    </div>
+
+  </li>
+</ul>
+ -->
+
+<div class="content-archivo-unidad container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="tree">
+                  <li *ngFor="let folder of folders">
+
+                    <div (click)="toggle(folder)" class="tree-item">
+                      <span class="icon">
+                        {{ folder.expanded ? '📂' : '📁' }}
+                      </span>
+                      <span class="label">{{ folder.name }}</span>
+                    </div>
+
+                    <div *ngIf="folder.expanded && folder.children.length > 0" class="tree-children">
+                      <app-archivo-unidad-activa
+                        [folders]="folder.children">
+                      </app-archivo-unidad-activa>
+                    </div>
+
+                  </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+

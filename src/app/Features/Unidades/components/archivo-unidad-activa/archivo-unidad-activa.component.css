@@ -1,0 +1,77 @@
+.folder-item {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.folder-item:hover {
+  background-color: #f1f1f1;
+}
+
+
+.tree {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tree li {
+  position: relative;
+  padding-left: 20px;
+}
+
+/* 🔥 Línea vertical */
+.tree li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8px;
+  border-left: 1px solid #ccc;
+  height: 100%;
+}
+
+/* 🔥 Línea horizontal */
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 8px;
+  width: 12px;
+  border-top: 1px solid #ccc;
+}
+
+/* 🔥 Quitar línea en último hijo */
+.tree li:last-child::before {
+  height: 14px;
+}
+
+/* ITEM */
+.tree-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.tree-item:hover {
+  background-color: #f5f7fa;
+}
+
+/* ICONO */
+.icon {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+/* TEXTO */
+.label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* HIJOS */
+.tree-children {
+  margin-left: 10px;
+}

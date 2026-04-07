@@ -12,17 +12,53 @@ import { LoginService } from '../../../../Auth/services/login.service';
 import { BuscadorListadoUnidadesActivasPipe } from '../../../../Shared/Pipes/buscador-listado-unidades-activas.pipe';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
 import { RegistroAnioArchivoUnidadActivaComponent } from "../../components/registro-anio-archivo-unidad-activa/registro-anio-archivo-unidad-activa.component";
+import { log } from 'console';
+import { ArchivoUnidadActivaComponent } from '../../components/archivo-unidad-activa/archivo-unidad-activa.component';
+import { FolderNiveles } from '../../interfaces/FolderNiveles';
 
 declare var bootstrap: any;
 declare var bootstrapArchivo: any;
 
 @Component({
   selector: 'app-listado-unidades-activas',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent, RegistroAnioArchivoUnidadActivaComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent, RegistroAnioArchivoUnidadActivaComponent, ArchivoUnidadActivaComponent],
   templateUrl: './listado-unidades-activas.component.html',
   styleUrl: './listado-unidades-activas.component.css'
 })
  export default class ListadoUnidadesActivasComponent implements OnInit {
+
+  public mostrarDesglose: boolean = false;
+
+  folders: FolderNiveles[] = [
+    {
+      name: 'PRINCIPAL',
+      expanded: true,
+      children: [
+        {
+          name: 'SEGUNDO NIVEL 1',
+          children: [
+            { name: 'TERCER NIVEL 1', children: [] }
+          ]
+        },
+        {
+          name: 'SEGUNDO NIVEL 2',
+          children: [
+            { name: 'TERCER NIVEL 2', children: [] },
+            { name: 'TERCER NIVEL 3', children: [] }
+          ]
+        },
+        {
+          name: 'SEGUNDO NIVEL 3',
+          children: [
+            { name: 'TERCER NIVEL 4', children: [] },
+            { name: 'TERCER NIVEL 5', children: [] },
+            { name: 'TERCER NIVEL 6', children: [] }
+          ]
+        }
+      ]
+    }
+  ];
+
 
     public bootstrapModal: any;
     public bootstrapModalRegistroArchivo: any;
@@ -70,6 +106,14 @@ declare var bootstrapArchivo: any;
 
    getLListadoUnidadesActivas(pagina: number = 1):void{
         this.httpUnidades.listadoUnidadesActivas(pagina, this.filterPost, this.padre).subscribe( (unidades) => {
+
+
+            if (unidades.statusCode == 200 && unidades.data.length == 0) {
+                console.log("entro para mostrar el desglose");
+                this.mostrarDesglose = true; // 🔥 activar vista nueva
+            } else {
+                this.mostrarDesglose = false; // 🔥 mostrar tabla normal
+            }
             this.listaUnidades = unidades;
             this.pagina = unidades.infoPagination.pagina;
         });
@@ -147,7 +191,7 @@ declare var bootstrapArchivo: any;
 
     closeModal():void{
         if (this.modalInstance) {
-          
+
             this.modalInstance.hide();
         }
     }

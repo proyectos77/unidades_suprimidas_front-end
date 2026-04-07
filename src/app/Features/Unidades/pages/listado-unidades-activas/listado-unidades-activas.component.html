@@ -24,7 +24,7 @@
                     <button type="button" class="btn btn-primary" (click)="abrirModalBuscarObservacion()">Buscar Observación</button>
                 </div>
             </div>
-      <div class="table-usuarios table-responsive content-list mt-5">
+      <div *ngIf="!mostrarDesglose" class="table-usuarios table-responsive content-list mt-5">
           <table class="table table-hover table-usuarios__tabla table-responsive table-bordered">
               <thead class="text-center table-dark">
                   <tr>
@@ -61,20 +61,45 @@
                   </tr>
               </tbody>
           </table>
+          <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
+              <ul class="pagination">
+                  <li class="page-item">
+                      <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>
+                  </li>
+
+                  <li *ngFor="let pagina of [].constructor(listaUnidades.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="listaUnidades.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+                  <li class="page-item">
+                      <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === listaUnidades.infoPagination.totalPaginas" (click)="cambiarPagina(listaUnidades.infoPagination.pagina + 1)">Siguiente</a>
+                  </li>
+              </ul>
+          </nav>
       </div>
-      <nav aria-label="..." *ngIf="pagina > 0" class="mt-5">
-          <ul class="pagination">
-              <li class="page-item">
-                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === 1" (click)="cambiarPagina(listaUnidades.infoPagination.pagina - 1)">Anterior</a>
-              </li>
-
-              <li *ngFor="let pagina of [].constructor(listaUnidades.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="listaUnidades.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
-
-              <li class="page-item">
-                  <a class="page-link" [class.disabled]="listaUnidades.infoPagination.pagina === listaUnidades.infoPagination.totalPaginas" (click)="cambiarPagina(listaUnidades.infoPagination.pagina + 1)">Siguiente</a>
-              </li>
-          </ul>
-      </nav>
+      <div *ngIf="mostrarDesglose" class="" style="margin-top: 10rem;">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="container bg-light">
+                    <div class="row">
+                      <div class="col p-3 border border-secondary text-center me-2">
+                        CAJAS: 12
+                      </div>
+                      <div class="col p-3 border border-secondary text-center me-2">
+                        CARPETAS: 600
+                      </div>
+                      <div class="col p-3 border border-secondary text-center me-2">
+                        FOLIOS: 5000
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row" style="margin-top: 5rem;">
+            <div class="col-md-12">
+                
+                 <app-archivo-unidad-activa [folders]="folders"></app-archivo-unidad-activa>
+            </div>
+          </div>
+      </div>
   </div>
 </div>
 
