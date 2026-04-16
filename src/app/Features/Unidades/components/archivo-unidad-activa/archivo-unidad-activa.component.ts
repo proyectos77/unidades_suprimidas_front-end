@@ -1,17 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { FolderNiveles } from '../../interfaces/FolderNiveles';
 
 @Component({
   selector: 'app-archivo-unidad-activa',
   standalone: true,
-  imports: [NgFor, NgIf, ArchivoUnidadActivaComponent], // 🔥 recursivo
+  imports: [ArchivoUnidadActivaComponent], // recursivo
   templateUrl: './archivo-unidad-activa.component.html',
   styleUrl: './archivo-unidad-activa.component.css'
 })
 export class ArchivoUnidadActivaComponent {
 
   @Input() folders: FolderNiveles[] = [];
+  @Input() level: number = 0;
 
   toggle(folder: FolderNiveles) {
     // 🔥 cerrar hermanos

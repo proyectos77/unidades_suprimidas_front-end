@@ -1,44 +1,138 @@
-<!-- <ul class="list-unstyled">
-  <li *ngFor="let folder of folders">
+<ul class="tree">
+  @for (folder of folders; track folder.name) {
+    <li>
+      <div (click)="toggle(folder)" class="tree-item">
+        <span class="icon">
+          @if (level === 0) {
+            <i class="fa-solid fa-table"></i>
+          } @else if (level === 1) {
+            <i class="fa-solid fa-box-archive"></i>
+          } @else if (level === 2) {
+            <i class="fa-regular fa-folder-open"></i>
+          } @else {
+            {{ folder.expanded ? '📂' : '📁' }}
+          }
+        </span>
+        <span class="label">{{ folder.name }}</span>
+      </div>
 
-    <div (click)="toggle(folder)" class="folder-item">
-      {{ folder.expanded ? '📂' : '📁' }} {{ folder.name }}
-    </div>
+      @if (folder.expanded) {
+        <div class="tree-children">
 
-    <div *ngIf="folder.expanded && folder.children.length > 0" class="ms-4">
-      <app-archivo-unidad-activa
-        [folders]="folder.children">
-      </app-archivo-unidad-activa>
-    </div>
+          <!-- Panel nivel 0 y 1: info de bodega/caja -->
+          @if (level === 0 || level === 1) {
+            <div class="info-panel mt-2 mb-3">
+              <div class="row g-2">
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">Bodega</span>
+                    <span class="info-value">{{ folder.bodega ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">Cantidad cajas</span>
+                    <span class="info-value">{{ folder.cajas ?? 0 }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">N° consecutivo bodega</span>
+                    <span class="info-value">{{ folder.consecutivoBodega ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">N° correlativo dependencia</span>
+                    <span class="info-value">{{ folder.correlativoDependencia ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">N° carpetas</span>
+                    <span class="info-value">{{ folder.carpetas ?? 0 }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">Cantidad series</span>
+                    <span class="info-value">{{ folder.cantidadSeries ?? 0 }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">Cantidad procesos</span>
+                    <span class="info-value">{{ folder.cantidadProcesos ?? 0 }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="info-item">
+                    <span class="info-label">Años</span>
+                    <span class="info-value">{{ folder.anios ?? '-' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
 
-  </li>
-</ul>
- -->
+          <!-- Panel nivel 2: info de carpeta -->
+          @if (level === 2) {
+            <div class="info-panel mt-2 mb-3">
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">N° carpeta</span>
+                    <span class="info-value">{{ folder.numeroCarpeta ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">Nombre del expediente</span>
+                    <span class="info-value">{{ folder.nombreExpediente ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">Fechas extremas</span>
+                    <span class="info-value">{{ folder.fechasExtremas ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">Folios por carpeta</span>
+                    <span class="info-value">{{ folder.folioPorCarpeta ?? 0 }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">Serie</span>
+                    <span class="info-value">{{ folder.serie ?? '-' }}</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="info-item">
+                    <span class="info-label">Subserie(s)</span>
+                    <span class="info-value">
+                      @if (folder.subseries && folder.subseries.length > 0) {
+                        @for (sub of folder.subseries; track sub) {
+                          <span class="badge-subserie">{{ sub }}</span>
+                        }
+                      } @else {
+                        -
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
 
-<div class="content-archivo-unidad container">
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="tree">
-                  <li *ngFor="let folder of folders">
+          @if (folder.children.length > 0) {
+            <app-archivo-unidad-activa [folders]="folder.children" [level]="level + 1"></app-archivo-unidad-activa>
+          }
 
-                    <div (click)="toggle(folder)" class="tree-item">
-                      <span class="icon">
-                        {{ folder.expanded ? '📂' : '📁' }}
-                      </span>
-                      <span class="label">{{ folder.name }}</span>
-                    </div>
-
-                    <div *ngIf="folder.expanded && folder.children.length > 0" class="tree-children">
-                      <app-archivo-unidad-activa
-                        [folders]="folder.children">
-                      </app-archivo-unidad-activa>
-                    </div>
-
-                  </li>
-            </ul>
         </div>
-    </div>
-
-</div>
-
-
+      }
+    </li>
+  }
+</ul>

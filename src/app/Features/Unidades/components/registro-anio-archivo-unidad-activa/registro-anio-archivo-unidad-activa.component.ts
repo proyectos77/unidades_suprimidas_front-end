@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, ReactiveFormsModule, Validators, ɵInternalFormsSharedModule } from '@angular/forms';
 import { UnidadesService } from '../../services/unidades.service';
 import { GetListadoAnios } from '../../interfaces/get-listado-anios';
@@ -19,7 +19,7 @@ import { Modal } from 'bootstrap';
 export class RegistroAnioArchivoUnidadActivaComponent implements OnInit, OnDestroy {
 
 
-    @Input() idDetalleUnidad!: number;
+    @Input() idDetalleUnidad!: number | null;
     public formularioAnioArchivo!: FormGroup;
     public anios: GetListadoAnios = {
         statusCode: 0,
@@ -29,6 +29,7 @@ export class RegistroAnioArchivoUnidadActivaComponent implements OnInit, OnDestr
     public campoAcumulado: boolean = false;
     private idDetalle: number = 0;
     private modalInstance: Modal | null = null;
+    private cdr = inject(ChangeDetectorRef);
 
     constructor(
       private form: FormBuilder,
@@ -49,10 +50,14 @@ export class RegistroAnioArchivoUnidadActivaComponent implements OnInit, OnDestr
     }
 
      listaAnios(): void {
-        this.httpUnidades.listadoAnios().subscribe((anioRegistro) => {
-            this.anios = anioRegistro;
-            console.log(this.anios);
-
+        this.httpUnidades.listadoAnios().subscribe({
+            next: (anioRegistro) => {
+                this.anios = anioRegistro;
+                this.cdr.detectChanges();
+            },
+            error: (error) => {
+                console.error('Error cargando años:', error);
+            }
         });
     }
 

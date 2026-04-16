@@ -82,19 +82,21 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
 
     ngOnInit(): void {
-        this.formularioRegistroArchivo = this.formulario();
+    this.formularioRegistroArchivo = this.formulario();
+    this.formularioAnioArchivo = this.formularioRegistroAnioArchivo(); // 👈 AQUÍ
 
+    this.listaAnios();
 
-        this.formularioRegistroArchivo.get('tipoOtro')?.valueChanges.subscribe((valor) => {
-            if (valor) {
-                this.mostrarCantidadOtro = true;
-                this.formularioRegistroArchivo.get('otros')?.enable();
-            } else {
-                this.mostrarCantidadOtro = false;
-                this.formularioRegistroArchivo.get('otros')?.disable();
-            }
-        });
-    }
+    this.formularioRegistroArchivo.get('tipoOtro')?.valueChanges.subscribe((valor) => {
+        if (valor) {
+            this.mostrarCantidadOtro = true;
+            this.formularioRegistroArchivo.get('otros')?.enable();
+        } else {
+            this.mostrarCantidadOtro = false;
+            this.formularioRegistroArchivo.get('otros')?.disable();
+        }
+    });
+}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['idUnidadActiva'] && changes['idUnidadActiva'].currentValue) {
@@ -137,8 +139,12 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     }
 
     rutaUnidadActiva(): void {
+        console.log('entro');
+
         this.httpUnidades.rutaUnidadActiva(this.idUnidadActiva).subscribe({
             next: (respuesta) => {
+                console.log(respuesta);
+
                 this.rutaUnidad = respuesta.data;
             },
             error: (error) => {

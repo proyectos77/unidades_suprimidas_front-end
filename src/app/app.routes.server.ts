@@ -24,11 +24,6 @@ export const serverRoutes: ServerRoute[] = [
       renderMode: RenderMode.Server
   },
 
-  {
-      path: 'main/unidades/registroArchivoUnidadesActivas/:id',
-      renderMode: RenderMode.Server
-  },
-
 
   {
     path: '**',

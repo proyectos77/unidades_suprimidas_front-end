@@ -1,7 +1,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalRegistroArchivoUnidadActiva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">Registro Archivo unidad activa</h5>
@@ -11,7 +11,7 @@
           <p><strong>Ruta:</strong> <span class="ruta"> {{ rutaUnidad }} </span></p>
 
            <!--*************** SECCION PARA CREAR EL ARCHIVO ***************-->
-            <div class="row mt-2">
+            <!-- <div class="row mt-2">
                 <div class="col-md-8">
                   <select name="" id="" class="form-select">
                     <option value="">Seleccione el año a registrar</option>
@@ -21,59 +21,247 @@
                 <div class="col-md-4 d-flex align-items-center justify-content-end ">
                     <button type="button" class="btn btn-primary" (click)="crearNuevoAnioArchivo()">Crear nuevo año</button>
                 </div>
-            </div>
+            </div> -->
 
-            <!--*************** SECCION PARA EL REGISTRO DEL NUEVO ANIO ***************-->
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#informacion-general" type="button" role="tab" aria-controls="home" aria-selected="true" >
+                        Informacion General
+                    </button>
+                </li>
 
-            <div class="row mt-5" *ngIf="mostrarRegistroAnioArchivo === true">
-                <p style="margin-bottom: 1rem;">Registro de Archivo</p>
-                <form action="" [formGroup]="formularioAnioArchivo">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#balda" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                        Balda
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="messages-tab" data-bs-toggle="tab"  data-bs-target="#cajas" type="button" role="tab" aria-controls="messages" aria-selected="false">
+                      Cajas
+                  </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="messages-tab" data-bs-toggle="tab"  data-bs-target="#carpetas" type="button" role="tab" aria-controls="messages" aria-selected="false">
+                      Carpetas
+                  </button>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+                <!-- Informacion General -->
+                <div class="tab-pane active" id="informacion-general" role="tabpanel" aria-labelledby="home-tab" >
+                    <form action="" >
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="" >Ubicacion</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Direccion</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Edificio</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="" >Piso</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Bodega</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Cuerpo</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Estante</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Informacion balda -->
+                <div class="tab-pane" id="balda" role="tabpanel" aria-labelledby="profile-tab"  >
+                    <form action="" >
+                        <div class="row">
+                            <!-- <div class="col-md-4">
+                                <label for="" class="form-label">* Año a registrar</label>
+
+                                <select class="form-select" >
+                                  <option value="">Seleccione</option>
+                                  <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
+                                </select>
+
+                                  @if (this.formularioAnioArchivo.get('anioRegistro')?.touched && formularioAnioArchivo.get('anioRegistro')?.errors?.['required']){
+                                      <div class="invalid-feedback" style="display: block;">
+                                          <small class="text-danger">Es necesario el año</small>
+                                      </div>
+                                  }
+                            </div> -->
+
+                            <div class="col-md-4">
+                                <label for="" >Balda</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Cantidad Cajas</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Numero consecutivo bodega</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="" >Numero correletivo dependencia</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Numero Carpetas</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Cantidad Series</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="" >Cantidad Procesos</label>
+                                <input type="number" class="form-control" name="" id="" >
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                  <label for="" class="form-label">* Año a registrar</label>
+
+                                  <select class="form-select" >
+                                    <option value="">Seleccione</option>
+                                    <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
+                                  </select>
+
+                                   <!--  @if (this.formularioAnioArchivo.get('anioRegistro')?.touched && formularioAnioArchivo.get('anioRegistro')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el año</small>
+                                        </div>
+                                    } -->
+                              </div>
+                        </div>
+                    </form>
+                </div>
+
+                  <!-- Informacion cajas -->
+                <div class="tab-pane" id="cajas" role="tabpanel" aria-labelledby="cajas-tab">
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="" class="form-label">* Año a registrar</label>
+                            <label for="" >Numero de carpeta</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
 
-                               <select class="form-select" formControlName="anioRegistro">
-                                <option value="">Seleccione</option>
-                                <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
-                              </select>
+                        <div class="col-md-4">
+                            <label for="" >Nombre del expediente</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
 
-                                @if (this.formularioAnioArchivo.get('anioRegistro')?.touched && formularioAnioArchivo.get('anioRegistro')?.errors?.['required']){
-                                    <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el año</small>
-                                    </div>
-                                }
-
-                      </div>
-
-                      <div class="col-md-4">
-                          <label for="" >Cantidad cajas</label>
-                          <input type="number" class="form-control" name="" id="" formControlName="cantidadCajas">
-                      </div>
-
-                      <div class="col-md-4">
-                          <label for="" >Cantidad carpetas</label>
-                          <input type="number" class="form-control" name="" id="" formControlName="cantidadCarpetas">
-                      </div>
-                  </div>
+                        <div class="col-md-4">
+                            <label for="" >Fecha estrema</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-md-4">
-                            <label for="" >Cantidad otros</label>
-                            <input type="number" class="form-control" name="" id="" formControlName="cantidadOtros">
+                            <label for="" >Folio por carpeta</label>
+                            <input type="number" class="form-control" name="" id="" >
                         </div>
 
                         <div class="col-md-4">
-                            <label for="" >Cantidad tomos</label>
-                            <input type="number" class="form-control" name="" id="" formControlName="cantidadTomos">
+                            <label for="" >Serie</label>
+                            <input type="number" class="form-control" name="" id="" >
                         </div>
 
                         <div class="col-md-4">
-                            <label for="" >Cantidad folios</label>
-                            <input type="number" class="form-control" name="" id="" formControlName="cantidadFolios">
+                            <label for="" >Subserie</label>
+                            <input type="number" class="form-control" name="" id="" >
                         </div>
                     </div>
-                </form>
+                </div>
+
+                   <!-- Informacion carpetas -->
+                <div class="tab-pane" id="carpetas" role="tabpanel" aria-labelledby="carpeta-tab">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="" >Numero de radicado</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="" >Fecha de elaboración</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="" >Destinatario</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="" >Asunto</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="" >Remitente</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="" >Soporte</label>
+                            <input type="number" class="form-control" name="" id="" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="" >Metadatos (De busqueda)</label>
+                            <textarea class="form-control" name="" id=""></textarea>
+                            <!-- <input type="number" class="form-control" name="" id="" > -->
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+
+            <!--*************** SECCION PARA EL REGISTRO DEL NUEVO ANIO ***************-->
+
+            <!-- <div class="row mt-5" >
+                <p style="margin-bottom: 1rem;">Registro de Archivo</p>
+
+            </div> -->
 
           <form action="" [formGroup]="formularioRegistroArchivo">
               <div class="row">
@@ -122,141 +310,6 @@
                           </tbody>
                       </table>
                   </div>
-
-
-                  <!-- SECCION PARA AJUNTAR EL ARCHIVO -->
-                   <div *ngIf="anioSeleccionado === true">
-                      <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span></p>
-                      <div class="row mt-5"><!--  *ngIf="mostrarForm" -->
-                        <div class="col-md-4">
-                            <label for="" class="form-label">* Año del archivo</label>
-                            <select class="form-select" formControlName="anioRegistro">
-                                <option value="">Seleccione</option>
-                                <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
-                            </select>
-
-                            @if (this.formularioRegistroArchivo.get('anioRegistro')?.touched && formularioRegistroArchivo.get('id_archivo')?.errors?.['required']){
-                                <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el año</small>
-                                </div>
-                            }
-
-                        </div>
-                        <div class="col-md-4">
-                            <label for="" class="form-label">* Seccion <span style="color: rgba(158, 158, 158, 0.934);">(Segun la TOE)</span></label>
-                            <input type="text" class="form-control" name="" id="" formControlName="seccion">
-
-                            @if (this.formularioRegistroArchivo.get('seccion')?.touched && formularioRegistroArchivo.get('seccion')?.errors?.['required']){
-                                <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesaria la sección</small>
-                                </div>
-                            }
-
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="" class="form-label">* Serie</label>
-                            <select class="form-select" formControlName="serie">
-                                <option value="">Seleccione</option>
-                                <option *ngFor="let serie of series.data" value="{{ serie.id_serie }}">{{ serie.nombre_serie }}</option>
-                            </select>
-
-                            @if (this.formularioRegistroArchivo.get('serie')?.touched && formularioRegistroArchivo.get('serie')?.errors?.['required']){
-                                <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo serie</small>
-                                </div>
-                            }
-                        </div>
-                      </div>
-
-                      <div class="row mt-5" ><!-- *ngIf="mostrarForm" -->
-                        <div class="col-md-4">
-                              <label for="" class="form-label">* Subseries</label>
-                              <select class="form-select" formControlName="subserie">
-                                  <option value="">Seleccione</option>
-                                  <option *ngFor="let subserie of subseries.data" value="{{ subserie.id_subserie }}">{{ subserie.nombre_subserie }}</option>
-                              </select>
-
-                              @if (this.formularioRegistroArchivo.get('subserie')?.touched && formularioRegistroArchivo.get('subserie')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario el campo subserie</small>
-                                  </div>
-                              }
-                          </div>
-                          <div class="col-md-4">
-                              <label for="" class="form-label">* Cantidad de cajas</label>
-                              <input type="number" class="form-control" formControlName="cajas">
-
-                              @if (this.formularioRegistroArchivo.get('cajas')?.touched && formularioRegistroArchivo.get('cajas')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario la cantidad de cajas</small>
-                                  </div>
-                              }
-                          </div>
-
-                          <div class="col-md-4">
-                              <label for="" class="form-label">* Cantidad de carpetas</label>
-                              <input type="number" class="form-control" formControlName="carpetas">
-
-                              @if (this.formularioRegistroArchivo.get('carpetas')?.touched && formularioRegistroArchivo.get('cantidad_carpetas')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario la cantidad de carpetas</small>
-                                  </div>
-                              }
-                          </div>
-
-                          <!-- <div class="col-md-4">
-                              <label for="" class="form-label"> Cantidad otros</label>
-                              <input type="number" class="form-control" formControlName="cantidad_otros" title="(USB,CDS, DISKETTE, DISCOS, ETC)">
-                              <div class="form-text" style="font-size: 1.2rem;">(USB,CDS, DISKETTE, DISCOS, ETC)</div>
-
-                          </div> -->
-
-                      </div>
-
-                      <div class="row mt-5" ><!-- *ngIf="mostrarForm" -->
-                        <div class="col-md-4">
-                              <label for="" class="form-label"> Cantidad tomos</label>
-                              <input type="number" class="form-control" formControlName="tomos">
-                          </div>
-                          <div class="col-md-4">
-                              <label for="" class="form-label">* Cantidad de folios</label>
-                              <input type="number" class="form-control" formControlName="folios">
-
-                              @if (this.formularioRegistroArchivo.get('folios')?.touched && formularioRegistroArchivo.get('folios')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario la cantidad de folios</small>
-                                  </div>
-                              }
-                          </div>
-
-                          <div class="col-md-4">
-                              <label for="" class="form-label">Otro</label>
-                              <select class="form-select" formControlName="tipoOtro">
-                                  <option value="">Seleccione</option>
-                                  <option *ngFor="let otro of tiposOtros.data" value="{{ otro.id_tipo_otro }}">{{ otro.nombre_tipo_otro }}</option>
-                              </select>
-                              <div class="form-text" style="font-size: 1rem;">{{ detalleOtro }}</div>
-                          </div>
-                      </div>
-
-                      <div class="row mt-5" ><!-- *ngIf="mostrarForm" -->
-
-                          <div class="col-md-3" *ngIf="formularioRegistroArchivo.get('tipoOtro')?.value">
-                              <label for="" class="form-label">Cantidad otro</label>
-                              <div class="input-group" style="">
-                                  <input type="text" class="form-control" aria-label="Recipient" formControlName="otros" >
-                                  <button class="btn btn-outline-secondary btn-sin-hover" type="button" id="button-addon2" (click)="agregarOtro()"><i class="fas fa-plus-circle fa-lg text-success"></i></button>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="row mt-5 mb-4">
-                          <div class="col-md-12 d-flex align-items-center justify-content-end ">
-                              <button type="button" class="btn btn-warning" (click)="validarForm()">Agregar +</button><!-- <i class="fas fa-plus fa-lg fa-fw"></i> -->
-                          </div>
-                      </div>
-                   </div>
 
               </div>
           </form>

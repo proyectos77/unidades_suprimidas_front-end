@@ -51,7 +51,7 @@
                           [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida'}">{{ unidad.estado }}
                       </td>
                       <td style="font-size: 1.6rem;">
-                          <i class="fa-solid fa-box-archive text-secondary" [routerLink]="['/main/unidades/registroArchivoUnidadesActivas', unidad.id_unidad]"></i>
+                          <i class="fa-solid fa-box-archive text-secondary" (click)="abrirModalRegistroArchivo(unidad.id_detalle)"></i>
                       </td>
                       <td [width]="115">
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: .5rem; font-size: .8rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button><!-- (click)="abrirModal(unidad)" -->
@@ -75,27 +75,66 @@
               </ul>
           </nav>
       </div>
-      <div *ngIf="mostrarDesglose" class="" style="margin-top: 10rem;">
+      <div *ngIf="mostrarDesglose" class="" style="margin-top: 5rem;">
           <div class="row">
               <div class="col-md-12">
                   <div class="container bg-light">
                     <div class="row">
-                      <div class="col p-3 border border-secondary text-center me-2">
-                        CAJAS: 12
-                      </div>
-                      <div class="col p-3 border border-secondary text-center me-2">
-                        CARPETAS: 600
-                      </div>
-                      <div class="col p-3 border border-secondary text-center me-2">
-                        FOLIOS: 5000
-                      </div>
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">Ubicacion:</span>
+                              <span class="info-value"> Punto Central (WGS84):N,O.</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">Direccion:</span>
+                              <span class="info-value"> Calle 123 # 45-67</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">Edificio:</span>
+                              <span class="info-value"> Edificio Principal</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">Piso:</span>
+                              <span class="info-value"> Tercero</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">Bodega:</span>
+                              <span class="info-value"> Bodega Central</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">CUERPO:</span>
+                              <span class="info-value"> CUERPO 1</span>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <div class="info-item">
+                              <span class="info-label">ESTANTE:</span>
+                              <span class="info-value"> A1</span>
+                            </div>
+                        </div>
                     </div>
                   </div>
               </div>
           </div>
           <div class="row" style="margin-top: 5rem;">
             <div class="col-md-12">
-                
+
                  <app-archivo-unidad-activa [folders]="folders"></app-archivo-unidad-activa>
             </div>
           </div>
@@ -126,7 +165,11 @@
 
 
 <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getLListadoUnidadesActivas(1)"></app-modal-editar-unidad>
+
 <app-registro-archivo-unidad-activa [idUnidadActiva]="unidadArchivo"></app-registro-archivo-unidad-activa>
+
+<!-- <app-registro-anio-archivo-unidad-activa *ngIf="idDetalle != null" [idDetalleUnidad]="idDetalle">
+</app-registro-anio-archivo-unidad-activa> -->
 
   <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
 
