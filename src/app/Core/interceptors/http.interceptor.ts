@@ -26,7 +26,9 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
               window.location.href = '/login';
           }else if (err.statusCode === 404) {
               sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
-          }else if (err.statusCode === 422) {
+          }/* else if (err.statusCode === 422) {
+              sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
+          } */else if (err.statusCode === 500) {
               sweet.alertaGeneral(err.icono || 'error', err.titulo || 'Error', err.mensaje);
           }
       } else {

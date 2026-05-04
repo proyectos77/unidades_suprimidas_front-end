@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environment/environment.staging';
+import { environment } from '../../../environment/environment.staging';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ListadoSeries } from '../interfaces/listado-series';
-import { ListadoSubseries } from '../interfaces/listado-subseries';
+import { ListadoSeries } from '../../Features/Transferencias/interfaces/listado-series';
+import { ListadoSubseries } from '../../Features/Transferencias/interfaces/listado-subseries';
 
 @Injectable({
   providedIn: 'root'

@@ -1,138 +1,135 @@
-<ul class="tree">
-  @for (folder of folders; track folder.name) {
-    <li>
-      <div (click)="toggle(folder)" class="tree-item">
-        <span class="icon">
-          @if (level === 0) {
-            <i class="fa-solid fa-table"></i>
-          } @else if (level === 1) {
-            <i class="fa-solid fa-box-archive"></i>
-          } @else if (level === 2) {
-            <i class="fa-regular fa-folder-open"></i>
-          } @else {
-            {{ folder.expanded ? '📂' : '📁' }}
-          }
-        </span>
-        <span class="label">{{ folder.name }}</span>
-      </div>
-
-      @if (folder.expanded) {
-        <div class="tree-children">
-
-          <!-- Panel nivel 0 y 1: info de bodega/caja -->
-          @if (level === 0 || level === 1) {
-            <div class="info-panel mt-2 mb-3">
-              <div class="row g-2">
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">Bodega</span>
-                    <span class="info-value">{{ folder.bodega ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">Cantidad cajas</span>
-                    <span class="info-value">{{ folder.cajas ?? 0 }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">N° consecutivo bodega</span>
-                    <span class="info-value">{{ folder.consecutivoBodega ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">N° correlativo dependencia</span>
-                    <span class="info-value">{{ folder.correlativoDependencia ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">N° carpetas</span>
-                    <span class="info-value">{{ folder.carpetas ?? 0 }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">Cantidad series</span>
-                    <span class="info-value">{{ folder.cantidadSeries ?? 0 }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">Cantidad procesos</span>
-                    <span class="info-value">{{ folder.cantidadProcesos ?? 0 }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-3">
-                  <div class="info-item">
-                    <span class="info-label">Años</span>
-                    <span class="info-value">{{ folder.anios ?? '-' }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-
-          <!-- Panel nivel 2: info de carpeta -->
-          @if (level === 2) {
-            <div class="info-panel mt-2 mb-3">
-              <div class="row g-2">
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">N° carpeta</span>
-                    <span class="info-value">{{ folder.numeroCarpeta ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">Nombre del expediente</span>
-                    <span class="info-value">{{ folder.nombreExpediente ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">Fechas extremas</span>
-                    <span class="info-value">{{ folder.fechasExtremas ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">Folios por carpeta</span>
-                    <span class="info-value">{{ folder.folioPorCarpeta ?? 0 }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">Serie</span>
-                    <span class="info-value">{{ folder.serie ?? '-' }}</span>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="info-item">
-                    <span class="info-label">Subserie(s)</span>
-                    <span class="info-value">
-                      @if (folder.subseries && folder.subseries.length > 0) {
-                        @for (sub of folder.subseries; track sub) {
-                          <span class="badge-subserie">{{ sub }}</span>
-                        }
-                      } @else {
-                        -
-                      }
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-
-          @if (folder.children.length > 0) {
-            <app-archivo-unidad-activa [folders]="folder.children" [level]="level + 1"></app-archivo-unidad-activa>
-          }
-
+  <hr>
+  <ul class="tree">
+    @for (folder of folders; track folder.name) {
+      <li>
+        <div (click)="toggle(folder)" class="tree-item" [class.tree-item-level-0]="level === 0" [class.tree-item-level-1]="level === 1" [class.tree-item-level-2]="level === 2" [class.tree-item-level-3]="level === 3" [class.tree-item-level-4]="level === 4">
+          <span class="icon">
+            @if (level === 0) {
+              <i class="fa-solid fa-store"></i>
+            } @else if (level === 1) {
+              <i class="fa-solid fa-building"></i>
+            } @else if (level === 2) {
+              <i class="fa-solid fa-table-cells-large"></i>
+            } @else if (level === 3) {
+              <i class="fa-solid fa-box"></i>
+            } @else if (level === 4) {
+              <i class="fa-solid fa-folder"></i>
+            } @else {
+              {{ folder.expanded ? '📂' : '📁' }}
+            }
+          </span>
+          <span class="label">{{ folder.name }}</span>
         </div>
-      }
-    </li>
-  }
-</ul>
+
+        @if (folder.expanded) {
+          <div class="tree-children">
+
+            @if (!folder.childrenLoaded) {
+              <div class="loading-indicator" style="padding: 1rem; text-align: center; color: #999;">
+                <small>Cargando...</small>
+              </div>
+            }
+
+            <!-- Panel nivel 3: info de caja -->
+            @if (level === 3) {
+              <div class="info-panel mt-2 mb-3">
+                <div class="row g-2">
+                  <div class="col-6 col-md-3">
+                    <div class="info-item">
+                      <span class="info-label">N° consecutivo bodega</span>
+                      <span class="info-value">{{ folder.consecutivoBodega ?? '-' }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="info-item">
+                      <span class="info-label">N° correlativo dependencia</span>
+                      <span class="info-value">{{ folder.correlativoDependencia ?? '-' }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="info-item">
+                      <span class="info-label">Año</span>
+                      <span class="info-value">{{ folder.anios ?? '-' }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="info-item">
+                      <span class="info-label">Cantidad carpetas</span>
+                      <span class="info-value">{{ folder.carpetas ?? 0 }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="info-item">
+                      <span class="info-label">Cantidad libros</span>
+                      <span class="info-value">{{ folder.cajas ?? 0 }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Panel nivel 4: info de carpeta -->
+            @if (level === 4) {
+              <div class="info-panel mt-2 mb-3">
+                <div class="row g-2">
+                  <div class="col-6 col-md-4">
+                    <div class="info-item">
+                      <span class="info-label">N° carpeta</span>
+                      <span class="info-value">{{ folder.numeroCarpeta ?? '-' }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="info-item">
+                      <span class="info-label">Serie</span>
+                      <span class="info-value">{{ folder.serie ?? '-' }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="info-item">
+                      <span class="info-label">Subserie(s)</span>
+                      <span class="info-value">
+                        @if (folder.subseries && folder.subseries.length > 0) {
+                        @for (sub of folder.subseries; track sub) {
+                        <span class="badge-subserie">{{ sub }}</span>
+                        }
+                        } @else {
+                        -
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="info-item">
+                      <span class="info-label">Folios por carpeta</span>
+                      <span class="info-value">{{ folder.folioPorCarpeta ?? 0 }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="info-item">
+                      <span class="info-label">Fechas extremas</span>
+                      <span class="info-value">{{ folder.fechasExtremas ?? '-' }}</span>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            }
+
+            @if (folder.children.length > 0) {
+              <app-archivo-unidad-activa
+                [folders]="folder.children"
+                [level]="level + 1"
+                [idUnidad]="idUnidad"
+                [onLoadEstantes]="onLoadEstantes"
+                [onLoadBaldas]="onLoadBaldas"
+                [onLoadCajas]="onLoadCajas"
+                [onLoadCarpetas]="onLoadCarpetas">
+              </app-archivo-unidad-activa>
+            }
+
+          </div>
+        }
+      </li>
+    }
+  </ul>

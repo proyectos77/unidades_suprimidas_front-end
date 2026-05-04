@@ -7,7 +7,7 @@ import { LsitadoArchivoPorUnidad } from '../../interfaces/lsitado-archivo-por-un
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreSolicitudTransferencia } from '../../interfaces/store-solicitud-transferencia';
 import { Subject, takeUntil } from 'rxjs';
-import { SeriesSubseriesService } from '../../services/series-subseries.service';
+import { SeriesSubseriesService } from '../../../../Core/services/series-subseries.service';
 import { ListadoSeries } from '../../interfaces/listado-series';
 import { ListadoSubseries } from '../../interfaces/listado-subseries';
 import { LoginService } from '../../../../Auth/services/login.service';

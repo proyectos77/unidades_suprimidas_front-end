@@ -50,13 +50,56 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 8px 12px;
   border-radius: 6px;
   transition: 0.2s;
+  margin: 4px 0;
 }
 
-.tree-item:hover {
-  background-color: #f5f7fa;
+/* Colores pastel por nivel */
+.tree-item-level-0 {
+  background-color: #e8f4f8;
+  border-left: 5px solid #81d4fa;
+}
+
+.tree-item-level-0:hover {
+  background-color: #d0e8f2;
+}
+
+.tree-item-level-1 {
+  background-color: #e8f5e9;
+  border-left: 5px solid #81c784;
+}
+
+.tree-item-level-1:hover {
+  background-color: #c8e6c9;
+}
+
+.tree-item-level-2 {
+  background-color: #fffde7;
+  border-left: 5px solid #fdd835;
+}
+
+.tree-item-level-2:hover {
+  background-color: #fffd9e;
+}
+
+.tree-item-level-3 {
+  background-color: #fce4ec;
+  border-left: 5px solid #f06292;
+}
+
+.tree-item-level-3:hover {
+  background-color: #f8bbd0;
+}
+
+.tree-item-level-4 {
+  background-color: #ffe0b2;
+  border-left: 5px solid #ffb74d;
+}
+
+.tree-item-level-4:hover {
+  background-color: #ffcc80;
 }
 
 /* ICONO */

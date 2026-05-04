@@ -7,7 +7,7 @@ import { ListadoDetalleSolicitud, Datum } from '../../interfaces/listado-detalle
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { ListadoDocumentosDetalle } from '../../interfaces/listado-documentos-detalle';
 import { UrlDocumentosPipe } from '../../../../Shared/Pipes/url-documentos.pipe';
-import { SeriesSubseriesService } from '../../services/series-subseries.service';
+import { SeriesSubseriesService } from '../../../../Core/services/series-subseries.service';
 import { ListadoSeries } from '../../interfaces/listado-series';
 import { ListadoSubseries } from '../../interfaces/listado-subseries';
 import { TransferenciasService } from '../../services/transferencias.service';

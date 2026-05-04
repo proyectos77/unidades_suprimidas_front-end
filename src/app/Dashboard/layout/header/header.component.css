@@ -1,19 +1,22 @@
 .header{
-    /* background-image: url(../../../../../public/imagenes/pagina/fondoLogin.png); */
-    background-color: var(--colorBanner-Menu);
+    background-image: url(../../../../../public/imagenes/pagina/baner-superior-2@2x.png);
+
+    /* background-color: var(--colorBanner-Menu); */
     height: 100%;
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 3rem;
+    padding: 3rem 3rem;
 
 }
 
 .header__texto {
-    width: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .header__texto img{
@@ -24,7 +27,7 @@
    color: var(--blanco);
    font-family: var(--titulos);
     font-weight: 900;
-    font-size: 2.1rem;
+    font-size: 2.7rem;
 }
 .header__opcion{
     width: 30%;

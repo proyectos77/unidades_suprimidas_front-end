@@ -7,7 +7,11 @@
     align-items: center;
     row-gap: 2rem;
     box-shadow: var(--shadow);
-    background-color: var(--colorBanner-Menu);
+    background-image: url(../../../../../public/imagenes/pagina/baner-izquierdo-2@2x.png);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* background-color: var(--colorBanner-Menu); */
     /* border-radius: 1rem; */
 }
 

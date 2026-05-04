@@ -1,324 +1,439 @@
-
 <!-- Modal -->
-<div class="modal fade" id="modalRegistroArchivoUnidadActiva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Registro Archivo unidad activa</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="limpiarForm()"></button>
-      </div>
-      <div class="modal-body">
-          <p><strong>Ruta:</strong> <span class="ruta"> {{ rutaUnidad }} </span></p>
-
-           <!--*************** SECCION PARA CREAR EL ARCHIVO ***************-->
-            <!-- <div class="row mt-2">
-                <div class="col-md-8">
-                  <select name="" id="" class="form-select">
-                    <option value="">Seleccione el año a registrar</option>
-                  </select>
+<div class="modal fade" id="modalRegistroArchivoUnidadActiva" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro Archivo unidad activa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- (click)="limpiarForm()" -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p><strong>Ruta:</strong> <span class="ruta"> {{ rutaUnidad }} </span></p>
+                    </div>
                 </div>
 
-                <div class="col-md-4 d-flex align-items-center justify-content-end ">
-                    <button type="button" class="btn btn-primary" (click)="crearNuevoAnioArchivo()">Crear nuevo año</button>
-                </div>
-            </div> -->
+                <div class="row mt-4">
+                    <div class="col-md-12">
 
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#informacion-general" type="button" role="tab" aria-controls="home" aria-selected="true" >
-                        Informacion General
-                    </button>
-                </li>
+                      <!-- Cabeceras -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" #informacionGeneral id="home-tab" data-bs-toggle="tab" data-bs-target="#informacion-general" type="button" role="tab" aria-controls="home" aria-selected="true"> Información General</button>
+                            </li>
 
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#balda" type="button" role="tab" aria-controls="profile" aria-selected="false">
-                        Balda
-                    </button>
-                </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled"  #cajas id="messages-tab" data-bs-toggle="tab" data-bs-target="#cajas" type="button" role="tab" aria-controls="messages" aria-selected="false">Cajas</button>
+                            </li>
 
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="messages-tab" data-bs-toggle="tab"  data-bs-target="#cajas" type="button" role="tab" aria-controls="messages" aria-selected="false">
-                      Cajas
-                  </button>
-                </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled" #carpetas id="messages-tab" data-bs-toggle="tab" data-bs-target="#carpetas" type="button" role="tab" aria-controls="messages" aria-selected="false"> Carpetas</button>
+                            </li>
+                        </ul>
 
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="messages-tab" data-bs-toggle="tab"  data-bs-target="#carpetas" type="button" role="tab" aria-controls="messages" aria-selected="false">
-                      Carpetas
-                  </button>
-                </li>
-            </ul>
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                          <!-- Informacion General -->
+                          <div class="tab-pane active" id="informacion-general" role="tabpanel" aria-labelledby="home-tab">
+                              <form action="" [formGroup]="formularioInfoGeneral">
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Ubicacion (Coordenadas)</label>
+                                        <input type="text" class="form-control" formControlName="ubicacion">
+                                        @if (this.formularioInfoGeneral.get('ubicacion')?.touched && formularioInfoGeneral.get('ubicacion')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo ubicacion</small>
+                                            </div>
+                                        }
+                                    </div>
 
-            <!-- Tab panes -->
-            <div class="tab-content">
+                                    <div class="col-md-4">
+                                        <label for="">Direccion</label>
+                                        <input type="text" class="form-control" formControlName="direccion">
+                                        @if (this.formularioInfoGeneral.get('direccion')?.touched && this.formularioInfoGeneral.get('direccion')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo direccion</small>
+                                            </div>
+                                        }
+                                    </div>
 
-                <!-- Informacion General -->
-                <div class="tab-pane active" id="informacion-general" role="tabpanel" aria-labelledby="home-tab" >
-                    <form action="" >
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="" >Ubicacion</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
+                                    <div class="col-md-4">
+                                        <label for="">Edificio</label>
+                                        <input type="text" class="form-control" formControlName="edificio">
+                                        @if (this.formularioInfoGeneral.get('edificio')?.touched && this.formularioInfoGeneral.get('edificio')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo edificio</small>
+                                            </div>
+                                        }
+                                    </div>
+                                  </div>
 
-                            <div class="col-md-4">
-                                <label for="" >Direccion</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label for="">Piso</label>
+                                        <input type="text" class="form-control" formControlName="piso">
+                                        @if (this.formularioInfoGeneral.get('piso')?.touched && this.formularioInfoGeneral.get('piso')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo piso</small>
+                                            </div>
+                                        }
+                                    </div>
 
-                            <div class="col-md-4">
-                                <label for="" >Edificio</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
+                                    <div class="col-md-4">
+                                        <label for="">Bodega</label>
+                                        <input type="text" class="form-control" formControlName="bodega">
+                                        @if (this.formularioInfoGeneral.get('bodega')?.touched && this.formularioInfoGeneral.get('bodega')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo bodega</small>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row mt-5" *ngIf="mostrarBtnIformacion == true">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary" (click)="validarFormInformacionGeneral()">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
 
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                <label for="" >Piso</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Bodega</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Cuerpo</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Estante</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Informacion balda -->
-                <div class="tab-pane" id="balda" role="tabpanel" aria-labelledby="profile-tab"  >
-                    <form action="" >
-                        <div class="row">
-                            <!-- <div class="col-md-4">
-                                <label for="" class="form-label">* Año a registrar</label>
-
-                                <select class="form-select" >
-                                  <option value="">Seleccione</option>
-                                  <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
-                                </select>
-
-                                  @if (this.formularioAnioArchivo.get('anioRegistro')?.touched && formularioAnioArchivo.get('anioRegistro')?.errors?.['required']){
+                        <!-- Informacion caja -->
+                        <div class="tab-pane" id="cajas" role="tabpanel" aria-labelledby="profile-tab">
+                            <form action="" [formGroup]="formularioRegistroCaja">
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label for="">Cuerpo</label>
+                                  <select class="form-select" formControlName="cuerpo" *ngIf="cuerpos.data.length > 0">
+                                    <option value="">Seleccione el cuerpo</option>
+                                    <option *ngFor="let cuerpo of cuerpos.data" [value]="cuerpo.id_cuerpo">{{ cuerpo.nombre_cuerpo
+                                      }}</option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('cuerpo')?.touched && this.formularioRegistroCaja.get('cuerpo')?.errors?.['required']){
                                       <div class="invalid-feedback" style="display: block;">
-                                          <small class="text-danger">Es necesario el año</small>
+                                        <small class="text-danger">Es necesario el campo cuerpo</small>
                                       </div>
                                   }
-                            </div> -->
+                                </div>
 
-                            <div class="col-md-4">
-                                <label for="" >Balda</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Cantidad Cajas</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Numero consecutivo bodega</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                <label for="" >Numero correletivo dependencia</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Numero Carpetas</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Cantidad Series</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="" >Cantidad Procesos</label>
-                                <input type="number" class="form-control" name="" id="" >
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                  <label for="" class="form-label">* Año a registrar</label>
-
-                                  <select class="form-select" >
-                                    <option value="">Seleccione</option>
-                                    <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
+                                <div class="col-md-4">
+                                  <label for="">Estante</label>
+                                  <select class="form-select" formControlName="estante">
+                                    <option value="">Seleccione el estante</option>
+                                    <option *ngFor="let estante of estantes.data" [value]="estante.id_estante">{{
+                                      estante.nombre_estante }}</option>
                                   </select>
+                                  @if (this.formularioRegistroCaja.get('estante')?.touched &&
+                                  this.formularioRegistroCaja.get('estante')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo estante</small>
+                                  </div>
+                                  }
+                                </div>
 
-                                   <!--  @if (this.formularioAnioArchivo.get('anioRegistro')?.touched && formularioAnioArchivo.get('anioRegistro')?.errors?.['required']){
-                                        <div class="invalid-feedback" style="display: block;">
-                                            <small class="text-danger">Es necesario el año</small>
-                                        </div>
-                                    } -->
+                                <div class="col-md-4">
+                                  <label for="">Balda</label>
+                                  <select class="form-select" formControlName="baldas">
+                                    <option value="">Seleccione la balda</option>
+                                    <option *ngFor="let balda of baldas.data" [value]="balda.id_balda">{{ balda.nombre_balda }}
+                                    </option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('baldas')?.touched &&
+                                  this.formularioRegistroCaja.get('baldas')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo balda</small>
+                                  </div>
+                                  }
+                                </div>
                               </div>
+
+                              <div class="row mt-4">
+                                <div class="col-md-4">
+                                  <label for="">Codigo caja</label>
+                                  <input type="text" class="form-control" formControlName="codigoCaja">
+                                  @if (this.formularioRegistroCaja.get('codigoCaja')?.touched &&
+                                  this.formularioRegistroCaja.get('codigoCaja')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo codigo caja</small>
+                                  </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Numero consecutivo bodega</label>
+                                  <input type="text" class="form-control" formControlName="numeroConsecutivoBodega">
+                                  @if (this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.touched &&
+                                  this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo numero consecutivo bodega</small>
+                                  </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Numero correlativo dependencia</label>
+                                  <input type="text" class="form-control" formControlName="numeroCorrelativoDependencia">
+                                  @if (this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.touched && this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo numero correlativo dependencia</small>
+                                  </div>
+                                  }
+                                </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                <div class="col-md-4">
+                                  <label for="">Año</label>
+                                  <select class="form-select" formControlName="anio">
+                                    <option value="">Seleccione el año</option>
+                                    <option *ngFor="let anio of anios.data" [value]="anio">{{ anio }}</option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('anio')?.touched &&
+                                  this.formularioRegistroCaja.get('anio')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo año</small>
+                                  </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Cantidad Libros</label>
+                                  <input type="text" class="form-control" formControlName="libros">
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Cantidad Carpetas</label>
+                                  <input type="text" class="form-control" formControlName="carpetas">
+                                  @if (this.formularioRegistroCaja.get('carpetas')?.touched &&
+                                  this.formularioRegistroCaja.get('carpetas')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo cantidad carpetas</small>
+                                  </div>
+                                  }
+                                </div>
+                              </div>
+
+
+                              <div class="row mt-4">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-warning" (click)="agregarCajaAgrupada()">Agregar
+                                    caja</button>
+                                </div>
+                              </div>
+
+                              <div class="row mt-4" *ngIf="cajasAgrupadas.cajas.length > 0">
+                                <div class="col-md-12">
+                                  <h6>Cajas agrupadas (máx. 4):</h6>
+                                  <table class="table table-bordered table-sm">
+                                    <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Balda</th>
+                                        <th>Código Caja</th>
+                                        <th>Consec. Bodega</th>
+                                        <th>Correl. Dependencia</th>
+                                        <th>Año</th>
+                                        <th>Libros</th>
+                                        <th>Carpetas</th>
+                                        <th>Acción</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let caja of cajasAgrupadas.cajas; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ caja.baldas }}</td>
+                                        <td>{{ caja.codigoCaja }}</td>
+                                        <td>{{ caja.numeroConsecutivoBodega }}</td>
+                                        <td>{{ caja.numeroCorrelativoDependencia }}</td>
+                                        <td>{{ caja.anio }}</td>
+                                        <td>{{ caja.libros }}</td>
+                                        <td>{{ caja.carpetas }}</td>
+                                        <td><button type="button" class="btn btn-danger btn-sm"
+                                            (click)="eliminarCajaAgrupada(i)">Eliminar</button></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="row mt-4">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success" [disabled]="cajasAgrupadas.cajas.length === 0"
+                                    (click)="registrarCajasAgrupadas()">Registrar grupo de cajas</button>
+                                </div>
+                              </div>
+                            </form>
                         </div>
-                    </form>
+
+                        <!-- Informacion carpetas -->
+                        <div class="tab-pane" id="carpetas" role="tabpanel" aria-labelledby="carpeta-tab">
+                          <form [formGroup]="formularioRegistroCarpeta">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                    <label for="">Caja</label>
+                                    <select class="form-select" formControlName="caja" [disabled]="cargandoCajas">
+                                      <option value="">{{ cargandoCajas ? 'Cargando cajas...' : 'Seleccione la caja' }}</option>
+                                      <option *ngFor="let caja of listadoCajas.data" [value]="caja.idCajaUnidadActiva">{{ caja.labelJerarquico || caja.codigoCajaUnidadActiva }}</option>
+                                    </select>
+                                    @if (this.formularioRegistroCarpeta.get('caja')?.touched &&
+                                    this.formularioRegistroCarpeta.get('caja')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el campo caja</small>
+                                        </div>
+                                    }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Serie</label>
+                                    <select class="form-select" formControlName="serie">
+                                      <option value="">Seleccione la serie</option>
+                                      <option *ngFor="let serie of series.data" [value]="serie.id_serie">{{ serie.nombre_serie }}</option>
+                                    </select>
+                                    @if (this.formularioRegistroCarpeta.get('serie')?.touched &&
+                                    this.formularioRegistroCarpeta.get('serie')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el campo serie</small>
+                                        </div>
+                                    }
+
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <label for="">Subserie</label>
+                                      <select class="form-select" formControlName="subserie" >
+                                          <option value="">Seleccione la subserie</option>
+                                          <option *ngFor="let subserie of subseries.data" [value]="subserie.id_subserie">{{ subserie.nombre_subserie }}</option>
+                                      </select>
+                                      @if (this.formularioRegistroCarpeta.get('subserie')?.touched &&
+                                      this.formularioRegistroCarpeta.get('subserie')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo subserie</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-4">
+                                      <label for="">Numero de carpeta</label>
+                                      <input type="text" class="form-control" formControlName="numeroCarpeta">
+                                      @if (this.formularioRegistroCarpeta.get('numeroCarpeta')?.touched &&
+                                      this.formularioRegistroCarpeta.get('numeroCarpeta')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo numero de carpeta</small>
+                                          </div>
+                                      }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <label for="">Fecha extrema inicio</label>
+                                      <input type="date" class="form-control" formControlName="fechaExtremaInicio">
+                                      @if (this.formularioRegistroCarpeta.get('fechaExtremaInicio')?.touched &&
+                                      this.formularioRegistroCarpeta.get('fechaExtremaInicio')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo fecha extrema inicio</small>
+                                          </div>
+                                      }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Fecha extrema fin</label>
+                                    <input type="date" class="form-control"
+                                      formControlName="fechaExtremaFin">
+                                      @if (this.formularioRegistroCarpeta.get('fechaExtremaFin')?.touched &&
+                                      this.formularioRegistroCarpeta.get('fechaExtremaFin')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo fecha extrema fin</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-4">
+                                    <label for="">Cantidad de folios</label>
+                                    <input type="number" class="form-control"
+                                      formControlName="cantidadFolios">
+                                      @if (this.formularioRegistroCarpeta.get('cantidadFolios')?.touched &&
+                                      this.formularioRegistroCarpeta.get('cantidadFolios')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo cantidad de folios</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-12 d-flex justify-content-end">
+                                      <button type="button" class="btn btn-warning" (click)="agregarCarpetaAgrupada()">Agregar carpeta</button>
+                                  </div>
+                              </div>
+                          </form>
+
+                          <!-- Tabla de carpetas agrupadas -->
+                          <div class="row mt-4" *ngIf="carpetasAgrupadas.carpetas.length > 0">
+                              <div class="col-md-12">
+                                  <h6>Carpetas agrupadas:</h6>
+                                  <table class="table table-bordered table-sm">
+                                      <thead>
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Caja</th>
+                                              <th>Subserie</th>
+                                              <th>N° Carpeta</th>
+                                              <th>Fecha Inicio</th>
+                                              <th>Fecha Fin</th>
+                                              <th>Folios</th>
+                                              <th>Acción</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor="let carpeta of carpetasAgrupadas.carpetas; let i = index">
+                                              <td>{{ i + 1 }}</td>
+                                              <td>{{ carpeta.nombreCaja }}</td>
+                                              <td>{{ carpeta.subserie }}</td>
+                                              <td>{{ carpeta.numeroCarpeta }}</td>
+                                              <td>{{ carpeta.fechaExtremaInicio }}</td>
+                                              <td>{{ carpeta.fechaExtremaFin }}</td>
+                                              <td>{{ carpeta.cantidadFolios }}</td>
+                                              <td><button type="button" class="btn btn-danger btn-sm" (click)="eliminarCarpetaAgrupada(i)">Eliminar</button></td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                          <div class="row mt-4">
+                              <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success" [disabled]="carpetasAgrupadas.carpetas.length === 0" (click)="registrarCarpetasAgrupadas()">Registrar grupo de carpetas</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
 
-                  <!-- Informacion cajas -->
-                <div class="tab-pane" id="cajas" role="tabpanel" aria-labelledby="cajas-tab">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="" >Numero de carpeta</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Nombre del expediente</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Fecha estrema</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label for="" >Folio por carpeta</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Serie</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Subserie</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
-                    </div>
-                </div>
 
-                   <!-- Informacion carpetas -->
-                <div class="tab-pane" id="carpetas" role="tabpanel" aria-labelledby="carpeta-tab">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="" >Numero de radicado</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
+              <!--*************** SECCION PARA EL REGISTRO DEL NUEVO ANIO ***************-->
 
-                        <div class="col-md-4">
-                            <label for="" >Fecha de elaboración</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
+              <!-- <div class="row mt-5" >
+                      <p style="margin-bottom: 1rem;">Registro de Archivo</p>
 
-                        <div class="col-md-4">
-                            <label for="" >Destinatario</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
-                    </div>
+                  </div> -->
 
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label for="" >Asunto</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Remitente</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
 
-                        <div class="col-md-4">
-                            <label for="" >Soporte</label>
-                            <input type="number" class="form-control" name="" id="" >
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="" >Metadatos (De busqueda)</label>
-                            <textarea class="form-control" name="" id=""></textarea>
-                            <!-- <input type="number" class="form-control" name="" id="" > -->
-                        </div>
-                    </div>
-                </div>
             </div>
-
-
-
-            <!--*************** SECCION PARA EL REGISTRO DEL NUEVO ANIO ***************-->
-
-            <!-- <div class="row mt-5" >
-                <p style="margin-bottom: 1rem;">Registro de Archivo</p>
-
-            </div> -->
-
-          <form action="" [formGroup]="formularioRegistroArchivo">
-              <div class="row">
-                  <div class="col-md-12 formulario__texto">
-
-                  </div>
-              </div>
-              <div class="row mt-5">
-
-                  <!-- TABLA CON EL ADJUNTO DE LOS ARCHIVOS -->
-                  <div class="contentTablaRegistro">
-                      <table class="table table-bordered mt-5" *ngIf="solicitudesLegibles.length > 0">
-                          <thead class="table-light">
-                              <tr>
-                                <th>#</th>
-                                <th>Sección</th>
-                                <th>Serie</th>
-                                <th>Subserie</th>
-                                <th>Cajas</th>
-                                <th>Carpetas</th>
-                                <th>Folios</th>
-                                <th>Otros</th>
-                                <th>Tomos</th>
-                                <th>Eliminar</th>
-                                <!-- <th>Documentos</th> -->
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr *ngFor="let item of solicitudesLegibles; let i = index">
-                                  <td>{{ i + 1 }}</td>
-                                  <td>{{ item.seccion }}</td>
-                                  <td>{{ item.nombre_serie }}</td>
-                                  <td>{{ item.nombre_subserie }}</td>
-                                  <td>{{ item.cantidad_cajas }}</td>
-                                  <td>{{ item.cantidad_carpetas }}</td>
-                                  <td>{{ item.cantidad_folios }}</td>
-                                  <td>{{ item.descripcion_otro || '-' }}</td>
-                                  <td>{{ item.cantidad_tomos || '-' }}</td>
-                                  <td class="text-center"> <button type="button" class="btn btn-danger" (click)="eliminar(i)" style="height: 2rem; padding: 0 .5rem; margin: 0;" ><i class="fas fa-minus"></i></button></td><!--  -->
-                                  <!-- <td>
-                                    <ul class="mb-0">
-                                      <li *ngFor="let doc of item.documentos">{{ doc.name }}</li>
-                                    </ul>
-                                  </td> -->
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-
-              </div>
-          </form>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarForm()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="enviarRegistros()">Registrar</button>
-      </div>
+          <!--  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarForm()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="enviarRegistros()">Registrar</button>
+          </div> -->
+        </div>
     </div>
-  </div>
+    <app-loader [isLoading]="loading"></app-loader>
 </div>
+

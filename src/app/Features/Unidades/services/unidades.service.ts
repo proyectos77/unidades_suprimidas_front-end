@@ -16,6 +16,7 @@ import { RespuestaRegistroArchivoUnidadActiva } from '../interfaces/respuesta-re
 import { SetRegistroArchivoUnidadActiva } from '../interfaces/set-registro-archivo-unidad-activa';
 import { GetRutaUnidadActiva } from '../interfaces/get-ruta-unidad-activa';
 import { ListadoUnidadesPadreActivas } from '../interfaces/listado-unidades-padre-activas';
+import { StoreInformacionGeneralArchivoUnidadACtva } from '../interfaces/store-informacion-general-archivo-unidad-actva';
 
 @Injectable({
   providedIn: 'root'
@@ -107,7 +108,7 @@ export class UnidadesService {
         return this.httpUnidades.get<GetAllListadoUnidadesActivas>(urlFinal);
     }
 
-    storeRegistroArchivoUnidadActiva(data: SetRegistroArchivoUnidadActiva[]):Observable<RespuestaRegistroArchivoUnidadActiva>{
+    storeRegistroArchivoUnidadActiva(data: StoreInformacionGeneralArchivoUnidadACtva):Observable<RespuestaRegistroArchivoUnidadActiva>{
         let urlFinal = this.urlList + '/archivoUnidadesActivas';
         return this.httpUnidades.post<RespuestaRegistroArchivoUnidadActiva>(urlFinal, data);
     }

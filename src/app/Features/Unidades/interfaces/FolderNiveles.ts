@@ -3,6 +3,14 @@ export interface FolderNiveles {
   name: string;
   expanded?: boolean;
   children: FolderNiveles[];
+  childrenLoaded?: boolean;
+  parent?: FolderNiveles;  // Referencia al padre para actualizar nombres
+  // IDs para lazy-loading
+  cuerpoId?: number;
+  estanteId?: number;
+  baldaId?: number;
+  cajaId?: number;
+  carpetaId?: number;
   // Nivel 0 y 1 (BALDA / Cajas)
   cajas?: number;
   carpetas?: number;

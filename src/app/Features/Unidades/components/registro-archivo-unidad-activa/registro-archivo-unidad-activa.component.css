@@ -1,4 +1,24 @@
-.ruta{
+.ruta {
     font-size: 1.2rem;
+    color: #555;
+}
+
+/* Estilos para el select de cajas con información jerárquica */
+.form-select option {
+    padding: 8px 12px;
+    line-height: 1.5;
+    word-spacing: 2px;
+}
+
+.form-select option:hover {
+    background-color: #e9ecef;
+}
+
+.form-select {
+    font-size: 13px;
+    color: #666;
+}
+
+.form-select option {
     color: #555;
 }

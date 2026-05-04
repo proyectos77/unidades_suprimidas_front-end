@@ -51,12 +51,12 @@
                           [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida'}">{{ unidad.estado }}
                       </td>
                       <td style="font-size: 1.6rem;">
-                          <i class="fa-solid fa-box-archive text-secondary" (click)="abrirModalRegistroArchivo(unidad.id_detalle)"></i>
+                          <i class="fa-solid fa-box-archive text-secondary" (click)="abrirModalRegistroArchivo(unidad.id_unidad)"></i>
                       </td>
                       <td [width]="115">
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: .5rem; font-size: .8rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button><!-- (click)="abrirModal(unidad)" -->
                           <button type="button" title="Activar/Inactivar" class="btn btn-danger" style="font-size: .8rem;" *ngIf="rolUser == 1" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: .5rem; font-size: .8rem; color: white;" [routerLink]="['/main/unidades/informacionUnidad', unidad.id_unidad]"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: .5rem; font-size: .8rem; color: white;" (click)="desgloseUnidad(unidad.id_unidad)"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
                       </td>
                   </tr>
               </tbody>
@@ -75,69 +75,124 @@
               </ul>
           </nav>
       </div>
+
+
       <div *ngIf="mostrarDesglose" class="" style="margin-top: 5rem;">
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="container bg-light">
-                    <div class="row">
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">Ubicacion:</span>
-                              <span class="info-value"> Punto Central (WGS84):N,O.</span>
-                            </div>
-                        </div>
+          @if (archivoNoRegistrado) {
+              <div class="alert alert-info mt-4 text-center" role="alert">
+                  <h5>No tiene archivo registrado</h5>
+                  <p>Esta unidad no tiene un archivo registrado en el sistema.</p>
+              </div>
+          } @else {
+              <div class="content-form">
+                  @if (resumenAlmacenamiento && resumenAlmacenamiento.data && resumenAlmacenamiento.data.length > 0) {
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="container bg-light">
+                            <div class="row">
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Unidad:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].unidad }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">Direccion:</span>
-                              <span class="info-value"> Calle 123 # 45-67</span>
-                            </div>
-                        </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Ubicacion:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].ubicacion }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">Edificio:</span>
-                              <span class="info-value"> Edificio Principal</span>
-                            </div>
-                        </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Direccion:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].direccion }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">Piso:</span>
-                              <span class="info-value"> Tercero</span>
-                            </div>
-                        </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Edificio:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].edificio }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">Bodega:</span>
-                              <span class="info-value"> Bodega Central</span>
-                            </div>
-                        </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Piso:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].piso }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">CUERPO:</span>
-                              <span class="info-value"> CUERPO 1</span>
-                            </div>
-                        </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Bodega:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].bodega }}</span>
+                                    </div>
+                                </div>
 
-                        <div class="col-6 col-md-3">
-                            <div class="info-item">
-                              <span class="info-label">ESTANTE:</span>
-                              <span class="info-value"> A1</span>
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Cantidad Cuerpos:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].cantidadCuerpos }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Cantidad Estantes:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].cantidadEstante }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Cantidad Baldas:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].cantidadBaldas }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Total Cajas:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].sumaCajas }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Total Carpetas:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].sumaCarpetas }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="info-item">
+                                      <span class="info-label">Total Folios:</span>
+                                      <span class="info-value">{{ resumenAlmacenamiento.data[0].sumaFolios }}</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                          </div>
+                      </div>
+                  </div>
+                  }
+                  <div class="row" style="margin-top: 5rem;">
+                    <div class="col-md-12">
+
+                        <app-archivo-unidad-activa
+                          [folders]="folders"
+                          [idUnidad]="unidadDesglose"
+                          [onLoadEstantes]="onLoadEstantesCallback"
+                          [onLoadBaldas]="onLoadBaldasCallback"
+                          [onLoadCajas]="onLoadCajasCallback"
+                          [onLoadCarpetas]="onLoadCarpetasCallback">
+                        </app-archivo-unidad-activa>
                     </div>
                   </div>
               </div>
-          </div>
-          <div class="row" style="margin-top: 5rem;">
-            <div class="col-md-12">
-
-                 <app-archivo-unidad-activa [folders]="folders"></app-archivo-unidad-activa>
-            </div>
-          </div>
+          }
       </div>
   </div>
 </div>
@@ -166,7 +221,7 @@
 
 <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getLListadoUnidadesActivas(1)"></app-modal-editar-unidad>
 
-<app-registro-archivo-unidad-activa [idUnidadActiva]="unidadArchivo"></app-registro-archivo-unidad-activa>
+<app-registro-archivo-unidad-activa [idUnidadActiva]="unidadArchivo" ></app-registro-archivo-unidad-activa>
 
 <!-- <app-registro-anio-archivo-unidad-activa *ngIf="idDetalle != null" [idDetalleUnidad]="idDetalle">
 </app-registro-anio-archivo-unidad-activa> -->

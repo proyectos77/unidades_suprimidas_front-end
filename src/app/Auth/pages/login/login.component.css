@@ -1,5 +1,6 @@
 .contenedorFormularioLogin{
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -8,7 +9,7 @@
     display: flex;
 
     background-image: url(../../../../../public/imagenes/pagina/Fondo\ Pantalla\ Principal\ GD\ ACHIVO\ CENTRAL\ EJC\ 1A.png);
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
 }

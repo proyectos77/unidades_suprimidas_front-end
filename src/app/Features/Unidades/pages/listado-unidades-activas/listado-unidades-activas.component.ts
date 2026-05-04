@@ -1,4 +1,4 @@
-import { Component, OnInit, viewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, viewChild, ElementRef, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { UnidadesService } from '../../services/unidades.service';
 import { GetAllListadoUnidadesActivas } from '../../interfaces/get-all-listado-unidades-activas';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -14,6 +14,9 @@ import { BuscadorListadoUnidadesActivasPipe } from '../../../../Shared/Pipes/bus
 import { ArchivoUnidadActivaComponent } from '../../components/archivo-unidad-activa/archivo-unidad-activa.component';
 import { FolderNiveles } from '../../interfaces/FolderNiveles';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
+import { log } from 'node:console';
+import { UnidadesActivasService } from '../../services/unidades-activas.service';
+import { GetResumenAlmacenamiento } from '../../interfaces/get-resumen-almacenamiento';
 
 declare var bootstrap: any;
 declare var bootstrapArchivo: any;
@@ -27,72 +30,16 @@ declare var bootstrapArchivo: any;
  export default class ListadoUnidadesActivasComponent implements OnInit {
 
   public mostrarDesglose: boolean = false;
+  public resumenAlmacenamiento: GetResumenAlmacenamiento | null = null;
+  public unidadDesglose: number = 0;
+  public archivoNoRegistrado: boolean = false;
+  folders: FolderNiveles[] = [];
 
-  folders: FolderNiveles[] = [
-    {
-      name: 'BALDA',
-      expanded: true,
-      cajas: 12,
-      carpetas: 600,
-      folios: 5000,
-      bodega: 'Bodega Central',
-      consecutivoBodega: 'BC-2024-001',
-      correlativoDependencia: 'DEP-045',
-      cantidadSeries: 8,
-      cantidadProcesos: 24,
-      anios: '2018 - 2024',
-      children: [
-        {
-          name: 'CJ-001',
-          cajas: 3, carpetas: 150, folios: 1200,
-          bodega: 'Bodega Central', consecutivoBodega: 'BC-2024-001',
-          correlativoDependencia: 'DEP-045', cantidadSeries: 2, cantidadProcesos: 6, anios: '2018 - 2020',
-          children: [
-            { name: 'Carpeta 1', numeroCarpeta: 'CAR-001', nombreExpediente: 'Expediente Administrativo 2018', fechasExtremas: '2018-01-01 / 2018-12-31', folioPorCarpeta: 200, serie: 'Gestión Administrativa', subseries: ['Contratos', 'Resoluciones'], children: [] },
-            { name: 'Carpeta 2', numeroCarpeta: 'CAR-002', nombreExpediente: 'Expediente Financiero 2018', fechasExtremas: '2018-03-01 / 2018-09-30', folioPorCarpeta: 180, serie: 'Gestión Financiera', subseries: ['Presupuesto'], children: [] },
-            { name: 'Carpeta 3', numeroCarpeta: 'CAR-003', nombreExpediente: 'Expediente Jurídico 2019', fechasExtremas: '2019-01-15 / 2019-11-30', folioPorCarpeta: 220, serie: 'Gestión Jurídica', subseries: ['Demandas', 'Tutelas', 'Derechos de Petición'], children: [] },
-            { name: 'Carpeta 4', numeroCarpeta: 'CAR-004', nombreExpediente: 'Expediente Técnico 2019', fechasExtremas: '2019-02-01 / 2019-12-31', folioPorCarpeta: 160, serie: 'Gestión Técnica', subseries: ['Informes'], children: [] }
-          ]
-        },
-        {
-          name: 'CJ-002',
-          cajas: 3, carpetas: 150, folios: 1300,
-          bodega: 'Bodega Central', consecutivoBodega: 'BC-2024-002',
-          correlativoDependencia: 'DEP-046', cantidadSeries: 2, cantidadProcesos: 7, anios: '2019 - 2021',
-          children: [
-            { name: 'Carpeta 1', numeroCarpeta: 'CAR-005', nombreExpediente: 'Expediente RRHH 2019', fechasExtremas: '2019-01-01 / 2019-12-31', folioPorCarpeta: 210, serie: 'Gestión Humana', subseries: ['Nómina', 'Vacaciones'], children: [] },
-            { name: 'Carpeta 2', numeroCarpeta: 'CAR-006', nombreExpediente: 'Expediente Contratación 2020', fechasExtremas: '2020-01-01 / 2020-06-30', folioPorCarpeta: 195, serie: 'Contratación', subseries: ['Licitaciones'], children: [] },
-            { name: 'Carpeta 3', numeroCarpeta: 'CAR-007', nombreExpediente: 'Expediente Disciplinario 2020', fechasExtremas: '2020-03-01 / 2020-12-31', folioPorCarpeta: 175, serie: 'Gestión Disciplinaria', subseries: ['Procesos Sancionatorios'], children: [] },
-            { name: 'Carpeta 4', numeroCarpeta: 'CAR-008', nombreExpediente: 'Expediente Planeación 2021', fechasExtremas: '2021-01-01 / 2021-12-31', folioPorCarpeta: 230, serie: 'Planeación', subseries: ['POA', 'Seguimiento'], children: [] }
-          ]
-        },
-        {
-          name: 'CJ-003',
-          cajas: 3, carpetas: 150, folios: 1250,
-          bodega: 'Bodega Central', consecutivoBodega: 'BC-2024-003',
-          correlativoDependencia: 'DEP-047', cantidadSeries: 2, cantidadProcesos: 5, anios: '2020 - 2022',
-          children: [
-            { name: 'Carpeta 1', numeroCarpeta: 'CAR-009', nombreExpediente: 'Expediente Ambiental 2020', fechasExtremas: '2020-02-01 / 2020-11-30', folioPorCarpeta: 190, serie: 'Gestión Ambiental', subseries: ['Permisos'], children: [] },
-            { name: 'Carpeta 2', numeroCarpeta: 'CAR-010', nombreExpediente: 'Expediente Obras 2021', fechasExtremas: '2021-01-01 / 2021-08-31', folioPorCarpeta: 205, serie: 'Infraestructura', subseries: ['Mantenimiento', 'Construcción'], children: [] },
-            { name: 'Carpeta 3', numeroCarpeta: 'CAR-011', nombreExpediente: 'Expediente Sistemas 2021', fechasExtremas: '2021-04-01 / 2021-12-31', folioPorCarpeta: 170, serie: 'TI', subseries: ['Soporte'], children: [] },
-            { name: 'Carpeta 4', numeroCarpeta: 'CAR-012', nombreExpediente: 'Expediente Comunicaciones 2022', fechasExtremas: '2022-01-01 / 2022-12-31', folioPorCarpeta: 215, serie: 'Comunicaciones', subseries: ['Correspondencia', 'Circulares'], children: [] }
-          ]
-        },
-        {
-          name: 'CJ-004',
-          cajas: 3, carpetas: 150, folios: 1250,
-          bodega: 'Bodega Central', consecutivoBodega: 'BC-2024-004',
-          correlativoDependencia: 'DEP-048', cantidadSeries: 2, cantidadProcesos: 6, anios: '2021 - 2024',
-          children: [
-            { name: 'Carpeta 1', numeroCarpeta: 'CAR-013', nombreExpediente: 'Expediente Archivo 2021', fechasExtremas: '2021-01-01 / 2021-12-31', folioPorCarpeta: 185, serie: 'Gestión Documental', subseries: ['TRD', 'TVD'], children: [] },
-            { name: 'Carpeta 2', numeroCarpeta: 'CAR-014', nombreExpediente: 'Expediente Capacitación 2022', fechasExtremas: '2022-02-01 / 2022-10-31', folioPorCarpeta: 200, serie: 'Capacitación', subseries: ['Formación Interna'], children: [] },
-            { name: 'Carpeta 3', numeroCarpeta: 'CAR-015', nombreExpediente: 'Expediente Proyectos 2023', fechasExtremas: '2023-01-01 / 2023-12-31', folioPorCarpeta: 225, serie: 'Proyectos', subseries: ['Formulación', 'Ejecución'], children: [] },
-            { name: 'Carpeta 4', numeroCarpeta: 'CAR-016', nombreExpediente: 'Expediente General 2024', fechasExtremas: '2024-01-01 / 2024-06-30', folioPorCarpeta: 140, serie: 'General', subseries: ['Varios'], children: [] }
-          ]
-        }
-      ]
-    }
-  ];
+  // Callbacks para lazy-loading
+  public onLoadEstantesCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarEstantes(folder, idUnidad);
+  public onLoadBaldasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarBaldas(folder, idUnidad);
+  public onLoadCajasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCajas(folder, idUnidad);
+  public onLoadCarpetasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCarpetas(folder, idUnidad);
 
 
     public bootstrapModal: any;
@@ -130,7 +77,9 @@ declare var bootstrapArchivo: any;
 
     public idDetalle: number | null = null;
 
-    constructor(private httpUnidades: UnidadesService, private sweet: SweetAlertService,private httpLogin: LoginService ){
+    cargaModalRegistroArchivo: boolean = false;
+
+    constructor(private httpUnidades: UnidadesService, private sweet: SweetAlertService, private httpLogin: LoginService, private httpUnidadesActivas: UnidadesActivasService, private cdr: ChangeDetectorRef) {
         const sesion = this.httpLogin.datosSesion();
         this.rolUser = sesion.idTipoUsuario;
         this.dependencia = sesion.idDependencia;
@@ -199,11 +148,10 @@ declare var bootstrapArchivo: any;
         this.bootstrapModal.show();
     }
 
-    abrirModalRegistroArchivo(idDetalle: number | null):void{
+    abrirModalRegistroArchivo(idUnidad: number | null):void{
         const modalArchivo = document.getElementById('modalRegistroArchivoUnidadActiva');
         this.bootstrapModalRegistroArchivo = new bootstrap.Modal(modalArchivo);
-        this.idDetalle = idDetalle;
-        this.unidadArchivo = idDetalle ?? 0;
+        this.unidadArchivo = idUnidad ?? 0;
         this.bootstrapModalRegistroArchivo.show();
     }
 
@@ -254,14 +202,310 @@ declare var bootstrapArchivo: any;
 
           if (hijos.data && hijos.data.length > 0) {
               this.padresUnidad.push({ opciones: hijos.data, seleccion: null });
+          } else {
+              // Si no hay hijos, significa que llegamos al último nivel - mostrar desglose
+              this.desgloseUnidad(idPadre);
           }
         });
-       /*  this.getAllUnidades(this.pagina, idPadre);
-        this.getIdDependenciaSeleccionada(idPadre);
+    }
 
+    desgloseUnidad(unidad: number): void {
+        this.unidadDesglose = unidad;
+        this.archivoNoRegistrado = false;
+        this.httpUnidadesActivas.getResumenAlmacenamiento(unidad).subscribe({
+            next: (resumen) => {
+                // Normalizar los datos para que funcionen en ambos formatos (camelCase y lowercase)
+                if (resumen.data && resumen.data.length > 0) {
+                    const datos: any = resumen.data[0];
+                    resumen.data[0] = {
+                        ...datos,
+                        cantidadCuerpos: datos.cantidadCuerpos || datos.cantidadcuerpos,
+                        cantidadEstante: datos.cantidadEstante || datos.cantidadestante,
+                        cantidadBaldas: datos.cantidadBaldas || datos.cantidadbaldas,
+                        sumaCajas: datos.sumaCajas || datos.sumacajas,
+                        sumaCarpetas: datos.sumaCarpetas || datos.sumacarpetas,
+                        sumaFolios: datos.sumaFolios || datos.sumafolios,
+                        bodega: datos.bodega,
+                        unidad: datos.unidad,
+                        ubicacion: datos.ubicacion,
+                        direccion: datos.direccion,
+                        edificio: datos.edificio,
+                        piso: datos.piso
+                    };
+                }
 
-         */
-        // Aquí podrías llamar a filtrarUnidades() si quieres filtrar automáticamente
+                this.resumenAlmacenamiento = resumen;
+                if (resumen.data && resumen.data.length > 0) {
+                    this.httpUnidadesActivas.getEstgructuraArchivoUnidadActiva(unidad).subscribe({
+                        next: (estructura) => {
+                            if (estructura.data && estructura.data.length > 0) {
+                                this.folders = estructura.data.map((item) => ({
+                                    name: item.nombre,
+                                    expanded: false,
+                                    children: [],
+                                    childrenLoaded: false,
+                                    cuerpoId: item.id,
+                                    bodega: resumen.data[0].bodega
+                                }));
+                                this.archivoNoRegistrado = false;
+                                this.mostrarDesglose = true;
+                            } else {
+                                // No hay estructura de archivo
+                                this.archivoNoRegistrado = true;
+                                this.mostrarDesglose = true;
+                            }
+                        },
+                        error: (error) => {
+                            console.error('Error al obtener la estructura del archivo:', error);
+                            this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener la estructura del archivo.');
+                        }
+                    });
+                } else {
+                    // No hay resumen de almacenamiento
+                    this.archivoNoRegistrado = true;
+                    this.mostrarDesglose = true;
+                }
+            },
+            error: (error) => {
+                console.error('Error al obtener el resumen de almacenamiento:', error);
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener el resumen de almacenamiento.');
+            }
+        });
+    }
+
+    public cargarEstantes(folder: FolderNiveles, idUnidad: number): void {
+        console.log('cargarEstantes called with cuerpoId:', folder.cuerpoId, 'idUnidad:', idUnidad);
+        if (folder.childrenLoaded || !folder.cuerpoId) {
+            console.log('Returning early - childrenLoaded:', folder.childrenLoaded);
+            return;
+        }
+
+        this.httpUnidadesActivas.getEstantes(idUnidad, folder.cuerpoId).subscribe({
+            next: (respuesta) => {
+                console.log('Estantes response:', respuesta);
+                console.log('Estantes data items:', respuesta.data);
+                if (respuesta.data && respuesta.data.length > 0) {
+                    respuesta.data.forEach((item: any, idx: number) => {
+                        console.log(`Item ${idx}:`, item, 'Keys:', Object.keys(item));
+                    });
+                    folder.children = respuesta.data.map((item: any) => {
+                        // Manejar variaciones de case en los nombres de campos
+                        const estanteId = item.idEstante || item.idestante || item.id || item.ID;
+                        const estanteName = item.estante || item.nombre || 'Estante';
+                        console.log('Estante mapping:', { original: item, estanteId, estanteName });
+
+                        return {
+                            name: `${estanteName}`,
+                            expanded: false,
+                            children: [],
+                            childrenLoaded: false,
+                            estanteId: estanteId,
+                            cuerpoId: folder.cuerpoId,
+                            parent: folder
+                        };
+                    });
+                    folder.childrenLoaded = true;
+                    this.cdr.markForCheck();
+                }
+            },
+            error: (error) => {
+                console.error('Error al cargar estantes:', error);
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudieron cargar los estantes.');
+            }
+        });
+    }
+
+    public cargarBaldas(folder: FolderNiveles, idUnidad: number): void {
+        console.log('cargarBaldas called with estanteId:', folder.estanteId);
+        if (folder.childrenLoaded || !folder.estanteId) return;
+
+        this.httpUnidadesActivas.getBaldas(idUnidad, folder.estanteId).subscribe({
+            next: (respuesta) => {
+                console.log('Baldas response:', respuesta);
+                if (respuesta.data && respuesta.data.length > 0) {
+                    folder.children = respuesta.data.map((item: any) => {
+                        // Manejar variaciones de case en los nombres de campos
+                        const baldaId = item.idBalda || item.idbalda || item.id || item.ID;
+                        const baldaName = item.balda || item.nombre || 'Balda';
+                        console.log('Balda mapping:', { original: item, baldaId, baldaName });
+
+                        return {
+                            name: `${baldaName}`,
+                            expanded: false,
+                            children: [],
+                            childrenLoaded: false,
+                            baldaId: baldaId,
+                            estanteId: folder.estanteId,
+                            parent: folder
+                        };
+                    });
+                    folder.childrenLoaded = true;
+                    this.cdr.markForCheck();
+                }
+            },
+            error: (error) => {
+                console.error('Error al cargar baldas:', error);
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudieron cargar las baldas.');
+            }
+        });
+    }
+
+    public cargarCajas(folder: FolderNiveles, idUnidad: number): void {
+        console.log('cargarCajas called with baldaId:', folder.baldaId);
+        if (folder.childrenLoaded || !folder.baldaId) return;
+
+        this.httpUnidadesActivas.getCajasPorBaldas(idUnidad, folder.baldaId).subscribe({
+            next: (respuesta) => {
+                console.log('Cajas response:', respuesta);
+                if (respuesta.data && respuesta.data.length > 0) {
+                    folder.children = respuesta.data.map((item: any) => {
+                        // Manejar variaciones de case en los nombres de campos
+                        const cajaId = item.id || item.ID || item.idCaja || item.idcaja;
+                        const cajaName = item.nombre || item.nombre || item.codigo || item.codigoCaja || 'Caja';
+                        console.log('Caja mapping:', { original: item, cajaId, cajaName });
+
+                        return {
+                            name: `${cajaName}`,
+                            expanded: false,
+                            children: [],
+                            childrenLoaded: false,
+                            cajaId: cajaId,
+                            baldaId: folder.baldaId,
+                            parent: folder
+                        };
+                    });
+                    folder.childrenLoaded = true;
+
+                    // Cargar información detallada de cada caja
+                    folder.children.forEach(caja => {
+                        this.httpUnidadesActivas.infoCaja(idUnidad, caja.cajaId!).subscribe({
+                            next: (infoCaja) => {
+                                console.log('Info caja completa:', infoCaja);
+                                if (infoCaja && infoCaja.data) {
+                                    const datos: any = infoCaja.data;
+
+                                    // Manejar ambos formatos (camelCase y lowercase)
+                                    const codigoCaja = datos.codigoCaja || datos.codigocaja || '-';
+                                    const cantidadLibros = datos.cantidadLibros || datos.cantidadlibros || '0';
+                                    const cantidadCarpetas = datos.cantidadCarpetas || datos.cantidadcarpetas || '0';
+                                    const numeroConsecutivoBodega = datos.numeroConsecutivoBodega || datos.numeroconsecutivobodega || '-';
+                                    const numeroCorrelativoDependencia = datos.numeroCorrelativoDependencia || datos.numerocorrelativodependencia || '-';
+                                    const anioCaja = datos.anioCaja || datos.aniocaja || new Date().getFullYear().toString();
+
+                                    // Obtener nombres de padres del API (manejar ambos formatos)
+                                    const nombreBalda = datos.nombreBalda || datos.nombrebalda || null;
+                                    const nombreEstante = datos.nombreEstante || datos.nombreestante || null;
+                                    const nombreCuerpo = datos.nombreCuerpo || datos.nombrecuerpo || null;
+
+                                    console.log('Datos completos de infoCaja:', datos);
+                                    console.log('Nombres obtenidos:', { nombreBalda, nombreEstante, nombreCuerpo });
+                                    console.log('Parent references:', { parent: caja.parent?.name, parentParent: caja.parent?.parent?.name, parentParentParent: caja.parent?.parent?.parent?.name });
+
+                                    caja.name = `${codigoCaja}`;
+                                    caja.cajas = parseInt(cantidadLibros as string) || 0;
+                                    caja.carpetas = parseInt(cantidadCarpetas as string) || 0;
+                                    caja.consecutivoBodega = numeroConsecutivoBodega;
+                                    caja.correlativoDependencia = numeroCorrelativoDependencia;
+                                    caja.anios = anioCaja;
+
+                                    // Actualizar nombres de padres
+                                    if (nombreBalda && caja.parent) {
+                                        caja.parent.name = `${nombreBalda}`;
+                                    }
+                                    if (nombreEstante && caja.parent?.parent) {
+                                        caja.parent.parent.name = `${nombreEstante}`;
+                                    }
+                                    if (nombreCuerpo && caja.parent?.parent?.parent) {
+                                        caja.parent.parent.parent.name = `${nombreCuerpo}`;
+                                    }
+
+                                    console.log('Caja actualizada:', caja);
+                                    this.cdr.markForCheck();
+                                } else {
+                                    console.warn('No hay datos en la respuesta de infoCaja');
+                                }
+                            },
+                            error: (error) => {
+                                console.error('Error al cargar info caja:', error);
+                            }
+                        });
+                    });
+
+                    this.cdr.markForCheck();
+                }
+            },
+            error: (error) => {
+                console.error('Error al cargar cajas:', error);
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudieron cargar las cajas.');
+            }
+        });
+    }
+
+    public cargarCarpetas(folder: FolderNiveles, idUnidad: number): void {
+        console.log('cargarCarpetas called with cajaId:', folder.cajaId);
+        if (folder.childrenLoaded || !folder.cajaId) return;
+
+        this.httpUnidadesActivas.GetCarpetasPorCaja(idUnidad, folder.cajaId).subscribe({
+            next: (respuesta) => {
+                console.log('Carpetas response:', respuesta);
+                if (respuesta.data && respuesta.data.length > 0) {
+                    folder.children = respuesta.data.map((item: any) => {
+                        // Manejar variaciones de case en los nombres de campos
+                        const carpetaId = item.carpeta || item.id || item.ID || item.idCarpeta || item.idcarpeta;
+                        const carpetaName = item.carpeta || item.numero || item.numeroCarpeta || item.codigo || 'Carpeta';
+                        console.log('Carpeta mapping:', { original: item, carpetaId, carpetaName });
+
+                        return {
+                            name: `CARPETA ${carpetaName}`,
+                            expanded: false,
+                            children: [],
+                            childrenLoaded: true,
+                            carpetaId: carpetaId
+                        };
+                    });
+                    folder.childrenLoaded = true;
+
+                    // Cargar información detallada de cada carpeta
+                    folder.children.forEach((carpeta) => {
+                        this.httpUnidadesActivas.getInformacionCarpeta(idUnidad, carpeta.carpetaId!).subscribe({
+                            next: (infoCarpeta) => {
+                                console.log('Info carpeta:', infoCarpeta);
+                                if (infoCarpeta && infoCarpeta.data) {
+                                    const datos: any = infoCarpeta.data;
+
+                                    // Manejar ambos formatos (camelCase y lowercase)
+                                    const numeroCarpeta = datos.numeroCarpeta || datos.numerocarpeta || '-';
+                                    const nombreSerie = datos.nombreSerie || datos.nombreserie || '-';
+                                    const nombreSubserie = datos.nombreSubserie || datos.nombresubserie || '-';
+                                    const cantidadFolios = datos.cantidadFolios || datos.cantidadfolios || datos.cantidadFolio || datos.cantidadfolio || '0';
+                                    const fechaExtremaInicio = datos.fechaExtremaInicio || datos.fechaextremainicio || '-';
+                                    const fechaExtremaFin = datos.fechaExtremaFin || datos.fechaextremafin || '-';
+
+                                    // Actualizar el nombre con el número de carpeta real
+                                    carpeta.name = `CARPETA ${numeroCarpeta}`;
+                                    carpeta.numeroCarpeta = numeroCarpeta;
+                                    carpeta.nombreExpediente = nombreSerie;
+                                    carpeta.serie = nombreSerie;
+                                    carpeta.subseries = nombreSubserie && nombreSubserie !== '-' ? [nombreSubserie] : [];
+                                    carpeta.folioPorCarpeta = parseInt(cantidadFolios as string) || 0;
+                                    carpeta.fechasExtremas = `${fechaExtremaInicio} / ${fechaExtremaFin}`;
+                                    this.cdr.markForCheck();
+                                }
+                            },
+                            error: (error) => {
+                                console.error('Error al cargar info carpeta:', error);
+                            }
+                        });
+                    });
+
+                    this.cdr.markForCheck();
+                }
+            },
+            error: (error) => {
+                console.error('Error al cargar carpetas:', error);
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudieron cargar las carpetas.');
+            }
+        });
     }
 
 
