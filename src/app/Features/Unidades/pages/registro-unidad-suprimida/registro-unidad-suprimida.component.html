@@ -1,0 +1,479 @@
+<div class="card cardContenido">
+  <div class="d-flex card-header card-header-paddin align-items-center justify-content-between">
+    <h3>Registro Unidades Suprimidas</h3>
+    <div class="d-flex align-items-center justify-content-end content-button"></div>
+  </div>
+  <div class="card-body card-body-page">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- cabeseras -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" #registroUnidad id="home-tab" data-bs-toggle="tab"
+              data-bs-target="#registroUnidad" type="button" role="tab" aria-controls="home" aria-selected="true">
+              Registro unidad
+            </button>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <button class="nav-link disabled" #registroDetalleUnidad id="messages-tab" data-bs-toggle="tab"
+              data-bs-target="#registroDetalleUnidad" type="button" role="tab" aria-controls="messages"
+              aria-selected="false">
+              Registro detalle unidad
+            </button>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" #registroArchivoUnidad id="documentos-tab" data-bs-toggle="tab"
+              data-bs-target="#registroArchivoUnidad" type="button" role="tab" aria-controls="documentos"
+              aria-selected="false">
+              Registro archivo unidad
+            </button>
+          </li>
+        </ul>
+
+
+        <div class="tab-content">
+        <!-- --- FORMULARIO UNIDAD --- -->
+          <div class="tab-pane active" id="registroUnidad" role="tabpanel" aria-labelledby="home-tab">
+            <form class="content-form" [formGroup]="unidadFormGroup" (ngSubmit)="validarFormularioUnidad()">
+              <div class="row">
+                <div class="col-md-12 formulario__texto">
+                  <p>
+                    Diligenciar todos los campos obligatorios marcados con un
+                    <span style="color: red">*</span>
+                  </p>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Nombre unidad (Suprimida)</label>
+                  <input class="form-control" type="text" formControlName="nombre" placeholder="" />
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.nombre')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.nombre')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario el campo nombre</small>
+                  </div>
+                  }
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Unidad superior jerárquicamente (División)</label>
+                  <input class="form-control" type="text" formControlName="division" placeholder="" />
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.division')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.division')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario la unidad que asumió el archivo</small>
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <div class="row mt-5">
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Sigla unidad (Suprimida)</label>
+                  <input class="form-control" type="text" formControlName="sigla" placeholder="" />
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.sigla')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.sigla')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario el campo sigla</small>
+                  </div>
+                  }
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Unidad que asumió el archivo</label>
+                  <input class="form-control" type="text" formControlName="unidad_que_asume" placeholder="" />
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.unidad_que_asume')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.unidad_que_asume')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario la unidad que asumió el archivo</small>
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <div class="row mt-5">
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Departamentos</label>
+                  <select class="form-select" name="" id="" formControlName="departamentos">
+                    <option value="">Seleeccionar</option>
+                    <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">
+                      {{ departamento.nombre }}
+                    </option>
+                  </select>
+
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.departamentos')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.departamentos')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario el campo departamento</small>
+                  </div>
+                  }
+                </div>
+
+                <div class="col-md-6 form-group">
+                  <label for="" class="form-label">* Municipios</label>
+                  <select class="form-select" formControlName="idMunicipio">
+                    <option value="">Seleccionar</option>
+                    <option *ngFor="let municipio of municipios.data" [value]="municipio.id_municipio">
+                      {{ municipio.nombre_municipio }}
+                    </option>
+                  </select>
+                  @if (
+                  formularioUnidadSuprimida.get('unidad.idMunicipio')?.touched &&
+                  formularioUnidadSuprimida.get('unidad.idMunicipio')?.errors?.['required']
+                  ) {
+                  <div class="invalid-feedback" style="display: block">
+                    <small class="text-danger">Es necesario el campo municipios</small>
+                  </div>
+                  }
+                </div>
+              </div>
+              <div class="row mt-5">
+                <div class="col-md-12 mt-5">
+                  <div class="content-from__btn">
+                    <button type="submit" class="btn btn-primary">
+                      Registrar
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="limpiarFormUnidad()">
+                      Limpiar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- --- FORMULARIO DETALLE UNIDAD --- -->
+          <div class="tab-pane" id="registroDetalleUnidad" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="content-form">
+                <form class="" [formGroup]="detalleUnidadFormGroup" (ngSubmit)="validarFormularioDetalleUnidad()">
+                  <div class="row">
+                    <div class="col-md-12 formulario__texto">
+                      <p>
+                        Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span>
+
+                      </p>
+                    </div>
+                  </div>
+                  <p> <strong>Detalle Unidad:</strong></p>
+                  <div class="row mt-5">
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label">* Unidad</label>
+                      <select class="form-select" formControlName="idUnidad">
+                        <option value="">Seleccione una unidad</option>
+                        <option *ngFor="let unidad of unidadesSelect.data" [value]="unidad.id_unidad">{{ unidad.nombre }}</option>
+                      </select>
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.idUnidad')?.touched && formularioUnidadSuprimida.get('detalleUnidad.idUnidad')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo unidad</small>
+                      </div>
+                      }
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label">* Acto administrativo de creacion</label>
+                      <input class="form-control" type="text" formControlName="actoAdministrativoCreacion">
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoCreacion')?.touched && formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoCreacion')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo acto administrativo de creación</small>
+                      </div>
+                      }
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label">* Fecha creacion unidad</label>
+                      <input type="date" class="form-control" formControlName="fechaCreacionUnidad">
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.fechaCreacionUnidad')?.touched && formularioUnidadSuprimida.get('detalleUnidad.fechaCreacionUnidad')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo fecha creación unidad</small>
+                      </div>
+                      }
+                    </div>
+
+
+                  </div>
+
+                  <div class="row mt-5">
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label">* Acto administrativo de supresión</label>
+                      <input class="form-control" type="text" formControlName="actoAdministrativoDesactivacion">
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoDesactivacion')?.touched && formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoDesactivacion')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo acto administrativo de supresión</small>
+                      </div>
+                      }
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label">* Fecha supresión unidad</label>
+                      <input class="form-control" type="date" formControlName="fechaDesactivacionUnidad">
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.fechaDesactivacionUnidad')?.touched && formularioUnidadSuprimida.get('detalleUnidad.fechaDesactivacionUnidad')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo fecha desactivación unidad</small>
+                      </div>
+                      }
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label for="" class="form-label"> Plan de reorganización DIORG</label>
+                      <input type="text" class="form-control" formControlName="planReorganizacionDiorg">
+                      <!--  @if (this.formDetalle.get('planReorganizacionDiorg')?.touched && formDetalle.get('planReorganizacionDiorg')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el campo plan de reorganización DIORG</small>
+                                    </div>
+                                } -->
+                    </div>
+
+                    <!--  <div class="col-md-4 form-group">
+                                <label for="" class="form-label"> Puesto de mando adelantado</label>
+                                <input class="form-control" type="text" formControlName="puestoMandoAdelantado">
+                            </div> -->
+                  </div>
+
+                  <!-- <div class="row mt-5">
+                            <div class="col-md-4 form-group">
+                                <label for="" class="form-label"> Puesto de mando atrasado</label>
+                                <input type="text" class="form-control" formControlName="puestoMandoAtrasado">
+                            </div>
+
+
+                        </div> -->
+
+                  <div class="row mt-5">
+                    <div class="col-md-12 form-group">
+                      <label for="" class="form-label">* Observaciones</label>
+                      <textarea class="form-control" type="text" formControlName="observacion" rows="3"></textarea>
+                      @if (formularioUnidadSuprimida.get('detalleUnidad.observacion')?.touched && formularioUnidadSuprimida.get('detalleUnidad.observacion')?.errors?.['required']){
+                      <div class="invalid-feedback" style="display: block;">
+                        <small class="text-danger">Es necesario el campo observación</small>
+                      </div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="row mt-5">
+                    <div class="col-md-12 content-from__btn">
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                      <button type="button" class="btn btn-secondary" (click)="limpiarFormDetalleUnidad()">Limpiar</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+          </div>
+
+          <!-- --- FORMULARIO ARCHIVO UNIDAD --- -->
+          <div class="tab-pane" id="registroArchivoUnidad" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="content-formulario-archivo">
+                <form action="" [formGroup]="archivoUnidadFormGroup" (ngSubmit)="validarFormularioArchivoUnidad()">
+                  <div class="row">
+                    <div class="col-md-12 formulario__texto">
+                      <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span></p>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+
+                    <div class="row mt-5">
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Unidad</label>
+                        <select class="form-select" formControlName="id_detalle">
+                          <option value="">Seleccione</option>
+                          <option *ngFor="let unidad of unidadesConDetalle.data" value="{{ unidad.id_detalle_unidad }}">{{
+                            unidad.nombre_unidad }}</option>
+                        </select>
+
+                        @if (formularioUnidadSuprimida.get('archivoUnidad.id_detalle')?.touched && formularioUnidadSuprimida.get('archivoUnidad.id_detalle')?.errors?.['required']){
+                        <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo unidad</small>
+                        </div>
+                        }
+                      </div>
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Año de registro</label>
+                        <select class="form-select" formControlName="anio_registro_archivo">
+                          <option value="">Seleccione</option>
+                          <option *ngFor="let anio of anios.data" value="{{ anio }}">{{ anio }}</option>
+                        </select>
+
+                        @if (formularioUnidadSuprimida.get('archivoUnidad.anio_registro_archivo')?.touched && formularioUnidadSuprimida.get('archivoUnidad.anio_registro_archivo')?.errors?.['required']){
+                        <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el año</small>
+                        </div>
+                        }
+
+                      </div>
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de cajas</label>
+                        <input type="number" class="form-control" formControlName="numero_cajas">
+
+                        @if (formularioUnidadSuprimida.get('archivoUnidad.numero_cajas')?.touched && formularioUnidadSuprimida.get('archivoUnidad.numero_cajas')?.errors?.['required']){
+                        <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario la cantidad de cajas</small>
+                        </div>
+                        }
+                      </div>
+                    </div>
+
+                    <div class="row mt-5">
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de carpetas</label>
+                        <input type="number" class="form-control" formControlName="numero_carpetas">
+
+                        @if (formularioUnidadSuprimida.get('archivoUnidad.numero_carpetas')?.touched && formularioUnidadSuprimida.get('archivoUnidad.numero_carpetas')?.errors?.['required']){
+                        <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario la cantidad de carpetas</small>
+                        </div>
+                        }
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label"> Otros</label>
+                        <input type="number" class="form-control" formControlName="otros" title="(USB,CDS, DISKETTE, DISCOS, ETC)">
+                        <div class="form-text" style="font-size: 1.2rem;">(Cantidad de: USB, CDS, DISKETTE, DISCOS, ETC)</div>
+
+                        <!-- @if (this.formArchivo.get('otros')?.touched && formArchivo.get('otros')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario la cantidad de otros</small>
+                                            </div>
+                                        } -->
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label"> Tomos</label>
+                        <input type="number" class="form-control" formControlName="tomos">
+
+                        <!-- @if (this.formArchivo.get('tomos')?.touched && formArchivo.get('tomos')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario la cantidad de otros</small>
+                                            </div>
+                                        } -->
+                      </div>
+                    </div>
+                    <div class="row mt-5">
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de folios</label>
+                        <input type="number" class="form-control" formControlName="numero_folio">
+
+                        @if (formularioUnidadSuprimida.get('archivoUnidad.numero_folio')?.touched && formularioUnidadSuprimida.get('archivoUnidad.numero_folio')?.errors?.['required']){
+                        <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario la cantidad de folios</small>
+                        </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Registro de de la tansferencia para la unidades activas -->
+                  <div *ngIf="unidadActiva == 1">
+                    <div class="row mt-5">
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Seccion <span style="color: rgba(158, 158, 158, 0.934);">(Segun la
+                            TOE)</span></label>
+                        <input type="text" class="form-control" name="" id="" formControlName="seccion">
+
+                        <!-- @if (this.formTransferencia.get('seccion')?.touched && formTransferencia.get('seccion')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesaria la sección</small>
+                                            </div>
+                                        } -->
+
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Serie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la
+                            serie)</span></label>
+                        <input type="text" class="form-control" formControlName="serie">
+
+                        <!--  @if (this.formTransferencia.get('serie')?.touched && formTransferencia.get('serie')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesaria la serie</small>
+                                            </div>
+                                        } -->
+
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Subserie <span style="color: rgba(158, 158, 158, 0.934);">(Nombre de la
+                            subserie) </span> </label>
+                        <input type="text" class="form-control" name="" id="" formControlName="subserie">
+
+                        <!-- @if (this.formTransferencia.get('subserie')?.touched && formTransferencia.get('subserie')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesaria la subserie</small>
+                                            </div>
+                                        } -->
+
+                      </div>
+
+                    </div>
+
+                    <div class="row mt-5">
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de cajas</label>
+                        <input type="number" class="form-control" formControlName="cantidad_cajas">
+
+                        <!-- @if (this.formTransferencia.get('cantidad_cajas')?.touched && formTransferencia.get('cantidad_cajas')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario la cantidad de carpetas</small>
+                                            </div>
+                                        } -->
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de carpetas</label>
+                        <input type="number" class="form-control" formControlName="cantidad_carpetas">
+
+                        <!--  @if (this.formTransferencia.get('cantidad_carpetas')?.touched && formTransferencia.get('cantidad_carpetas')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario la cantidad de folios</small>
+                                            </div>
+                                        } -->
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="" class="form-label"> Cantidad otros</label>
+                        <input type="number" class="form-control" formControlName="cantidad_otros">
+                      </div>
+                    </div>
+
+                    <div class="row mt-5">
+                      <div class="col-md-4">
+                        <label for="" class="form-label">* Cantidad de folios</label>
+                        <input type="number" class="form-control" formControlName="cantidad_folios">
+
+                        <!--  @if (this.formTransferencia.get('cantidad_folios')?.touched && formTransferencia.get('cantidad_folios')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario la cantidad de cajas</small>
+                                            </div>
+                                        } -->
+                      </div>
+
+
+
+                      <!--  <div class="col-md-4 d-flex align-items-end justify-content-end">
+                                        <button type="button" class="btn btn-warning" (click)="validarForm()">Agregar +</button>
+                                    </div> -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
