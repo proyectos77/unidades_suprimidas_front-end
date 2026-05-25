@@ -80,9 +80,17 @@ export class RegistroUnidadSuprimidaComponent implements OnInit {
 
   private cargarDatos(): void {
     this.listadoDepartamentos();
-    this.listadoUnidades(this.dependenciaUser);
-    this.listadoUnidadesConDetalle(this.dependenciaUser);
+    this.cargarUnidadesDetalle();
+    this.cargarUnidadesArchivo();
     this.listaAnios();
+  }
+
+  private cargarUnidadesDetalle(): void {
+    this.listadoUnidades(this.dependenciaUser);
+  }
+
+  private cargarUnidadesArchivo(): void {
+    this.listadoUnidadesConDetalle(this.dependenciaUser);
   }
 
   private configurarSuscripciones(): void {
@@ -188,6 +196,8 @@ export class RegistroUnidadSuprimidaComponent implements OnInit {
       this.sweet.alertaGeneral(unidad.icono, unidad.titulo, unidad.mensaje);
       if (unidad.statusCode == 200) {
         this.limpiarFormUnidad();
+        this.cargarUnidadesDetalle();
+        this.cargarUnidadesArchivo();
         this.irAlTabDetalle();
       }
     });
@@ -205,7 +215,8 @@ export class RegistroUnidadSuprimidaComponent implements OnInit {
     this.httpDetalleUnidad.storeDetalleUnidad(data).subscribe(detalle => {
       this.sweet.alertaGeneral(detalle.icono, detalle.titulo, detalle.mensaje);
       this.limpiarFormDetalleUnidad();
-      this.listadoUnidades(this.dependenciaUser);
+      this.cargarUnidadesDetalle();
+      this.cargarUnidadesArchivo();
       this.irAlTabArchivo();
     });
   }
@@ -228,7 +239,6 @@ export class RegistroUnidadSuprimidaComponent implements OnInit {
   }
 
   private irAlTabDetalle(): void {
-    this.registroDetalleUnidadBtn.nativeElement.classList.remove('disabled');
     this.registroDetalleUnidadBtn.nativeElement.click();
   }
 
