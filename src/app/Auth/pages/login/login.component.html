@@ -12,9 +12,9 @@
             </div> -->
 
             <div class="formulario__titulo">
-                <h1 style="margin: 0; padding: 0;">ARCHIVO CENTRAL</h1>
-                <h1 style="font-size: 8rem; margin: 0; padding: 0; letter-spacing: 20px;">DIGITAL</h1>
-                <h1  style="margin: 0; padding: 0;">EJÉRCITO NACIONAL</h1>
+                <h1 style="margin: 0; padding: 0; letter-spacing: 20px; font-size: 8rem;">SID</h1>
+                <h2 style="margin: 0; padding: 0;">SISTEMA DE INVENTARIO</h2>
+                <h2  style="margin: 0; padding: 0;">DCUMENTAL</h2>
             </div>
 
             <div class="formulario__input">
@@ -37,6 +37,43 @@
                     </div>
                 }
 
+            </div>
+
+            <div class="formulario__input">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <label style="font-weight: bold; margin-bottom: 8px; text-align: center;">Código de Seguridad</label>
+                    </div>
+                </div>
+                <div class="row mt-3 d-flex align-items-center justify-content-center gap-2">
+
+                    <div class="col-md-5">
+                        <div class="form-control" style="background-color: #b7b6b6; color: #333; text-align: center; padding: 10px; font-size: 20px; font-weight: bold; letter-spacing: 3px; user-select: none;">
+                            {{ captchaCode }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text"
+                               #codigoCaptcha
+                               class="form-control"
+                               placeholder="Captcha"
+                               formControlName="captcha"
+                               style="letter-spacing: 8px; font-weight: bold; text-align: center;">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-secondary" (click)="cargarCaptcha()" title="Generar nuevo código">
+                            ↻
+                        </button>
+                    </div>
+                </div>
+
+                @if (this.loginForm.get('captcha')?.touched && this.loginForm.get('captcha')?.errors?.['required']) {
+                    <div class="invalid-feeback" style="display: block;">
+                        <small class="text-danger">El código de seguridad es obligatorio.</small>
+                    </div>
+                }
             </div>
 
             <div class="formulario__restarurar-pass d-flex justify-content-end mb-5">

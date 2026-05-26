@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { GetLogin } from '../interfaces/get-login';
 import { SetLogin } from '../interfaces/set-login';
 import { SetLogout } from '../interfaces/set-logout';
+import { GetCapcha } from '../interfaces/get-capcha';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { SetLogout } from '../interfaces/set-logout';
 export class LoginService {
 
     public url: string = environment.apiUrl + '/login';
+    public urlCaptcha: string = environment.apiUrl + '/captcha';
     public urlLogout: string = environment.apiUrl + '/logout';
 
     constructor(private loginHttp: HttpClient) { }
@@ -61,5 +63,9 @@ export class LoginService {
     tienePermiso(perfilesPermitidos: number[]): boolean {
         const usuario = this.datosSesion();
         return usuario ? perfilesPermitidos.includes(usuario.idTipoUsuario) : false;
+    }
+
+    getCaptcha():Observable<GetCapcha>{
+        return this.loginHttp.get<GetCapcha>(this.urlCaptcha);
     }
 }

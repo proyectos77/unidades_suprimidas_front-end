@@ -12,6 +12,8 @@ export const routes: Routes = [
 
     { path: 'unidadesActivas', loadComponent: () => import('./pages/listado-unidades-activas/listado-unidades-activas.component') },
 
+  { path: 'registroUnidadSuprimida', loadComponent: () => import('./pages/registro-unidad-suprimida/registro-unidad-suprimida.component') },
+
 
 
     /* { path: 'registroUsuarios', loadComponent: () =>  import('./pages/registro-usuarios/registro-usuarios.component')},

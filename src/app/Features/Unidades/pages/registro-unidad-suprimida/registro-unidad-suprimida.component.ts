@@ -23,7 +23,7 @@ import { StoreArchivoDetalleUnidad } from '../../interfaces/store-archivo-detall
   templateUrl: './registro-unidad-suprimida.component.html',
   styleUrls: ['./registro-unidad-suprimida.component.css']
 })
-export class RegistroUnidadSuprimidaComponent implements OnInit {
+export default class RegistroUnidadSuprimidaComponent implements OnInit {
   @ViewChild('registroDetalleUnidad') registroDetalleUnidadBtn!: ElementRef;
   @ViewChild('registroArchivoUnidad') registroArchivoUnidadBtn!: ElementRef;
 
