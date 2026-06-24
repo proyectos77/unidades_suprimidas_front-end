@@ -166,8 +166,7 @@
                       </p>
                     </div>
                   </div>
-                  <p> <strong>Detalle Unidad:</strong></p>
-                  <div class="row mt-5">
+                  <div class="row mt-4">
                     <div class="col-md-4 form-group">
                       <label for="" class="form-label">* Unidad</label>
                       <select class="form-select" formControlName="idUnidad">
@@ -275,17 +274,16 @@
 
           <!-- --- FORMULARIO ARCHIVO UNIDAD --- -->
           <div class="tab-pane" id="registroArchivoUnidad" role="tabpanel" aria-labelledby="contact-tab">
-              <div class="content-formulario-archivo">
-                <form action="" [formGroup]="archivoUnidadFormGroup" (ngSubmit)="validarFormularioArchivoUnidad()">
+
+                <form action="" class="content-form" [formGroup]="archivoUnidadFormGroup" (ngSubmit)="validarFormularioArchivoUnidad()">
                   <div class="row">
                     <div class="col-md-12 formulario__texto">
                       <p>Diligenciar todos los campos obligatorios marcados con un <span style="color: red">*</span></p>
                     </div>
                   </div>
-                  <div class="row mt-5">
+                  <div class="row mt-4">
 
-                    <div class="row mt-5">
-                      <div class="col-md-4">
+                    <div class="col-md-4">
                         <label for="" class="form-label">* Unidad</label>
                         <select class="form-select" formControlName="id_detalle">
                           <option value="">Seleccione</option>
@@ -372,7 +370,7 @@
                         }
                       </div>
                     </div>
-                  </div>
+
 
 
                   <!-- Registro de de la tansferencia para la unidades activas -->
@@ -477,7 +475,7 @@
                     </div>
                   </div>
                 </form>
-              </div>
+
           </div>
         </div>
       </div>

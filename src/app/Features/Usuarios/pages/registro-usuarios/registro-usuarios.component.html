@@ -91,6 +91,19 @@
               </div>
 
               <div>
+                  <select class="form-control" formControlName="permiso">
+                      <option value="" selected disabled>Permiso *</option>
+                      <option *ngFor="let permisos of listadoPermisosData.data" value="{{ permisos.id_permiso }}">{{ permisos.nombre_permiso }}</option>
+                  </select>
+
+                  @if (this.formulario.get('permiso')?.touched && this.formulario.get('permiso')?.errors?.['required']) {
+                      <div class="invalid-feedback" style="display: block;">
+                          <small class="text-danger">Es necesario el campo permiso</small>
+                      </div>
+                  }
+              </div>
+
+              <div>
                   <select formControlName="cargo" class="form-select">
                       <option value="" selected disabled>Cargo *</option>
                       <option *ngFor="let cargos of cargos.data" value="{{ cargos.id }}">{{ cargos.nombre }}</option>

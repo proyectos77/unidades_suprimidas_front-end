@@ -11,4 +11,7 @@ export interface Usuario {
   email:  string;
   rol:    string;
   idTipoUsuario:  number;
+  permiso: string;
+  id_permiso: number;
+
 }

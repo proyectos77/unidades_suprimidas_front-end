@@ -10,6 +10,8 @@ import { SweetAlertService } from '../../../../Core/services/sweet-alert.service
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
 import { DependenciaServiceService } from '../../services/dependencia-service.service';
+import { PermisosService } from '../../services/permisos.service';
+import { ListadoPermisos } from '../../interfaces/listado-permisos';
 
 
 @Component({
@@ -37,6 +39,14 @@ export default class RegistroUsuariosComponent implements OnInit{
         'data': []
     }
 
+    public listadoPermisosData: ListadoPermisos = {
+        'statusCode': 0,
+        'titulo': '',
+        'mensaje': '',
+        'icono': '',
+        'data': []
+    }
+
     readonly #form = inject(FormBuilder);
     public formulario!: FormGroup;
 
@@ -45,7 +55,8 @@ export default class RegistroUsuariosComponent implements OnInit{
         private httpCargos : CargosService,
         private sweet: SweetAlertService,
         private httpUsuarios: UsuariosServicesService,
-        private httpDependencias: DependenciaServiceService
+        private httpDependencias: DependenciaServiceService,
+        private httpPermisos: PermisosService
     ){}
 
     public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
@@ -54,6 +65,7 @@ export default class RegistroUsuariosComponent implements OnInit{
         this.listadoTipoUsaurios();
         this.listarCargos();
         this.listadoDependenciasPadre();
+        this.listadoPermisos();
         this.formulario = this.formularioRegistro();
 
         this.formulario.get('nombre')?.valueChanges.subscribe(valor => {
@@ -72,6 +84,7 @@ export default class RegistroUsuariosComponent implements OnInit{
             user: ['', [Validators.required]],
             emailUsuario: ['', [Validators.required, Validators.email]],
             tipoUsuario: ['', [Validators.required]],
+            permiso: ['', [Validators.required]],
             cargo: ['', [Validators.required]]
         });
     }
@@ -100,6 +113,14 @@ export default class RegistroUsuariosComponent implements OnInit{
         });
     }
 
+    listadoPermisos():void{
+        this.httpPermisos.listadoPermisos().subscribe(permisos => {
+            if (permisos.statusCode == 200) {
+                this.listadoPermisosData = permisos;
+            }
+        });
+    }
+
     onSeleccionarDependencia(nivelIndex: number, event: Event): void {
         const selectElement = event.target as HTMLSelectElement;
         const idPadre: number = parseInt(selectElement.value, 10);
@@ -119,12 +140,7 @@ export default class RegistroUsuariosComponent implements OnInit{
                  this.nivelesDependencias.push({ opciones: hijos.data, seleccion: null });
              }
          });
-        // Por ahora, solo estructura para cuando esté disponible
-
-
     }
-
-
 
     validarFormulario():void{
         if (this.formulario.invalid) {
@@ -137,7 +153,6 @@ export default class RegistroUsuariosComponent implements OnInit{
 
             let dataForm = this.crearDataFormulario();
             this.crearUsuario(dataForm);
-
         }
     }
 
