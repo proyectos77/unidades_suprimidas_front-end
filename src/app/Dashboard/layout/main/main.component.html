@@ -1,13 +1,13 @@
 
-<div class="dashboard">
+<div class="dashboard" [class.sidebar-closed]="!sidebarOpen">
 
 
     <div class="dashboard__header">
-        <app-header></app-header>
+        <app-header (toggleSidebar)="toggleSidebar()"></app-header>
     </div>
 
     <!-- <div class="dashboard__content"> -->
-        <div class="dashboard__content-sidebar">
+        <div class="dashboard__content-sidebar" [class.sidebar-hidden]="!sidebarOpen">
             <app-sidebar></app-sidebar>
         </div>
         <div class="dashboard__content-main">
@@ -17,5 +17,5 @@
 
 
 
-<app-loader [isLoading]="loading"></app-loader>
+<app-loader [isLoading]="loading$ | async"></app-loader>
 

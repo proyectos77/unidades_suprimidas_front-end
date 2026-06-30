@@ -1,63 +1,35 @@
 <div class="main-sidebar">
 
-  <!-- <div class="icono-sidebar">
-     <img src="imagenes/pagina/escudo_ejercito.png" alt="">
-  </div> -->
-
   <nav class="menu">
       <ul class="menu__content">
-          <!-- <li class="menu__item" routerLinkActive="active">
-              <a>Usuarios</a>
-              <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/usuarios']" routerLinkActive="Active">Listado de usuarios</li>
-                  <li class="submenu__item" [routerLink]="['/main/usuarios/registroUsuarios']" routerLinkActive="Active">Registro de usuarios</li>
-              </ul>
-          </li>
- -->
-          <li class="menu__item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
-              <a>Unidades Suprimidas</a>
-              <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/unidades/listadoUnidades']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: false }">Listado de unidades suprimidas</li>
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro de unidades</li> -->
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro detalle unidad</li> -->
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active" [routerLinkActiveOptions]="{ exact: true }">Registro archivo unidad</li> -->
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidadSuprimida']" routerLinkActive="Active"
-                    [routerLinkActiveOptions]="{ exact: true }">Registro unidad suprimida</li>
 
+          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('unidades')">
+              <a (click)="toggleMenu('unidades')" class="menu__link">Unidades Suprimidas</a>
+              <ul class="submenu" [class.submenu--open]="isMenuExpanded('unidades')">
+                  <li class="submenu__item" [routerLink]="['/main/unidades/listadoUnidades']" routerLinkActive="active">Listado de unidades suprimidas</li>
+                  <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidadSuprimida']" routerLinkActive="active">Registro unidad suprimida</li>
               </ul>
           </li>
 
-          <li class="menu__item" routerLinkActive="active" *ngIf="rolUser != '4'">
-              <a>Transferencias</a>
-              <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/transferencias/solicitudTrasferencias']" routerLinkActive="Active">Solicitud de transferencia</li>
-                  <li class="submenu__item" [routerLink]="['/main/transferencias']" routerLinkActive="Active">Listado de solicitudes</li>
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active">Registro de unidades</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active">Registro detalle unidad</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active">Registro archivo unidad</li> -->
+          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('transferencias')">
+              <a (click)="toggleMenu('transferencias')" class="menu__link">Transferencias</a>
+              <ul class="submenu" [class.submenu--open]="isMenuExpanded('transferencias')">
+                  <li class="submenu__item" [routerLink]="['/main/transferencias/solicitudTrasferencias']" routerLinkActive="active">Solicitud de transferencia</li>
+                  <li class="submenu__item" [routerLink]="['/main/transferencias']" routerLinkActive="active">Listado de solicitudes</li>
               </ul>
           </li>
 
-          <!-- menu para unidades activas -->
-          <li class="menu__item" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
-              <a>Unidades Activas</a>
-              <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Listado unidades activas</li>
-
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Registrar Archivo</li> -->
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades']" routerLinkActive="Active">Registro Archivo</li> -->
-                  <!-- <li class="submenu__item" [routerLink]="['/main/transferencias/listadoSolicitudes']" routerLinkActive="Active">Listado de solicitudes</li> -->
-                  <!-- <li class="submenu__item" [routerLink]="['/main/unidades/registroUnidades']" routerLinkActive="Active">Registro de unidades</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroDetalleUnidad']" routerLinkActive="Active">Registro detalle unidad</li>
-                  <li class="submenu__item" [routerLink]="['/main/unidades/registroArchivoUnidad']" routerLinkActive="Active">Registro archivo unidad</li> -->
+          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('unidadesActivas')">
+              <a (click)="toggleMenu('unidadesActivas')" class="menu__link">Unidades Activas</a>
+              <ul class="submenu" [class.submenu--open]="isMenuExpanded('unidadesActivas')">
+                  <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="active">Listado unidades activas</li>
               </ul>
           </li>
 
-          <li class="menu__item" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" *ngIf="rolUser != '4'">
-              <a>Organigrama ejercito</a>
-              <ul class="submenu">
-                  <li class="submenu__item" [routerLink]="['/main/organigrama/organigramaEjercito']" routerLinkActive="Active"  [routerLinkActiveOptions]="{ exact: true }">Organigrama ejercito</li>
-
+          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('organigrama')">
+              <a (click)="toggleMenu('organigrama')" class="menu__link">Organigrama ejercito</a>
+              <ul class="submenu" [class.submenu--open]="isMenuExpanded('organigrama')">
+                  <li class="submenu__item" [routerLink]="['/main/organigrama/organigramaEjercito']" routerLinkActive="active">Organigrama ejercito</li>
               </ul>
           </li>
       </ul>

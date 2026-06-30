@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -14,6 +14,8 @@ import { NotificacionesService } from '../services/notificaciones.service';
   styleUrl: './header.component.css'
 })
 export default class HeaderComponent implements OnInit, OnDestroy {
+
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   public nombreUsuario: string = '';
   public rol: string = '';
@@ -74,5 +76,9 @@ export default class HeaderComponent implements OnInit, OnDestroy {
     this.notificacionesService.getNotificaciones().subscribe((notificaciones) => {
       this.notificaciones = notificaciones;
     });
+  }
+
+  onToggleSidebar(): void {
+    this.toggleSidebar.emit();
   }
 }

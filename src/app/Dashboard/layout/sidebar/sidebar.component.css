@@ -1,22 +1,20 @@
 .main-sidebar{
     min-height: 100%;
     max-height: 100%;
-    padding: 2rem;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    row-gap: 2rem;
-    box-shadow: var(--shadow);
+    align-items: stretch;
+    row-gap: 0.5rem;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.12);
     background-image: url(../../../../../public/imagenes/pagina/baner-izquierdo-2@2x.png);
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-color: var(--colorBanner-Menu); */
-    /* border-radius: 1rem; */
+    overflow-y: auto;
 }
 
 .icono-sidebar{
-    /* border:  solid 1px var(--negro); */
     padding: 2rem;
     border-radius: 50%;
     height: 15rem;
@@ -40,65 +38,91 @@
 .menu__content{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 90%;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 0.5rem;
 }
 
 .menu__item{
-    /* background-color: var(--blanco); */
-    margin-top: 1rem;
-    text-align: center;
+    margin: 0 0 0.5rem 0;
+    text-align: left;
     color: var(--blanco);
-    border-bottom: solid 1px var(--blanco);
-    border-radius: 1rem;
-    padding: 1rem;
+    border-radius: 0.75rem;
+    padding: 0;
     position: relative;
-    /* margin-bottom: 1rem;
-    background-color: var(--verdePrincipal);
-    padding: 1rem;
-    text-align: center;
-    border-radius: 1rem;
+    border: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.menu__link {
+    width: 100%;
+    display: block;
+    padding: 0.85rem 1.1rem;
+    border-left: 3px solid transparent;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-left-color 0.15s ease;
     color: var(--blanco);
-    position: relative; */
+    text-decoration: none;
+}
+
+.menu__link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left-color: var(--blanco);
+}
+
+.menu__item.expanded > .menu__link {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left-color: var(--blanco);
 }
 
 .submenu{
-    position: absolute;
-    top: 55px;
-    left: 0;
-    width: 100%;
-    z-index: 100;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.submenu--open {
+    opacity: 1;
+    max-height: 500px;
 }
 
 .submenu__item{
-  margin-bottom: 0.2rem;
-  background-color: var(--blanco);
-  padding: 1rem;
-  border-radius: 1rem;
-  text-decoration: underline;
-  color: var(--negro);
+    margin: 0;
+    background-color: var(--blanco);
+    padding: 0.8rem 1.1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--negro);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, padding-left 0.15s ease, color 0.15s ease;
+    border-left: 3px solid var(--verdePrincipal);
+    display: block;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    list-style: none;
+}
+
+.submenu__item:first-child {
+    margin-top: 0.5rem;
 }
 
 .submenu__item:hover{
-  background-color: var(--gris);
-  color: var(--negro);
+    background-color: #f5f5f5;
+    color: var(--verdePrincipal);
+    padding-left: 1.3rem;
 }
 
-.menu__item:hover{
-    background-color: var(--verdePrincipal);
-    cursor: pointer;
-}
-
-.menu__item:hover .submenu{
-    opacity: 1;
-    visibility: visible;
-}
-
-.active {
-    background-color: var(--verdePrincipal);
-    color: white;
-    font-weight: bold;
+.submenu__item.active {
+    background-color: #e8f5e9;
+    color: var(--verdePrincipal);
+    font-weight: 600;
+    border-left: 3px solid var(--verdePrincipal);
 }

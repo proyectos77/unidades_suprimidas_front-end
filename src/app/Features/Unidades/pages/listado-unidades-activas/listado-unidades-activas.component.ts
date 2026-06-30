@@ -1,29 +1,26 @@
-import { Component, OnInit, viewChild, ElementRef, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, viewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { UnidadesService } from '../../services/unidades.service';
 import { GetAllListadoUnidadesActivas } from '../../interfaces/get-all-listado-unidades-activas';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Modal } from 'bootstrap';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ModalEditarUnidadComponent } from '../../components/modal-editar-unidad/modal-editar-unidad.component';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { DatumUnidad } from '../../interfaces/get-all-unidades';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { LoginService } from '../../../../Auth/services/login.service';
-import { BuscadorListadoUnidadesActivasPipe } from '../../../../Shared/Pipes/buscador-listado-unidades-activas.pipe';
 
 import { ArchivoUnidadActivaComponent } from '../../components/archivo-unidad-activa/archivo-unidad-activa.component';
 import { FolderNiveles } from '../../interfaces/FolderNiveles';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
-import { log } from 'node:console';
 import { UnidadesActivasService } from '../../services/unidades-activas.service';
 import { GetResumenAlmacenamiento } from '../../interfaces/get-resumen-almacenamiento';
 
 declare var bootstrap: any;
-declare var bootstrapArchivo: any;
 
 @Component({
   selector: 'app-listado-unidades-activas',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, BuscadorListadoUnidadesActivasPipe, FormsModule, RegistroArchivoUnidadActivaComponent, ArchivoUnidadActivaComponent],
+  imports: [RouterModule, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, FormsModule, RegistroArchivoUnidadActivaComponent, ArchivoUnidadActivaComponent],
   templateUrl: './listado-unidades-activas.component.html',
   styleUrl: './listado-unidades-activas.component.css'
 })

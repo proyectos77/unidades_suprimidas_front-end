@@ -23,144 +23,129 @@
       <!-- Tab panes -->
       <div class="tab-content">
 
-          <div class="tab-pane  content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
-              <h4>{{ informacionUnidad.data.nombre_unidad }}</h4>
-
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Sigla:</span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p>{{ informacionUnidad.data.sigla_unidad }}</p>
-                  </div>
+          <div class="tab-pane content-form" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="detalle-header">
+                  <h3 class="detalle-titulo">{{ informacionUnidad.data.nombre_unidad }}</h3>
               </div>
 
-              <div class="contentVistaInfoUnidad" *ngIf="unidadActiva == true">
-                  <div class="itenInformacion" >
-                      <p class="item__text"><span>Unidad superior Unidad superior jerárquicamente:</span></p>
+              <div class="detalle-grid">
+                  <!-- Sigla -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-tag"></i>
+                          <span class="detalle-card__title">Sigla</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p class="detalle-card__value">{{ informacionUnidad.data.sigla_unidad || 'Sin información' }}</p>
+                      </div>
                   </div>
 
-                  <div class="itenInformacion" *ngIf="unidadActiva == true">
-                    <p>{{ informacionUnidad.data.padre?.nombre_unidad }}</p>
+                  <!-- Unidad Superior (Activa) -->
+                  <div class="detalle-card" *ngIf="unidadActiva == true">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-sitemap"></i>
+                          <span class="detalle-card__title">Unidad Superior Jerárquicamente</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.padre?.nombre_unidad || 'Sin información' }}</p>
+                      </div>
+                  </div>
+
+                  <!-- División (Suprimida) -->
+                  <div class="detalle-card" *ngIf="unidadSuprimida == true">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-layer-group"></i>
+                          <span class="detalle-card__title">División</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.unidad_superior_jerarquicamente_unidad || 'Sin información' }}</p>
+                      </div>
+                  </div>
+
+                  <!-- Unidad que asumió el archivo (Suprimida) -->
+                  <div class="detalle-card" *ngIf="unidadSuprimida == true">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-exchange-alt"></i>
+                          <span class="detalle-card__title">Unidad que asumió el archivo</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.unidad_que_asume_archivo_unidad || 'Sin información' }}</p>
+                      </div>
                   </div>
               </div>
-
-              <div class="contentVistaInfoUnidad" *ngIf="unidadSuprimida == true">
-                  <div class="itenInformacion" >
-                      <p class="item__text"><span>Divicion:</span></p>
-                  </div>
-
-                  <div class="itenInformacion" *ngIf="unidadSuprimida == true">
-                    <p>{{ informacionUnidad.data.unidad_superior_jerarquicamente_unidad }}</p>
-                  </div>
-              </div>
-
-               <div class="contentVistaInfoUnidad" *ngIf="unidadSuprimida == true">
-                  <div class="itenInformacion" >
-                      <p class="item__text"><span>Unidad que asumio el archivo:</span></p>
-                  </div>
-
-                  <div class="itenInformacion" *ngIf="unidadSuprimida == true">
-                    <p>{{ informacionUnidad.data.unidad_que_asume_archivo_unidad }}</p>
-                  </div>
-              </div>
-             <!--
-               {{ informacionUnidad.data.padre_unidad }}</p>
-              <p class="item__text"><span>Departamento / Municipio de creación:</span> {{ informacionUnidad.data.municipio.departamentos.nombre_departamento }} / {{ informacionUnidad.data.municipio.nombre_municipio }}</p> -->
           </div>
 
 
           <div class="tab-pane content-form" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
-
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Acto administrativo de creación: </span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_creacion_detalle }}</p>
-                  </div>
+              <div class="detalle-header">
+                  <h3 class="detalle-titulo">{{ informacionUnidad.data.nombre_unidad }}</h3>
               </div>
 
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Fecha de creación: </span></p>
+              <div class="detalle-grid">
+                  <!-- Acto administrativo de creación -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-file-alt"></i>
+                          <span class="detalle-card__title">Acto administrativo de creación</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_creacion_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
 
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.fecha_creacion_unidad_detalle }}</p>
-                  </div>
-              </div>
-
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Acto administrativo de supresíon: </span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_desactivacion_detalle }}</p>
-                  </div>
-              </div>
-
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Fecha de supresíon: </span></p>
+                  <!-- Fecha de creación -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-calendar"></i>
+                          <span class="detalle-card__title">Fecha de creación</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p class="detalle-card__value">{{ informacionUnidad.data.detalle_unidad?.fecha_creacion_unidad_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
 
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.fecha_desactivacion_unidad_detalle }}</p>
-                  </div>
-              </div>
-
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Plan de organizacíon diorg: </span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.plan_reorganizacion_diorg_detalle }}</p>
-                  </div>
-              </div>
-
-              <!-- <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Puesto de mando adelantado: </span></p>
+                  <!-- Acto administrativo de supresión -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-ban"></i>
+                          <span class="detalle-card__title">Acto administrativo de supresión</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.detalle_unidad?.acto_administrativo_desactivacion_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
 
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.puesto_mando_adelantado_detalle }}</p>
-                  </div>
-              </div> -->
-
-              <!-- <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Puesto de mando atrasado: </span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.puesto_mando_atrasado_detalle }}</p>
-                  </div>
-              </div> -->
-
-             <!--  <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Puesto de mando atrasado: </span></p>
+                  <!-- Fecha de supresión -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-calendar-times"></i>
+                          <span class="detalle-card__title">Fecha de supresión</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p class="detalle-card__value">{{ informacionUnidad.data.detalle_unidad?.fecha_desactivacion_unidad_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
 
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad.puesto_mando_atrasado_detalle }}</p>
+                  <!-- Plan de organización -->
+                  <div class="detalle-card">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-sitemap"></i>
+                          <span class="detalle-card__title">Plan de organización DIORG</span>
+                      </div>
+                      <div class="detalle-card__content">
+                          <p>{{ informacionUnidad.data.detalle_unidad?.plan_reorganizacion_diorg_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
-              </div> -->
 
-              <div class="contentVistaInfoUnidad">
-                  <div class="itenInformacion">
-                      <p class="item__text"><span>Observación: </span></p>
-                  </div>
-
-                  <div class="itenInformacion">
-                      <p class="item__text">{{ informacionUnidad.data.detalle_unidad?.observacion_detalle }}</p>
+                  <!-- Observación (full width) -->
+                  <div class="detalle-card detalle-card--full">
+                      <div class="detalle-card__header">
+                          <i class="fas fa-sticky-note"></i>
+                          <span class="detalle-card__title">Observación</span>
+                      </div>
+                      <div class="detalle-card__content detalle-card__content--large">
+                          <p>{{ informacionUnidad.data.detalle_unidad?.observacion_detalle || 'Sin información' }}</p>
+                      </div>
                   </div>
               </div>
 
@@ -182,9 +167,11 @@
 
 
           <div class="tab-pane content-list active" id="messages" role="tabpanel" aria-labelledby="messages-tab">
-              <h3 class="item__title">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              <div class="archivos-header">
+                  <h3 class="detalle-titulo">{{ informacionUnidad.data.nombre_unidad }}</h3>
+              </div>
 
-              <div class="contentGrafica">
+              <div class="archivos-grafica-container">
                   <ngx-charts-bar-vertical
                       [view]="view"
                       [scheme]="customColorScheme"
@@ -199,86 +186,109 @@
                       [yAxisLabel]="yAxisLabel"
                       [legendTitle]="legendTitle"
                       [yAxisTickFormatting]="formatAsPercentage"
-
                       [dataLabelFormatting]="formatAsPercentage"
-                      >
+                      [trimXAxisTicks]="false"
+                      [tooltipDisabled]="false">
                   </ngx-charts-bar-vertical>
               </div>
 
-
-              <div class="content-buscador">
-                  <input type="text" name="filterPost" id="" class="form-control filtrado-tabla" [(ngModel)] = "filterPost" placeholder="Filtro">
+              <div class="archivos-filtro-container">
+                  <div class="archivos-filtro">
+                      <i class="fas fa-search"></i>
+                      <input type="text" name="filterPost" class="form-control archivos-filtro__input" [(ngModel)]="filterPost" placeholder="Buscar por año...">
+                  </div>
               </div>
 
-              <div class="table-responsive mt-5">
-                <table class="table table-hover table-bordered text-center">
-                    <thead style="font-size: 1.4rem;" class="table-dark">
-                        <tr>
-                          <th colspan="6">Total Archivo</th>
-                          <th colspan="6" class="bg-success">Total Transferido</th>
-                          <th colspan="6" class="bg-warning">Total Pendiente</th>
-                          <th>Opciones</th>
-                        </tr>
-                        <tr>
-                          <th>Año</th>
-                          <th>Cajas</th>
-                          <th>Carpetas</th>
-                          <th>Folios</th>
-                          <th>Otros</th>
-                          <th>Tomos</th>
+              <div class="archivos-tabla-wrapper">
+                  <table class="tabla-archivos">
+                      <thead class="tabla-archivos__head">
+                          <tr>
+                              <th colspan="6" class="tabla-archivos__grupo tabla-archivos__grupo--total">
+                                  <i class="fas fa-folder"></i> Total Archivo
+                              </th>
+                              <th colspan="6" class="tabla-archivos__grupo tabla-archivos__grupo--transferido">
+                                  <i class="fas fa-check-circle"></i> Total Transferido
+                              </th>
+                              <th colspan="6" class="tabla-archivos__grupo tabla-archivos__grupo--pendiente">
+                                  <i class="fas fa-hourglass-end"></i> Total Pendiente
+                              </th>
+                              <th class="tabla-archivos__grupo tabla-archivos__grupo--opciones">
+                                  <i class="fas fa-cog"></i> Opciones
+                              </th>
+                          </tr>
+                          <tr>
+                              <th class="tabla-archivos__header">Año</th>
+                              <th class="tabla-archivos__header">Cajas</th>
+                              <th class="tabla-archivos__header">Carpetas</th>
+                              <th class="tabla-archivos__header">Folios</th>
+                              <th class="tabla-archivos__header">Otros</th>
+                              <th class="tabla-archivos__header">Tomos</th>
 
-                          <th class="bg-success">Cajas</th>
-                          <th class="bg-success">Carpetas</th>
-                          <th class="bg-success">Folios</th>
-                          <th class="bg-success">Otros</th>
-                          <th class="bg-success">Tomos</th>
-                          <th class="bg-success">Porcentaje</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">Cajas</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">Carpetas</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">Folios</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">Otros</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">Tomos</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--transferido">%</th>
 
-                          <th class="bg-warning">Cajas</th>
-                          <th class="bg-warning">Carpetas</th>
-                          <th class="bg-warning">Folios</th>
-                          <th class="bg-warning">Otros</th>
-                          <th class="bg-warning">Tomos</th>
-                          <th class="bg-warning">Porcentaje</th>
-                          <th></th>
-                        </tr>
-                    </thead>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">Cajas</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">Carpetas</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">Folios</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">Otros</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">Tomos</th>
+                              <th class="tabla-archivos__header tabla-archivos__header--pendiente">%</th>
+                              <th class="tabla-archivos__header"></th>
+                          </tr>
+                      </thead>
 
-                    <tbody style="font-size: 1.2rem;">
-                        <tr *ngFor="let archivo of informacionArchivoUnidad.data | buscadorArchivoUnidad:filterPost">
-                            <td>{{ archivo.anio_registro_archivo }}</td>
-                            <td>{{ archivo.numero_cajas_archivos }}</td>
-                            <td>{{ archivo.numero_carpetas_archivo }}</td>
-                            <td>{{ archivo.numero_folios_archivo }}</td>
-                            <td>{{ archivo.numero_otros_archivo }}</td>
-                            <td>{{ archivo.numero_tomos_archivo }}</td>
+                      <tbody class="tabla-archivos__body">
+                          <tr class="tabla-archivos__row" *ngFor="let archivo of informacionArchivoUnidad.data | buscadorArchivoUnidad:filterPost">
+                              <td class="tabla-archivos__cell tabla-archivos__cell--destacada">{{ archivo.anio_registro_archivo }}</td>
+                              <td class="tabla-archivos__cell">{{ archivo.numero_cajas_archivos }}</td>
+                              <td class="tabla-archivos__cell">{{ archivo.numero_carpetas_archivo }}</td>
+                              <td class="tabla-archivos__cell">{{ archivo.numero_folios_archivo }}</td>
+                              <td class="tabla-archivos__cell">{{ archivo.numero_otros_archivo }}</td>
+                              <td class="tabla-archivos__cell">{{ archivo.numero_tomos_archivo }}</td>
 
-                            <td class="bg-success">{{ archivo.cantidad_cajas_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.cantidad_carpetas_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.cantidad_folios_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.cantidad_otros_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.cantidad_tomos_transferencia }}</td>
-                            <td class="bg-success">{{ archivo.porcentaje_transferencia }}%</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido">{{ archivo.cantidad_cajas_transferencia }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido">{{ archivo.cantidad_carpetas_transferencia }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido">{{ archivo.cantidad_folios_transferencia }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido">{{ archivo.cantidad_otros_transferencia }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido">{{ archivo.cantidad_tomos_transferencia }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--transferido tabla-archivos__cell--porcentaje">{{ archivo.porcentaje_transferencia }}%</td>
 
-                            <td class="bg-warning">{{ archivo.cantidad_cajas_faltante }}</td>
-                            <td class="bg-warning">{{  archivo.cantidad_carpetas_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.cantidad_folios_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.cantidad_otros_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.cantidad_tomos_faltante }}</td>
-                            <td class="bg-warning">{{ archivo.porcentaje_faltante | number:'1.0-0'  }}%</td>
-                            <td>
-                              <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: 1rem; font-size: 1rem; color: white;" [routerLink]="['/main/unidades/listadoTransferenciasPorArchivo', archivo.id_archivo]">
-                                  <i class="fa-solid fa-magnifying-glass-plus"></i>
-                              </button>
-
-                              <button *ngIf="perfilUsuario === 1" type="button" title="Ver informacion completa" class="btn btn-success" style="margin-left: 1rem; font-size: 1rem; color: white;" (click)="abrirModal(archivo.numero_cajas_archivos, archivo.numero_carpetas_archivo, archivo.numero_folios_archivo, archivo.numero_otros_archivo, archivo.numero_tomos_archivo, archivo.id_archivo)">
-                                  <i class="fas fa-pen"></i>
-                              </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente">{{ archivo.cantidad_cajas_faltante }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente">{{ archivo.cantidad_carpetas_faltante }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente">{{ archivo.cantidad_folios_faltante }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente">{{ archivo.cantidad_otros_faltante }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente">{{ archivo.cantidad_tomos_faltante }}</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--pendiente tabla-archivos__cell--porcentaje">{{ archivo.porcentaje_faltante | number:'1.0-0' }}%</td>
+                              <td class="tabla-archivos__cell tabla-archivos__cell--acciones">
+                                  <button type="button" title="Ver información completa" class="btn-tabla btn-tabla--info" [routerLink]="['/main/unidades/listadoTransferenciasPorArchivo', archivo.id_archivo]">
+                                      <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                  </button>
+                                  <button *ngIf="perfilUsuario === 1" type="button" title="Editar" class="btn-tabla btn-tabla--editar" (click)="abrirModal(archivo.numero_cajas_archivos, archivo.numero_carpetas_archivo, archivo.numero_folios_archivo, archivo.numero_otros_archivo, archivo.numero_tomos_archivo, archivo.id_archivo)">
+                                      <i class="fas fa-pen"></i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
               </div>
+
+              <nav aria-label="..." *ngIf="informacionArchivoUnidad.infoPagination.totalPaginas > 0" class="mt-5">
+                  <ul class="pagination">
+                      <li class="page-item">
+                          <a class="page-link" [class.disabled]="informacionArchivoUnidad.infoPagination.pagina === 1" (click)="cambiarPagina(informacionArchivoUnidad.infoPagination.pagina - 1)">Anterior</a>
+                      </li>
+
+                      <li *ngFor="let pagina of [].constructor(informacionArchivoUnidad.infoPagination.totalPaginas); let i = index;" class="page-item" [class.active]="informacionArchivoUnidad.infoPagination.pagina == i+1"><a class="page-link"(click)="cambiarPagina(i+1)">{{ i + 1 }}</a></li>
+
+                      <li class="page-item">
+                          <a class="page-link" [class.disabled]="informacionArchivoUnidad.infoPagination.pagina === informacionArchivoUnidad.infoPagination.totalPaginas" (click)="cambiarPagina(informacionArchivoUnidad.infoPagination.pagina + 1)">Siguiente</a>
+                      </li>
+                  </ul>
+              </nav>
           </div>
       </div>
 

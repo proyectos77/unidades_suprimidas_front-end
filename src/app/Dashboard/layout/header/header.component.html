@@ -1,5 +1,11 @@
 <!--  -->
 <div class="header">
+  <div class="header__toggle">
+    <button class="btn-toggle" (click)="onToggleSidebar()" title="Mostrar/Ocultar menú">
+      <i class="fas fa-bars fa-lg"></i>
+    </button>
+  </div>
+
   <div class="header__texto">
     <!-- <img src="imagenes/pagina/PHL texto blanco.png" alt=""> -->
      <span class="titulo__header text-end"> SISTEMA DE INVENTARIO DOCUMENTAL <span style="margin-left: 10px">SID</span>  </span>
@@ -26,24 +32,24 @@
       </div>
 
         <!-- Usuario -->
-        <div class="col-md-5 header__opcion-datos">
-            <p style="color: white;">{{ nombreUsuario }}</p>
-            <p style="color: white;">{{ rol }}</p>
-        </div>
+        <div class="header__usuario">
+            <div class="header__usuario-info">
+                <div class="header__usuario-nombre">{{ nombreUsuario }}</div>
+                <div class="header__usuario-rol">{{ rol }}</div>
+            </div>
 
-        <div class="col-md-1 ">
             <div class="user-menu">
-                <button class="btn p-0 border-0 header__opcion-btn mt-3 text-center">
-                  <i class="fas fa-user fa-2x fa-fw icono-user"></i>
+                <button class="btn header__usuario-btn p-0 border-0 text-center">
+                  <i class="fas fa-user fa-fw"></i>
                 </button>
 
                 <ul class="submenu">
                     <li class="submenu__item">
-                        <a class="" href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
+                        <a href="#" (click)="cerrarSesion()">Cerrar Sesión</a>
                     </li>
 
                     <li class="submenu__item">
-                        <a class="" [routerLink]="['/main/manualUsuario/manuales']">Manual de usuario</a>
+                        <a [routerLink]="['/main/manualUsuario/manuales']">Manual de usuario</a>
                     </li>
 
                     <li *ngIf="mostrarMenuSuperUsuario" class="submenu__item">
@@ -54,7 +60,7 @@
                         <a [routerLink]="['/main/usuarios/registroUsuarios']">Registro de usuarios</a>
                     </li>
                     <li class="submenu__item">
-                        <a class="" [routerLink]="['/main/manualUsuario/informacion']">Informacion del sistema</a>
+                        <a [routerLink]="['/main/manualUsuario/informacion']">Informacion del sistema</a>
                     </li>
                 </ul>
             </div>

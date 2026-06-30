@@ -1,34 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import HeaderComponent from "../header/header.component";
 import SidebarComponent from "../sidebar/sidebar.component";
 import { RouterOutlet } from '@angular/router';
 import { LoaderComponent } from "../../../Shared/Components/loader/loader.component";
+import { LoaderService } from "../../../Core/services/loader.service";
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-main',
-  imports: [HeaderComponent, SidebarComponent, RouterOutlet, LoaderComponent],
+  imports: [HeaderComponent, SidebarComponent, RouterOutlet, LoaderComponent, AsyncPipe],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
-export default class MainComponent implements OnInit{
-    public loading = true;
+export default class MainComponent implements OnInit, OnDestroy {
+    public loading$: any;
+    public sidebarOpen: boolean = true;
+    private destroy$ = new Subject<void>();
+
+    constructor(private loaderService: LoaderService) {}
 
     ngOnInit(): void {
-
-        this.cerrarSpiner();
+        this.loaderService.reset();
+        this.loading$ = this.loaderService.loading$;
     }
 
-    cerrarSpiner():void{
-        setTimeout (() =>{
-            this.loading = false;
-        }, 1000)
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
-    /* recargarPagina() {
-      this.loading = true;
-      setTimeout(() => {
-          window.location.reload();
-      }, 1000); // Da un pequeño tiempo para ver la animación
-    } */
+
+    toggleSidebar(): void {
+        this.sidebarOpen = !this.sidebarOpen;
+    }
 }
 
 

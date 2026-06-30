@@ -4,7 +4,7 @@
         <img src="imagenes/pagina/EJC-BLANCO-ALTA2.png" alt="">
     </div> -->
 
-    <div class="content-form">
+    <div class="content-form-login">
         <form class="formulario formLogin" [formGroup]="loginForm">
 
             <!-- <div class="formulario__titulo">
@@ -13,75 +13,77 @@
 
             <div class="formulario__titulo">
                 <h1 style="margin: 0; padding: 0; letter-spacing: 20px; font-size: 8rem;">SID</h1>
-                <h2 style="margin: 0; padding: 0;">SISTEMA DE INVENTARIO</h2>
-                <h2  style="margin: 0; padding: 0;">DCUMENTAL</h2>
+                <h2 style="margin: 0; padding: 0; font-size: 4rem;">SISTEMA DE INVENTARIO</h2>
+                <h2  style="margin: 0; padding: 0; font-size: 4rem;">DCUMENTAL</h2>
             </div>
 
-            <div class="formulario__input">
-                <input type="text" class="form-control" placeholder="Usuario" formControlName="user_usuario">
+            <div class="formulario_content__input">
+                <div class="formulario__input">
+                    <input type="text" class="form-control" placeholder="Usuario" formControlName="user_usuario">
 
-                @if (this.loginForm.get('user_usuario')?.touched && this.loginForm.get('user_usuario')?.errors?.['required']) {
-                    <div class="invalid-feeback" style="display: block;">
-                        <small class="text-danger">El campo usuario es obligatorio.</small>
+                    @if (this.loginForm.get('user_usuario')?.touched && this.loginForm.get('user_usuario')?.errors?.['required']) {
+                    <div class="invalid-feedback" style="display: block;">
+                      <small class="text-danger" style="font-size: 1.2rem;">El campo usuario es obligatorio.</small>
                     </div>
-                }
-
-            </div>
-
-            <div class="formulario__input">
-                <input type="password" class="form-control" placeholder="Contraseña" formControlName="password_usuario">
-
-                @if (this.loginForm.get('password_usuario')?.touched && this.loginForm.get('password_usuario')?.errors?.['required']) {
-                    <div class="invalid-feeback" style="display: block;">
-                        <small class="text-danger">El campo contraseña es obligatorio.</small>
-                    </div>
-                }
-
-            </div>
-
-            <div class="formulario__input">
-                <div class="row">
-                    <div class="col-md-12 d-flex justify-content-center">
-                        <label style="font-weight: bold; margin-bottom: 8px; text-align: center;">Código de Seguridad</label>
-                    </div>
+                    }
                 </div>
-                <div class="row mt-3 d-flex align-items-center justify-content-center gap-2">
+
+                <div class="formulario__input">
+                  <input type="password" class="form-control" placeholder="Contraseña" formControlName="password_usuario">
+
+                  @if (this.loginForm.get('password_usuario')?.touched && this.loginForm.get('password_usuario')?.errors?.['required'])
+                  {
+                  <div class="invalid-feedback" style="display: block;">
+                    <small class="text-danger" style="font-size: 1.2rem;">El campo contraseña es obligatorio.</small>
+                  </div>
+                  }
+
+                </div>
+            </div>
+
+            <div class="content-captcha">
+                <div class="formulario__input">
+                  <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <label style="font-weight: bold; margin-bottom: 8px; text-align: center;">Código de Seguridad</label>
+                    </div>
+                  </div>
+                  <div class="row mt-3 d-flex align-items-center justify-content-center gap-2">
 
                     <div class="col-md-5">
-                        <div class="form-control" style="background-color: #b7b6b6; color: #333; text-align: center; padding: 10px; font-size: 20px; font-weight: bold; letter-spacing: 3px; user-select: none;">
-                            {{ captchaCode }}
-                        </div>
+                      <div class="form-control"
+                        style="background-color: #b7b6b6; color: #333; text-align: center; padding: 10px; font-size: 20px; font-weight: bold; letter-spacing: 3px; user-select: none;">
+                        {{ captchaCode }}
+                      </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <input type="text"
-                               #codigoCaptcha
-                               class="form-control"
-                               placeholder="Captcha"
-                               formControlName="captcha"
-                               style="letter-spacing: 8px; font-weight: bold; text-align: center;">
+                    <div class="col-md-5">
+                      <input type="text" #codigoCaptcha class="form-control codigo" placeholder="Captcha" formControlName="captcha"
+                        style="letter-spacing: 5px; font-weight: bold; text-align: center; width: 100%;">
                     </div>
 
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-outline-secondary" (click)="cargarCaptcha()" title="Generar nuevo código">
-                            ↻
-                        </button>
+                      <button type="button" style="background-color: #b7b6b6; color: #333; font-weight: bold;" class="btn btn-outline-secondary" (click)="cargarCaptcha()" title="Generar nuevo código">
+                        ↻
+                      </button>
                     </div>
-                </div>
-
-                @if (this.loginForm.get('captcha')?.touched && this.loginForm.get('captcha')?.errors?.['required']) {
-                    <div class="invalid-feeback" style="display: block;">
-                        <small class="text-danger">El código de seguridad es obligatorio.</small>
-                    </div>
-                }
+                  </div>
+              </div>
             </div>
 
-            <div class="formulario__restarurar-pass d-flex justify-content-end mb-5">
+            @if (this.loginForm.get('captcha')?.touched && this.loginForm.get('captcha')?.errors?.['required']) {
+                <div class="invalid-feedback d-flex justify-content-center align-items-center mt-3" style="display: block;">
+                  <small class="text-danger" style="font-size: 1.2rem;">El código de seguridad es obligatorio.</small>
+                </div>
+            }
+
+
+            <div class="formulario__restarurar-pass d-flex justify-content-center mb-3 mt-5">
                 <a href="#">Restaurar contraseña</a>
             </div>
 
-            <div class="formulario__btn d-flex justify-content-end">
-                <button type="button" class="btn btn-primary" (click)="validarForm()">Iniciar Sesion</button>
+            <div class="formulario__btn d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" style="font-size: 1.8rem;" (click)="validarForm()">Iniciar Sesion</button>
             </div>
         </form>
     </div>

@@ -7,7 +7,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { ListadoDocumentosDetalle } from '../../interfaces/listado-documentos-detalle';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UrlDocumentosPipe } from '../../../../Shared/Pipes/url-documentos.pipe';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { DataUpdateSolicitud } from '../../interfaces/data-update-solicitud';
 import { UsuariosServicesService } from '../../../Usuarios/services/usuarios-services.service';
@@ -16,7 +15,7 @@ import { SafeUrlPipe } from '../../../../Shared/Pipes/safe-url.pipe.ts.pipe';
 
 @Component({
   selector: 'app-detalle-solicitu-transferencia',
-  imports: [RouterLink, NgFor, NgxChartsModule, ReactiveFormsModule, UrlDocumentosPipe, NgIf, SafeUrlPipe],
+  imports: [RouterLink, NgFor, NgxChartsModule, ReactiveFormsModule, NgIf, SafeUrlPipe],
   templateUrl: './detalle-solicitu-transferencia.component.html',
   styleUrl: './detalle-solicitu-transferencia.component.css'
 })

@@ -42,7 +42,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   public unidadSuprimida: boolean = false;
   public unidadActiva: boolean = false;
 
-  view: [number, number] = [800, 150]; // Dimensiones [ancho, alto]
+  view: [number, number] = [800, 200]; // Dimensiones [ancho, alto]
 
   // Opciones del gráfico
   showXAxis: boolean = true;
@@ -51,7 +51,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   showLegend: boolean = true;
   showXAxisLabel: boolean = true;
   xAxisLabel: string = '';
-  showYAxisLabel: boolean = true;
+  showYAxisLabel: boolean = false;
   yAxisLabel: string = '';
   legendTitle: string = 'Estados';
   customColorScheme = {
@@ -194,13 +194,36 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           }else{
 
             const registros = archivo.data;
-            const totalTransferido = registros.reduce((acc, item) => acc + Number(item.porcentaje_transferencia),0);
-            const totalPendiente = registros.reduce((acc, item) => acc + Number(item.porcentaje_faltante),0);
 
-            const totalGeneral = totalTransferido + totalPendiente;
+            // Sumar todas las cantidades de archivo total
+            const totalCajasArchivo = registros.reduce((acc, item) => acc + Number(item.numero_cajas_archivos),0);
+            const totalCarpetasArchivo = registros.reduce((acc, item) => acc + Number(item.numero_carpetas_archivo),0);
+            const totalFoliosArchivo = registros.reduce((acc, item) => acc + Number(item.numero_folios_archivo),0);
+            const totalOtrosArchivo = registros.reduce((acc, item) => acc + Number(item.numero_otros_archivo),0);
+            const totalTomosArchivo = registros.reduce((acc, item) => acc + Number(item.numero_tomos_archivo),0);
 
-            const porcentajeTransferido = Number(((totalTransferido / totalGeneral) * 100).toFixed(1));
-            const porcentajePendiente = Number(((totalPendiente / totalGeneral) * 100).toFixed(1));
+            // Sumar todas las cantidades transferidas
+            const totalCajasTransferido = registros.reduce((acc, item) => acc + Number(item.cantidad_cajas_transferencia),0);
+            const totalCarpetasTransferido = registros.reduce((acc, item) => acc + Number(item.cantidad_carpetas_transferencia),0);
+            const totalFoliosTransferido = registros.reduce((acc, item) => acc + Number(item.cantidad_folios_transferencia),0);
+            const totalOtrosTransferido = registros.reduce((acc, item) => acc + Number(item.cantidad_otros_transferencia),0);
+            const totalTomosTransferido = registros.reduce((acc, item) => acc + Number(item.cantidad_tomos_transferencia),0);
+
+            // Sumar todas las cantidades pendientes
+            const totalCajasFaltante = registros.reduce((acc, item) => acc + Number(item.cantidad_cajas_faltante),0);
+            const totalCarpetasFaltante = registros.reduce((acc, item) => acc + Number(item.cantidad_carpetas_faltante),0);
+            const totalFoliosFaltante = registros.reduce((acc, item) => acc + Number(item.cantidad_folios_faltante),0);
+            const totalOtrosFaltante = registros.reduce((acc, item) => acc + Number(item.cantidad_otros_faltante),0);
+            const totalTomosFaltante = registros.reduce((acc, item) => acc + Number(item.cantidad_tomos_faltante),0);
+
+            // Calcular totales generales
+            const totalArchivoGeneral = totalCajasArchivo + totalCarpetasArchivo + totalFoliosArchivo + totalOtrosArchivo + totalTomosArchivo;
+            const totalTransferido = totalCajasTransferido + totalCarpetasTransferido + totalFoliosTransferido + totalOtrosTransferido + totalTomosTransferido;
+            const totalPendiente = totalCajasFaltante + totalCarpetasFaltante + totalFoliosFaltante + totalOtrosFaltante + totalTomosFaltante;
+
+            // Calcular porcentajes
+            const porcentajeTransferido = totalArchivoGeneral > 0 ? Number(((totalTransferido / totalArchivoGeneral) * 100).toFixed(1)) : 0;
+            const porcentajePendiente = totalArchivoGeneral > 0 ? Number(((totalPendiente / totalArchivoGeneral) * 100).toFixed(1)) : 0;
 
             this.data = [
               {
@@ -278,6 +301,13 @@ export default class VistaDetalleUnidadComponent implements OnInit {
       };
   }
 
+
+  cambiarPagina(pagina: number): void {
+      if (pagina < 1 || pagina > this.informacionArchivoUnidad.infoPagination.totalPaginas) {
+          return;
+      }
+      this.getArchivoUnidad(this.informacionUnidad.data.detalle_unidad?.id_detalle ?? 0, pagina);
+  }
 
   regresar() {
       window.history.back();
