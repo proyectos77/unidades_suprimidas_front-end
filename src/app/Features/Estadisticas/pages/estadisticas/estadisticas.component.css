@@ -1,0 +1,475 @@
+/* ============= KPI Cards ============= */
+.section-kpis {
+  margin-bottom: 2.5rem;
+  padding: 0 0 0.5rem 0;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9f8 100%);
+  border-radius: 0.7rem;
+  padding: 1.2rem 1rem;
+  border-left: 4px solid #1c5e1c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100px;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+  gap: 0.5rem;
+}
+
+.kpi-header i {
+  font-size: 1.6rem;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.kpi-tendencia {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.kpi-tendencia.positiva {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: #28a745;
+}
+
+.kpi-tendencia.negativa {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: #dc3545;
+}
+
+.kpi-titulo {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+
+.kpi-valor {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1c5e1c;
+  margin: 0;
+}
+
+/* ============= Charts ============= */
+.section-graficos {
+  margin-bottom: 2.5rem;
+  padding: 0 0 0.5rem 0;
+}
+
+.chart-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9f8 100%);
+  border-radius: 0.7rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.chart-container canvas {
+  max-height: 220px !important;
+}
+
+.chart-titulo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1c5e1c;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.3px;
+}
+
+.chart-titulo::before {
+  content: '';
+  width: 3px;
+  height: 1.1rem;
+  background-color: #1c5e1c;
+  margin-right: 0.6rem;
+  border-radius: 2px;
+}
+
+/* ============= Filtros ============= */
+.section-filtros {
+  margin-bottom: 2.5rem;
+  padding: 0 0 0.5rem 0;
+}
+
+.card-filtros {
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9f8 100%);
+  border-radius: 0.7rem;
+}
+
+.card-filtros .card-body {
+  padding: 1.5rem;
+}
+
+.card-filtros h6 {
+  color: #1c5e1c;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.2rem;
+}
+
+.card-filtros .form-label {
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  text-transform: capitalize;
+}
+
+.card-filtros .form-control,
+.card-filtros .form-select {
+  border-color: #ddd;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+}
+
+.card-filtros .form-control:focus,
+.card-filtros .form-select:focus {
+  border-color: #1c5e1c;
+  box-shadow: 0 0 0 0.2rem rgba(28, 94, 28, 0.1);
+}
+
+.card-filtros .btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+/* ============= Tabla ============= */
+.section-tabla {
+  margin-bottom: 2rem;
+  padding: 0 0 0.5rem 0;
+}
+
+.card-tabla {
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border-radius: 0.7rem;
+}
+
+.tabla-estadisticas {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.tabla-estadisticas thead {
+  background: linear-gradient(135deg, #1c5e1c 0%, #2d7a2d 100%);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.tabla-estadisticas thead th {
+  padding: 0.9rem 0.8rem;
+  color: #ffffff;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tabla-estadisticas tbody td {
+  padding: 0.85rem 0.8rem;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.tabla-estadisticas tbody tr {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabla-estadisticas tbody tr:hover {
+  background-color: #f5f9f5;
+  box-shadow: inset 0 0 6px rgba(28, 94, 28, 0.08);
+}
+
+.tabla-estadisticas tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badge Styles */
+.badge-success {
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+.badge-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+.badge-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+/* ============= Responsive ============= */
+@media (max-width: 1200px) {
+  .kpi-card {
+    min-height: 95px;
+    padding: 1rem 0.9rem;
+  }
+
+  .kpi-valor {
+    font-size: 2rem;
+  }
+
+  .chart-container {
+    padding: 1.3rem;
+  }
+
+  .chart-container canvas {
+    max-height: 200px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .kpi-card {
+    min-height: 90px;
+    padding: 0.95rem 0.85rem;
+  }
+
+  .kpi-titulo {
+    font-size: 0.75rem;
+  }
+
+  .kpi-valor {
+    font-size: 1.9rem;
+  }
+
+  .chart-container {
+    padding: 1.2rem;
+  }
+
+  .chart-container canvas {
+    max-height: 180px !important;
+  }
+
+  .chart-titulo {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-kpis,
+  .section-graficos,
+  .section-filtros,
+  .section-tabla {
+    margin-bottom: 2rem;
+  }
+
+  .kpi-card {
+    min-height: 85px;
+    padding: 0.9rem 0.8rem;
+  }
+
+  .kpi-titulo {
+    font-size: 0.7rem;
+  }
+
+  .kpi-valor {
+    font-size: 1.7rem;
+  }
+
+  .kpi-header i {
+    font-size: 1.4rem;
+  }
+
+  .chart-container {
+    padding: 1rem;
+  }
+
+  .chart-container canvas {
+    max-height: 150px !important;
+  }
+
+  .card-filtros .card-body {
+    padding: 1.2rem;
+  }
+
+  .tabla-estadisticas {
+    font-size: 0.8rem;
+  }
+
+  .tabla-estadisticas thead th {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  .tabla-estadisticas tbody td {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .kpi-card {
+    min-height: 80px;
+    padding: 0.8rem 0.7rem;
+  }
+
+  .kpi-titulo {
+    font-size: 0.65rem;
+  }
+
+  .kpi-valor {
+    font-size: 1.5rem;
+  }
+
+  .kpi-header i {
+    font-size: 1.2rem;
+  }
+
+  .kpi-tendencia {
+    font-size: 0.65rem;
+  }
+
+  .card-filtros .card-body {
+    padding: 1rem;
+  }
+
+  .card-filtros .form-label {
+    font-size: 0.8rem;
+  }
+
+  .chart-container {
+    padding: 0.9rem;
+  }
+
+  .chart-container canvas {
+    max-height: 120px !important;
+  }
+
+  .chart-titulo {
+    font-size: 0.8rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .chart-titulo::before {
+    width: 2px;
+    height: 0.9rem;
+  }
+}
+
+/* ============= Animation ============= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-kpis {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.section-graficos {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.section-filtros {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.section-tabla {
+  animation: fadeInUp 0.7s ease-out;
+}
+
+/* ============= Utility Classes ============= */
+.text-muted {
+  color: #999;
+}
+
+.py-4 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.g-3 {
+  gap: 1.2rem !important;
+}
+
+.g-2 {
+  gap: 0.8rem !important;
+}
+
+/* ============= General Improvements ============= */
+.cardContenido {
+  border-radius: 0.7rem;
+}
+
+.card-header-paddin {
+  border-radius: 0.7rem 0.7rem 0 0;
+  padding: 1.3rem;
+  background: linear-gradient(135deg, rgba(28, 94, 28, 0.05) 0%, rgba(62, 83, 21, 0.05) 100%);
+  border-bottom: 2px solid #1c5e1c;
+}
+
+.card-body-page {
+  padding: 1.8rem;
+}

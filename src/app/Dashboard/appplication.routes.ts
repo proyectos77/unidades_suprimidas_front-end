@@ -28,6 +28,11 @@ export const routes: Routes = [
         loadChildren: () => import('../Features/ManualesInformacion/manuales.routes')
     },
 
+    {
+        path: 'estadisticas', loadComponent:() => import('./layout/main/main.component'),
+        loadChildren: () => import('../Features/Estadisticas/estadisticas.routes')
+    },
+
 
     {path: '', redirectTo: 'transferencias', pathMatch:'full'}
 

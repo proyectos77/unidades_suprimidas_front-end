@@ -42,6 +42,8 @@ export default class SidebarComponent implements OnInit {
             this.expandedMenu = 'unidadesActivas';
         } else if (currentRoute.includes('transferencias')) {
             this.expandedMenu = 'transferencias';
+        } else if (currentRoute.includes('estadisticas')) {
+            this.expandedMenu = 'estadisticas';
         } else if (currentRoute.includes('organigrama')) {
             this.expandedMenu = 'organigrama';
         } else if (currentRoute.includes('unidades')) {

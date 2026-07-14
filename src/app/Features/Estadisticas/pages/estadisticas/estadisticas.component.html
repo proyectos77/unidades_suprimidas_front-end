@@ -1,0 +1,126 @@
+<div class="card cardContenido">
+  <div class="card-header card-header-paddin">
+    <h3>Reportes y Estadísticas</h3>
+  </div>
+
+  <div class="card-body card-body-page">
+    <!-- KPIs Section -->
+    <section class="section-kpis mb-4">
+      <div class="row g-3">
+        <div *ngFor="let kpi of kpis" class="col-md-6 col-lg-3">
+          <div class="kpi-card" [style.border-left-color]="kpi.color">
+            <div class="kpi-header">
+              <i [class]="'fas ' + kpi.icon" [style.color]="kpi.color"></i>
+              <span class="kpi-tendencia" [ngClass]="kpi.tendencia > 0 ? 'positiva' : 'negativa'">
+                <i class="fas" [ngClass]="kpi.tendencia > 0 ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                {{ kpi.tendencia > 0 ? '+' : '' }}{{ kpi.tendencia }}%
+              </span>
+            </div>
+            <h5 class="kpi-titulo">{{ kpi.titulo }}</h5>
+            <p class="kpi-valor">{{ kpi.valor }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="section-graficos mb-4">
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <h5 class="chart-titulo">Transferencias por Mes</h5>
+            <canvas id="chartBarras" height="75"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="chart-container">
+            <h5 class="chart-titulo">Estado de Solicitudes</h5>
+            <canvas id="chartPie" height="75"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-12">
+          <div class="chart-container" style="min-height: 280px;">
+            <h5 class="chart-titulo">Volumen de Documentos Transferidos (Últimos 4 Meses)</h5>
+            <canvas id="chartLinea" height="80"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros Section -->
+    <section class="section-filtros mb-4">
+      <div class="card card-filtros">
+        <div class="card-body">
+          <h6 class="mb-3">Filtros</h6>
+          <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-6 col-lg-4">
+              <label class="form-label">Unidad</label>
+              <input type="text" class="form-control" [(ngModel)]="filtroUnidad" placeholder="Buscar unidad...">
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <label class="form-label">Estado</label>
+              <select class="form-select" [(ngModel)]="filtroEstado">
+                <option value="">Todos</option>
+                <option value="Aprobada">Aprobada</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Rechazada">Rechazada</option>
+              </select>
+            </div>
+            <div class="col-12 col-lg-4">
+              <button class="btn btn-primary w-100 w-lg-auto" (click)="limpiarFiltros()">
+                <i class="fas fa-redo-alt"></i> Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Table Section -->
+    <section class="section-tabla">
+      <div class="card card-tabla">
+        <div class="card-header card-header-paddin">
+          <h6 class="mb-0">Detalle de Transferencias</h6>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover tabla-estadisticas">
+            <thead>
+              <tr>
+                <th>Unidad</th>
+                <th class="text-center">Cajas</th>
+                <th class="text-center">Carpetas</th>
+                <th class="text-center">Folios</th>
+                <th class="text-center">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="obtenerDatosFilterrados().length === 0">
+                <td colspan="5" class="text-center text-muted py-4">
+                  No hay registros que coincidan con los filtros seleccionados
+                </td>
+              </tr>
+              <tr *ngFor="let dato of obtenerDatosFilterrados()">
+                <td>{{ dato.unidad }}</td>
+                <td class="text-center">{{ dato.cajas }}</td>
+                <td class="text-center">{{ dato.carpetas }}</td>
+                <td class="text-center">{{ dato.folios }}</td>
+                <td class="text-center">
+                  <span class="badge" [ngClass]="
+                    dato.estado === 'Aprobada' ? 'badge-success' :
+                    dato.estado === 'Pendiente' ? 'badge-warning' :
+                    'badge-danger'
+                  ">
+                    {{ dato.estado }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
