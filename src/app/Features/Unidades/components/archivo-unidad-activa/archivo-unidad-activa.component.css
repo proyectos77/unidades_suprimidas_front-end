@@ -50,56 +50,61 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 4px 12px;
   border-radius: 6px;
   transition: 0.2s;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
-/* Colores pastel por nivel */
+/* Colores con degradado verde oliva por nivel */
 .tree-item-level-0 {
-  background-color: #e8f4f8;
-  border-left: 5px solid #81d4fa;
+  background: linear-gradient(135deg, #0f3d0f 0%, #1c5e1c 100%);
+  border-left: 5px solid #0f3d0f;
+  color: #ffffff;
 }
 
 .tree-item-level-0:hover {
-  background-color: #d0e8f2;
+  background: linear-gradient(135deg, #062406 0%, #0f3d0f 100%);
 }
 
 .tree-item-level-1 {
-  background-color: #e8f5e9;
-  border-left: 5px solid #81c784;
+  background: linear-gradient(135deg, #4a8c4a 0%, #6ba86b 100%);
+  border-left: 5px solid #4a8c4a;
+  color: #ffffff;
 }
 
 .tree-item-level-1:hover {
-  background-color: #c8e6c9;
+  background: linear-gradient(135deg, #2d7a2d 0%, #4a8c4a 100%);
 }
 
 .tree-item-level-2 {
-  background-color: #fffde7;
-  border-left: 5px solid #fdd835;
+  background: linear-gradient(135deg, #7fb17f 0%, #a3c9a3 100%);
+  border-left: 5px solid #7fb17f;
+  color: #ffffff;
 }
 
 .tree-item-level-2:hover {
-  background-color: #fffd9e;
+  background: linear-gradient(135deg, #6ba86b 0%, #7fb17f 100%);
 }
 
 .tree-item-level-3 {
-  background-color: #fce4ec;
-  border-left: 5px solid #f06292;
+  background: linear-gradient(135deg, #b8dbb8 0%, #d0e8d0 100%);
+  border-left: 5px solid #b8dbb8;
+  color: #333333;
 }
 
 .tree-item-level-3:hover {
-  background-color: #f8bbd0;
+  background: linear-gradient(135deg, #a3c9a3 0%, #b8dbb8 100%);
 }
 
 .tree-item-level-4 {
-  background-color: #ffe0b2;
-  border-left: 5px solid #ffb74d;
+  background: linear-gradient(135deg, #d9efd9 0%, #eff5ef 100%);
+  border-left: 5px solid #d9efd9;
+  color: #333333;
 }
 
 .tree-item-level-4:hover {
-  background-color: #ffcc80;
+  background: linear-gradient(135deg, #c5e3c5 0%, #d9efd9 100%);
 }
 
 /* ICONO */
@@ -111,7 +116,27 @@
 /* TEXTO */
 .label {
   font-size: 14px;
-  color: #333;
+  color: inherit;
+}
+
+.tree-item-level-0 .label {
+  color: #ffffff;
+}
+
+.tree-item-level-1 .label {
+  color: #ffffff;
+}
+
+.tree-item-level-2 .label {
+  color: #ffffff;
+}
+
+.tree-item-level-3 .label {
+  color: #333333;
+}
+
+.tree-item-level-4 .label {
+  color: #333333;
 }
 
 /* HIJOS */
@@ -133,20 +158,27 @@
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 5px 8px;
   height: 100%;
 }
 
+.info-item-inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .info-label {
-  font-size: 11px;
+  font-size: 10px;
   color: #6c757d;
   text-transform: uppercase;
   font-weight: 600;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
 }
 
 .info-value {
-  font-size: 14px;
+  font-size: 12px;
   color: #212529;
   font-weight: 500;
   margin-top: 2px;

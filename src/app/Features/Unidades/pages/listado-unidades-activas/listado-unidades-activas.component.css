@@ -23,12 +23,20 @@
 
 .info-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   height: 100%;
+}
+
+.info-item.vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 12px;
 }
 
 .info-label {
@@ -37,11 +45,14 @@
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .info-value {
   font-size: 14px;
   color: #212529;
   font-weight: 500;
-  margin-top: 2px;
+  margin-top: 0;
+  word-break: break-word;
 }

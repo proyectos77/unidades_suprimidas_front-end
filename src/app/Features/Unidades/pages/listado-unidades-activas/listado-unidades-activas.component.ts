@@ -362,7 +362,7 @@ declare var bootstrap: any;
                         console.log('Caja mapping:', { original: item, cajaId, cajaName });
 
                         return {
-                            name: `${cajaName}`,
+                            name: `Caja ${cajaName}`,
                             expanded: false,
                             children: [],
                             childrenLoaded: false,
@@ -398,7 +398,7 @@ declare var bootstrap: any;
                                     console.log('Nombres obtenidos:', { nombreBalda, nombreEstante, nombreCuerpo });
                                     console.log('Parent references:', { parent: caja.parent?.name, parentParent: caja.parent?.parent?.name, parentParentParent: caja.parent?.parent?.parent?.name });
 
-                                    caja.name = `${codigoCaja}`;
+                                    caja.name = `Caja ${codigoCaja}`;
                                     caja.cajas = parseInt(cantidadLibros as string) || 0;
                                     caja.carpetas = parseInt(cantidadCarpetas as string) || 0;
                                     caja.consecutivoBodega = numeroConsecutivoBodega;
@@ -453,7 +453,7 @@ declare var bootstrap: any;
                         console.log('Carpeta mapping:', { original: item, carpetaId, carpetaName });
 
                         return {
-                            name: `CARPETA ${carpetaName}`,
+                            name: `Carpeta ${carpetaName}`,
                             expanded: false,
                             children: [],
                             childrenLoaded: true,
@@ -479,7 +479,7 @@ declare var bootstrap: any;
                                     const fechaExtremaFin = datos.fechaExtremaFin || datos.fechaextremafin || '-';
 
                                     // Actualizar el nombre con el número de carpeta real
-                                    carpeta.name = `CARPETA ${numeroCarpeta}`;
+                                    carpeta.name = `Carpeta ${numeroCarpeta}`;
                                     carpeta.numeroCarpeta = numeroCarpeta;
                                     carpeta.nombreExpediente = nombreSerie;
                                     carpeta.serie = nombreSerie;
