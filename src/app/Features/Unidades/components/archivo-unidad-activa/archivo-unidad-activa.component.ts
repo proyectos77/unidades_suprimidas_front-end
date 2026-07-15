@@ -17,6 +17,14 @@ export class ArchivoUnidadActivaComponent {
   @Input() onLoadBaldas: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
   @Input() onLoadCajas: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
   @Input() onLoadCarpetas: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
+  @Input() onDescargarDocumentoCarpeta: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
+
+  descargarDocumento(event: Event, folder: FolderNiveles) {
+    event.stopPropagation();
+    if (this.onDescargarDocumentoCarpeta) {
+      this.onDescargarDocumentoCarpeta(folder, this.idUnidad);
+    }
+  }
 
   toggle(folder: FolderNiveles) {
     console.log(`Toggle level ${this.level}, folder:`, folder.name, `childrenLoaded: ${folder.childrenLoaded}`);

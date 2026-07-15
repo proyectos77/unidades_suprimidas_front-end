@@ -37,6 +37,7 @@ declare var bootstrap: any;
   public onLoadBaldasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarBaldas(folder, idUnidad);
   public onLoadCajasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCajas(folder, idUnidad);
   public onLoadCarpetasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCarpetas(folder, idUnidad);
+  public onDescargarDocumentoCarpetaCallback = (folder: FolderNiveles, idUnidad: number) => this.descargarDocumentoCarpeta(folder);
 
 
     public bootstrapModal: any;
@@ -505,6 +506,26 @@ declare var bootstrap: any;
         });
     }
 
+    public descargarDocumentoCarpeta(folder: FolderNiveles): void {
+        if (!folder.carpetaId) return;
 
+        this.httpUnidadesActivas.listadoDocumentosFuidPorCarpeta(folder.carpetaId).subscribe({
+            next: (respuesta) => {
+                const documentos = respuesta.data || [];
+                const documentoConArchivo = documentos.find((d: any) => d.url_documento && d.url_documento !== 'sin-documento');
+
+                if (!documentoConArchivo) {
+                    this.sweet.alertaGeneral('warning', 'Sin documento', 'Esta carpeta no tiene un documento asociado.');
+                    return;
+                }
+
+                const url = this.httpUnidadesActivas.obtenerUrlDescargaDocumentoFuid(documentoConArchivo.id_documento_general);
+                window.open(url, '_blank');
+            },
+            error: () => {
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener el documento de la carpeta.');
+            }
+        });
+    }
 
 }

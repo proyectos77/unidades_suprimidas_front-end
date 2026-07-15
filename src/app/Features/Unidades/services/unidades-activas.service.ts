@@ -137,4 +137,18 @@ export class UnidadesActivasService {
         return this.httpUnidades.post<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { url_documento: string } }>(urlFinal, formData);
     }
 
+    listadoDocumentosFuidPorCarpeta(idCarpeta: number): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: any[] }> {
+        let urlFinal = this.url + '/documentosFuidPorCarpeta/' + idCarpeta;
+        return this.httpUnidades.get<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: any[] }>(urlFinal);
+    }
+
+    descargarDocumentoFuid(idDocumento: number): Observable<Blob> {
+        let urlFinal = this.url + '/documentoGeneralFuid/' + idDocumento + '/descargar';
+        return this.httpUnidades.get(urlFinal, { responseType: 'blob' });
+    }
+
+    obtenerUrlDescargaDocumentoFuid(idDocumento: number): string {
+        return this.url + '/documentoGeneralFuid/' + idDocumento + '/descargar';
+    }
+
 }
