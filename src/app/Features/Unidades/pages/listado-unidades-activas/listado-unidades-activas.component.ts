@@ -494,6 +494,17 @@ declare var bootstrap: any;
                                 console.error('Error al cargar info carpeta:', error);
                             }
                         });
+
+                        this.httpUnidadesActivas.listadoDocumentosFuidPorCarpeta(carpeta.carpetaId!).subscribe({
+                            next: (respuesta) => {
+                                const documentos = respuesta.data || [];
+                                carpeta.tieneDocumentoFuid = documentos.some((d: any) => d.url_documento && d.url_documento !== 'sin-documento');
+                                this.cdr.markForCheck();
+                            },
+                            error: () => {
+                                carpeta.tieneDocumentoFuid = false;
+                            }
+                        });
                     });
 
                     this.cdr.markForCheck();

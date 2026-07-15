@@ -28,4 +28,5 @@ export interface FolderNiveles {
   folioPorCarpeta?: number;
   serie?: string;
   subseries?: string[];
+  tieneDocumentoFuid?: boolean;
 }
