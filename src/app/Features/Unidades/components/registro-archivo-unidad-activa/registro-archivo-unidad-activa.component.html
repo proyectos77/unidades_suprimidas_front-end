@@ -407,6 +407,50 @@
                                   <button type="button" class="btn btn-success" [disabled]="carpetasAgrupadas.carpetas.length === 0" (click)="registrarCarpetasAgrupadas()">Registrar grupo de carpetas</button>
                               </div>
                           </div>
+
+                          <!-- Sección de carga de Excel -->
+                          <div class="row mt-4 mb-4 p-3 border rounded" style="background-color: #f8f9fa;">
+                            <div class="col-md-12">
+                              <h6>Cargar Datos desde Excel</h6>
+                              <div class="row">
+                                <div class="col-md-12 mb-3">
+                                  <label for="selectCarpetaExcel">Carpeta destino</label>
+                                  <select
+                                    id="selectCarpetaExcel"
+                                    class="form-select"
+                                    [(ngModel)]="carpetaSeleccionadaExcel"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option [ngValue]="null">Seleccione la carpeta a la que pertenecen los documentos</option>
+                                    <option *ngFor="let carpeta of listadoCarpetasRegistradas.data" [ngValue]="carpeta.idCarpetaUnidadActiva">
+                                      {{ carpeta.labelJerarquico || carpeta.numeroCarpetaUnidadActiva }}
+                                    </option>
+                                  </select>
+                                  <small class="text-muted">Todos los documentos del Excel quedarán ligados a esta carpeta.</small>
+                                </div>
+                                <div class="col-md-8">
+                                  <label for="inputExcelCarpetas">Seleccionar archivo Excel</label>
+                                  <input
+                                    type="file"
+                                    id="inputExcelCarpetas"
+                                    class="form-control"
+                                    accept=".xlsx,.xls,.csv"
+                                    [disabled]="!carpetaSeleccionadaExcel"
+                                    (change)="onFileSelected($event)">
+                                  <small class="text-muted">Formatos soportados: .xlsx, .xls, .csv</small>
+                                </div>
+                                <div class="col-md-4 d-flex flex-column">
+                                  <label class="d-block invisible">Acción</label>
+                                  <button
+                                    type="button"
+                                    class="btn btn-success w-100"
+                                    [disabled]="!carpetaSeleccionadaExcel || !archivoSeleccionado || procesandoExcel"
+                                    (click)="procesarArchivoExcel()">
+                                    Procesar Excel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

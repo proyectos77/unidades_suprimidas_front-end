@@ -22,6 +22,8 @@ import { GetInfoCaja } from '../interfaces/get-info-caja';
 import { GetCajas } from '../interfaces/get-cajas';
 import { GetCarpeta } from '../interfaces/get-carpeta';
 import { GetInfoCarpeta } from '../interfaces/get-info-carpeta';
+import { StoreDataFuid } from '../interfaces/store-data-fuid';
+import { RespuestaRegistroFuidGeneral } from '../interfaces/respuesta-registro-fuid-general';
 
 @Injectable({
   providedIn: 'root'
@@ -116,6 +118,23 @@ export class UnidadesActivasService {
     getInformacionCarpeta(idUnidad: number, idCarpeta: number): Observable<GetInfoCarpeta> {
         let urlFinal = this.url + '/infoCarpetaUnidad/' + idUnidad + '/' + idCarpeta;
         return this.httpUnidades.get<GetInfoCarpeta>(urlFinal);
+    }
+
+    storeRegistroDocumentoGeneralFuid(data: StoreDataFuid): Observable<RespuestaRegistroFuidGeneral> {
+        let urlFinal = this.url + '/documentoGeneralFuid';
+        return this.httpUnidades.post<RespuestaRegistroFuidGeneral>(urlFinal, data);
+    }
+
+    listadoCarpetasPorArchivoUnidadActiva(idArchivoUnidadActiva: number): Observable<RespuestaRegistroCapetaUnidadActiva> {
+        let urlFinal = this.url + '/carpetasPorArchivoUnidadActiva/' + idArchivoUnidadActiva;
+        return this.httpUnidades.get<RespuestaRegistroCapetaUnidadActiva>(urlFinal);
+    }
+
+    subirArchivoExcelFuid(archivo: File): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { url_documento: string } }> {
+        let urlFinal = this.url + '/documentoGeneralFuid/subirArchivoExcel';
+        const formData = new FormData();
+        formData.append('archivo_excel', archivo);
+        return this.httpUnidades.post<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { url_documento: string } }>(urlFinal, formData);
     }
 
 }

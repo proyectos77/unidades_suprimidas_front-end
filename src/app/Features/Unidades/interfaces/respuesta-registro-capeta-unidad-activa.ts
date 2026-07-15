@@ -11,6 +11,7 @@ export interface Datum {
   idCajaUnidadActiva:                    number;
   idSubserie:                            number;
   numeroCarpetaUnidadActiva:             string;
+  labelJerarquico:                       string;
   fechaExtremaInicio:                    Date;
   fechaExtremaFin:                       Date;
   cantidadFolios:                        string;
