@@ -166,13 +166,18 @@ export default class RegistroUsuariosComponent implements OnInit{
     }
 
     crearUsuario(data: StoreUsuarios):void{
-        this.httpUsuarios.registrarUsuario(data).subscribe(usuario => {
-
-            this.sweet.alertaGeneral(usuario.icono, usuario.titulo, usuario.mensaje);
-            if (usuario.statusCode == 200) {
-                this.limpiar();
+        this.httpUsuarios.registrarUsuario(data).subscribe({
+            next: (usuario) => {
+                this.sweet.alertaGeneral(usuario.icono, usuario.titulo, usuario.mensaje);
+                if (usuario.statusCode == 200) {
+                    this.limpiar();
+                }
+            },
+            error: (error) => {
+                const respuesta = error.error;
+                this.sweet.alertaGeneral(respuesta?.icono ?? 'error', respuesta?.titulo ?? 'Error', respuesta?.mensaje ?? 'Ocurrió un error al registrar el usuario.');
             }
-        })
+        });
     }
 
     limpiar(): void {
