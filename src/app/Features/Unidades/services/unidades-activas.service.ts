@@ -24,6 +24,7 @@ import { GetCarpeta } from '../interfaces/get-carpeta';
 import { GetInfoCarpeta } from '../interfaces/get-info-carpeta';
 import { StoreDataFuid } from '../interfaces/store-data-fuid';
 import { RespuestaRegistroFuidGeneral } from '../interfaces/respuesta-registro-fuid-general';
+import { GetDataDocumentoGeneralFuid } from '../interfaces/get-data-documento-general-fuid';
 
 @Injectable({
   providedIn: 'root'
@@ -150,5 +151,10 @@ export class UnidadesActivasService {
     obtenerUrlDescargaDocumentoFuid(idDocumento: number): string {
         return this.url + '/documentoGeneralFuid/' + idDocumento + '/descargar';
     }
+
+  obtenerDataDocumentoGeneralFuid(idCarpeta: number): Observable<GetDataDocumentoGeneralFuid>{
+      let urlFinal = this.url + '/documentoGeneralFuid/' + idCarpeta;
+      return this.httpUnidades.get<GetDataDocumentoGeneralFuid>(urlFinal);
+  }
 
 }

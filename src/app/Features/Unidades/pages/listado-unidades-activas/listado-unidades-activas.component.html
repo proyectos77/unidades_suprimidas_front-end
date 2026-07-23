@@ -188,7 +188,8 @@
                           [onLoadBaldas]="onLoadBaldasCallback"
                           [onLoadCajas]="onLoadCajasCallback"
                           [onLoadCarpetas]="onLoadCarpetasCallback"
-                          [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpetaCallback">
+                          [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpetaCallback"
+                          [onVerDataDocumentoFuid]="onVerDataDocumentoFuidCallback">
                         </app-archivo-unidad-activa>
                     </div>
                   </div>
@@ -219,6 +220,64 @@
   </div>
 </div>
 
+
+<!-- Modal Data Documento Fuid -->
+<div class="modal fade" #dataFuidModal data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDataDocumentoFuidLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDataDocumentoFuidLabel">Información Fuid General</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <thead class="text-center table-dark">
+              <tr>
+                <th>N° Orden</th>
+                <th>Código</th>
+                <th>Serie / Subserie / Asunto</th>
+                <th>Fecha extrema inicio</th>
+                <th>Fecha extrema fin</th>
+                <th>N° Caja</th>
+                <th>N° Carpeta</th>
+                <th>N° Tomo</th>
+                <th>N° Otro</th>
+                <th>N° Folios</th>
+                <th>N° Soporte</th>
+                <th>Frecuencia de consulta</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr *ngFor="let documento of documentosDataFuid">
+                <td>{{ documento.numero_orden }}</td>
+                <td>{{ documento.codigo }}</td>
+                <td>{{ documento.nombre_serie_subserie_asunto }}</td>
+                <td>{{ documento.fecha_extrema_inicio | date:'dd/MM/yyyy' }}</td>
+                <td>{{ documento.fecha_extrema_fin | date:'dd/MM/yyyy' }}</td>
+                <td>{{ documento.numero_caja }}</td>
+                <td>{{ documento.numero_carpeta }}</td>
+                <td>{{ documento.numero_tomo }}</td>
+                <td>{{ documento.numero_otro }}</td>
+                <td>{{ documento.numero_folios }}</td>
+                <td>{{ documento.numero_soporte }}</td>
+                <td>{{ documento.numero_frecuencia_consulta }}</td>
+                <td>{{ documento.notas }}</td>
+              </tr>
+              <tr *ngIf="documentosDataFuid.length === 0">
+                <td colspan="13">No hay información disponible.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getLListadoUnidadesActivas(1)"></app-modal-editar-unidad>
 

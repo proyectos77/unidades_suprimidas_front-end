@@ -166,6 +166,8 @@ export default class RegistroUsuariosComponent implements OnInit{
     }
 
     crearUsuario(data: StoreUsuarios):void{
+        console.log(data);
+
         this.httpUsuarios.registrarUsuario(data).subscribe({
             next: (usuario) => {
                 this.sweet.alertaGeneral(usuario.icono, usuario.titulo, usuario.mensaje);

@@ -116,6 +116,9 @@
                       <button type="button" class="btn btn-primary" (click)="descargarDocumento($event, folder)">
                         Descargar Fuid General
                       </button>
+                      <button type="button" class="btn btn-primary ms-2" (click)="verDataDocumento($event, folder)">
+                        Ver Fuid General
+                      </button>
                     </div>
                   }
 
@@ -132,7 +135,8 @@
                 [onLoadBaldas]="onLoadBaldas"
                 [onLoadCajas]="onLoadCajas"
                 [onLoadCarpetas]="onLoadCarpetas"
-                [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpeta">
+                [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpeta"
+                [onVerDataDocumentoFuid]="onVerDataDocumentoFuid">
               </app-archivo-unidad-activa>
             }
 

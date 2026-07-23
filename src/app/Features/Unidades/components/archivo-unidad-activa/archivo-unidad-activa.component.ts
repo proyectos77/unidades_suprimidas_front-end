@@ -18,11 +18,19 @@ export class ArchivoUnidadActivaComponent {
   @Input() onLoadCajas: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
   @Input() onLoadCarpetas: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
   @Input() onDescargarDocumentoCarpeta: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
+  @Input() onVerDataDocumentoFuid: ((folder: FolderNiveles, idUnidad: number) => void) | null = null;
 
   descargarDocumento(event: Event, folder: FolderNiveles) {
     event.stopPropagation();
     if (this.onDescargarDocumentoCarpeta) {
       this.onDescargarDocumentoCarpeta(folder, this.idUnidad);
+    }
+  }
+
+  verDataDocumento(event: Event, folder: FolderNiveles) {
+    event.stopPropagation();
+    if (this.onVerDataDocumentoFuid) {
+      this.onVerDataDocumentoFuid(folder, this.idUnidad);
     }
   }
 

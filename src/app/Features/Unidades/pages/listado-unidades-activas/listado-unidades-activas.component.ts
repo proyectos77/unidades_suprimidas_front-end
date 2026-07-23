@@ -3,7 +3,7 @@ import { UnidadesService } from '../../services/unidades.service';
 import { GetAllListadoUnidadesActivas } from '../../interfaces/get-all-listado-unidades-activas';
 import { FormsModule } from '@angular/forms';
 import { Modal } from 'bootstrap';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf, DatePipe } from '@angular/common';
 import { ModalEditarUnidadComponent } from '../../components/modal-editar-unidad/modal-editar-unidad.component';
 import { RouterModule } from '@angular/router';
 import { DatumUnidad } from '../../interfaces/get-all-unidades';
@@ -15,12 +15,13 @@ import { FolderNiveles } from '../../interfaces/FolderNiveles';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
 import { UnidadesActivasService } from '../../services/unidades-activas.service';
 import { GetResumenAlmacenamiento } from '../../interfaces/get-resumen-almacenamiento';
+import { Datum as DatumDocumentoGeneralFuid } from '../../interfaces/get-data-documento-general-fuid';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-listado-unidades-activas',
-  imports: [RouterModule, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, FormsModule, RegistroArchivoUnidadActivaComponent, ArchivoUnidadActivaComponent],
+  imports: [RouterModule, NgFor, NgIf, NgClass, DatePipe, ModalEditarUnidadComponent, FormsModule, RegistroArchivoUnidadActivaComponent, ArchivoUnidadActivaComponent],
   templateUrl: './listado-unidades-activas.component.html',
   styleUrl: './listado-unidades-activas.component.css'
 })
@@ -38,6 +39,9 @@ declare var bootstrap: any;
   public onLoadCajasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCajas(folder, idUnidad);
   public onLoadCarpetasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCarpetas(folder, idUnidad);
   public onDescargarDocumentoCarpetaCallback = (folder: FolderNiveles, idUnidad: number) => this.descargarDocumentoCarpeta(folder);
+  public onVerDataDocumentoFuidCallback = (folder: FolderNiveles, idUnidad: number) => this.verDataDocumentoFuid(folder);
+
+  public documentosDataFuid: DatumDocumentoGeneralFuid[] = [];
 
 
     public bootstrapModal: any;
@@ -72,6 +76,8 @@ declare var bootstrap: any;
 
     private modalInstance: Modal | null = null;
     private modalActualizar = viewChild<ElementRef>('buscarObservacion');
+    private modalDataFuidRef = viewChild<ElementRef>('dataFuidModal');
+    private modalInstanceDataFuid: Modal | null = null;
 
     public idDetalle: number | null = null;
 
@@ -535,6 +541,26 @@ declare var bootstrap: any;
             },
             error: () => {
                 this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener el documento de la carpeta.');
+            }
+        });
+    }
+
+    public verDataDocumentoFuid(folder: FolderNiveles): void {
+        if (!folder.carpetaId) return;
+
+        this.httpUnidadesActivas.obtenerDataDocumentoGeneralFuid(folder.carpetaId).subscribe({
+            next: (respuesta) => {
+                this.documentosDataFuid = respuesta.data || [];
+                this.cdr.detectChanges();
+
+                const modal = this.modalDataFuidRef();
+                if (modal) {
+                    this.modalInstanceDataFuid = new Modal(modal.nativeElement);
+                    this.modalInstanceDataFuid.show();
+                }
+            },
+            error: () => {
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener la información del documento fuid.');
             }
         });
     }

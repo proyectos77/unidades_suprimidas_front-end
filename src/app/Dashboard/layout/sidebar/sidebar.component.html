@@ -3,7 +3,7 @@
   <nav class="menu">
       <ul class="menu__content">
 
-          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('unidades')" (click)="toggleMenu('unidades')">
+          <li class="menu__item" *ngIf="Permiso == 1 || Permiso == 3" [class.expanded]="isMenuExpanded('unidades')" (click)="toggleMenu('unidades')">
               <a class="menu__link">Unidades Suprimidas</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('unidades')">
                   <li class="submenu__item" [routerLink]="['/main/unidades/listadoUnidades']" routerLinkActive="active" (click)="$event.stopPropagation()">Listado de unidades suprimidas</li>
@@ -11,7 +11,7 @@
               </ul>
           </li>
 
-          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('transferencias')" (click)="toggleMenu('transferencias')">
+          <li class="menu__item" *ngIf="Permiso == 1 || Permiso == 3" [class.expanded]="isMenuExpanded('transferencias')" (click)="toggleMenu('transferencias')">
               <a class="menu__link">Transferencias</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('transferencias')">
                   <li class="submenu__item" [routerLink]="['/main/transferencias/solicitudTrasferencias']" routerLinkActive="active" (click)="$event.stopPropagation()">Solicitud de transferencia</li>
@@ -19,14 +19,14 @@
               </ul>
           </li>
 
-          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('unidadesActivas')" (click)="toggleMenu('unidadesActivas')">
+          <li class="menu__item" *ngIf="Permiso == 2 || Permiso == 3 || Permiso == 3" [class.expanded]="isMenuExpanded('unidadesActivas')" (click)="toggleMenu('unidadesActivas')">
               <a class="menu__link">Unidades Activas</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('unidadesActivas')">
                   <li class="submenu__item" [routerLink]="['/main/unidades/unidadesActivas']" routerLinkActive="active" (click)="$event.stopPropagation()">Listado unidades activas</li>
               </ul>
           </li>
 
-          <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('estadisticas')" (click)="toggleMenu('estadisticas')">
+          <li class="menu__item" *ngIf="Permiso == 3" [class.expanded]="isMenuExpanded('estadisticas')" (click)="toggleMenu('estadisticas')">
               <a class="menu__link">Estadisticas</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('estadisticas')">
                   <li class="submenu__item" [routerLink]="['/main/estadisticas/estadisticasReportes']" routerLinkActive="active" (click)="$event.stopPropagation()">Reportes</li>

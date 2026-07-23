@@ -393,7 +393,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     enriquecerCajasConInformacionJerarquica(): void {
         // Inicializar labels con valores por defecto rápidamente
         this.listadoCajas.data.forEach(caja => {
-            caja.labelJerarquico = caja.codigoCajaUnidadActiva;
+            caja.labelJerarquico = `Caja ${caja.codigoCajaUnidadActiva}`;
         });
 
         // Crear un array de observables para todas las cajas
@@ -416,7 +416,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                         const cuerpo = datos.nombrecuerpo || datos.nombreCuerpo || '-';
                         const estante = datos.nombreEstante || datos.nombreestante || '-';
                         const balda = datos.nombreBalda || datos.nombrebalda || '-';
-                        const nombreCaja = caja.codigoCajaUnidadActiva;
+                        const nombreCaja = `Caja ${caja.codigoCajaUnidadActiva}`;
 
                         caja.nombreCuerpo = cuerpo;
                         caja.nombreEstante = estante;

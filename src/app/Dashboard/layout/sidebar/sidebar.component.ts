@@ -21,8 +21,11 @@ export default class SidebarComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.httpLogin.datosSesion());
         this.rolUser = this.httpLogin.datosSesion().idTipoUsuario;
-        this.Permiso = this.httpLogin.datosSesion().id_permiso;
+        this.Permiso = this.httpLogin.datosSesion().permiso_id;
+        console.log(this.Permiso);
+
         this.expandActivateMenu();
 
         this.router.events.pipe(
