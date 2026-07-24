@@ -1,4 +1,4 @@
-import { ElementRef, Input, OnDestroy, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { ElementRef, Input, OnDestroy, OnInit, Renderer2, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
@@ -8,7 +8,8 @@ import { SeriesSubseriesService } from '../../../../Core/services/series-subseri
 import { ListadoSeries } from '../../../Transferencias/interfaces/listado-series';
 import { ListadoSubseries } from '../../../Transferencias/interfaces/listado-subseries';
 import { GetListadoAnios } from '../../interfaces/get-listado-anios';
-import { Subject, forkJoin } from 'rxjs';
+import { Subject, forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { TransferenciasService } from '../../../Transferencias/services/transferencias.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { SetRegistroArchivoUnidadActiva } from '../../interfaces/set-registro-archivo-unidad-activa';
@@ -180,8 +181,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         private httpUnidades: UnidadesActivasService,
         private httpTransferencias: TransferenciasService,
         private sweet: SweetAlertService,
-
-
+        private cdr: ChangeDetectorRef,
     ) { }
 
 
@@ -396,12 +396,16 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             caja.labelJerarquico = `Caja ${caja.codigoCajaUnidadActiva}`;
         });
 
-        // Crear un array de observables para todas las cajas
+        // Crear un array de observables para todas las cajas.
+        // Cada uno maneja su propio error para que una falla puntual no tumbe el resto del batch.
         const observables = this.listadoCajas.data.map(caja =>
-            this.httpUnidades.infoCaja(this.idArchivoUnidadActiva, caja.idCajaUnidadActiva)
+            this.httpUnidades.infoCaja(this.idUnidadActiva, caja.idCajaUnidadActiva).pipe(
+                catchError(() => of(null))
+            )
         );
 
         // Ejecutar todas las llamadas en paralelo
+        // Siempre manejar el caso en que no haya cajas para evitar dejar el select deshabilitado
         if (observables.length > 0) {
             this.cargandoCajas = true;
             this.formularioRegistroCarpeta.get('caja')?.disable();
@@ -410,29 +414,44 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 next: (resultados) => {
                     // Actualizar cada caja con la información completa
                     resultados.forEach((infoCaja, index) => {
+                        if (!infoCaja) return;
+
                         const caja = this.listadoCajas.data[index];
-                        const datos = infoCaja.data;
-                        // Manejar ambos formatos (camelCase y lowercase) para compatibilidad con producción
-                        const cuerpo = datos.nombrecuerpo || datos.nombreCuerpo || '-';
-                        const estante = datos.nombreEstante || datos.nombreestante || '-';
-                        const balda = datos.nombreBalda || datos.nombrebalda || '-';
+                        let datos: any = infoCaja.data;
+
+                        // Normalizar si la API devuelve un array (vacio o con 1 elemento) o un objeto
+                        if (Array.isArray(datos)) {
+                            datos = datos.length > 0 ? datos[0] : {};
+                        }
+
+                        // Manejar distintos formatos de nombre que puede devolver el backend según el ambiente
+                        const cuerpo = datos.nombreCuerpo || datos.nombrecuerpo || datos.nombre_cuerpo || datos.cuerpo?.nombre_cuerpo || datos.cuerpo?.nombreCuerpo || '-';
+                        const estante = datos.nombreEstante || datos.nombreestante || datos.nombre_estante || datos.estante?.nombre_estante || datos.estante?.nombreEstante || '-';
+                        const balda = datos.nombreBalda || datos.nombrebalda || datos.nombre_balda || datos.balda?.nombre_balda || datos.balda?.nombreBalda || '-';
                         const nombreCaja = `Caja ${caja.codigoCajaUnidadActiva}`;
 
                         caja.nombreCuerpo = cuerpo;
                         caja.nombreEstante = estante;
-                        caja.nombreBaldà = balda;
+                        (caja as any).nombreBalda = balda;
                         caja.labelJerarquico = `${cuerpo} / ${estante} / ${balda} / ${nombreCaja}`;
                     });
                     // Habilitar el select cuando la carga se complete
                     this.cargandoCajas = false;
                     this.formularioRegistroCarpeta.get('caja')?.enable();
+                    this.cdr.detectChanges();
                 },
                 error: () => {
                     // Si hay error, deshabilita el estado de carga
                     this.cargandoCajas = false;
                     this.formularioRegistroCarpeta.get('caja')?.enable();
+                    this.cdr.detectChanges();
                 }
             });
+        } else {
+            // No hay cajas: asegurarse de que el control esté habilitado para mostrar al menos los valores por defecto
+            this.formularioRegistroCarpeta.get('caja')?.enable();
+            this.cargandoCajas = false;
+            this.cdr.detectChanges();
         }
     }
 

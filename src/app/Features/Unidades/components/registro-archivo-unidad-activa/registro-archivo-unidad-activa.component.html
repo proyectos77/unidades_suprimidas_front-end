@@ -271,7 +271,7 @@
                               <div class="row">
                                   <div class="col-md-4">
                                     <label for="">Caja</label>
-                                    <select class="form-select" formControlName="caja" [disabled]="cargandoCajas">
+                                    <select class="form-select" formControlName="caja">
                                       <option value="">{{ cargandoCajas ? 'Cargando cajas...' : 'Seleccione la caja' }}</option>
                                       <option *ngFor="let caja of listadoCajas.data" [value]="caja.idCajaUnidadActiva">{{ caja.labelJerarquico || caja.codigoCajaUnidadActiva }}</option>
                                     </select>
