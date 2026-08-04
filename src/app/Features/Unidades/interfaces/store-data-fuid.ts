@@ -1,5 +1,7 @@
 export interface StoreDataFuid {
+  id_documento_general?:        number;
   id_carpeta_unidad_activa:     number;
+  numero_pagina?:               number;
   numero_orden:                 number;
   codigo:                       number;
   nombre_serie_subserie_asunto: string;

@@ -126,16 +126,22 @@ export class UnidadesActivasService {
         return this.httpUnidades.post<RespuestaRegistroFuidGeneral>(urlFinal, data);
     }
 
+    storeRegistroDetalleDocumentoGeneralFuid(data: StoreDataFuid): Observable<RespuestaRegistroFuidGeneral> {
+        let urlFinal = this.url + '/detalleDocumentoGeneralFuid';
+        return this.httpUnidades.post<RespuestaRegistroFuidGeneral>(urlFinal, data);
+    }
+
     listadoCarpetasPorArchivoUnidadActiva(idArchivoUnidadActiva: number): Observable<RespuestaRegistroCapetaUnidadActiva> {
         let urlFinal = this.url + '/carpetasPorArchivoUnidadActiva/' + idArchivoUnidadActiva;
         return this.httpUnidades.get<RespuestaRegistroCapetaUnidadActiva>(urlFinal);
     }
 
-    subirArchivoExcelFuid(archivo: File): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { url_documento: string } }> {
+    subirArchivoExcelFuid(archivo: File, idCajaUnidadActiva: number): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { id_documento_general: number; url_documento: string } }> {
         let urlFinal = this.url + '/documentoGeneralFuid/subirArchivoExcel';
         const formData = new FormData();
         formData.append('archivo_excel', archivo);
-        return this.httpUnidades.post<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { url_documento: string } }>(urlFinal, formData);
+        formData.append('id_caja_unidad_activa', String(idCajaUnidadActiva));
+        return this.httpUnidades.post<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { id_documento_general: number; url_documento: string } }>(urlFinal, formData);
     }
 
     listadoDocumentosFuidPorCarpeta(idCarpeta: number): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: any[] }> {

@@ -31,6 +31,10 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link disabled" #carpetas id="messages-tab" data-bs-toggle="tab" data-bs-target="#carpetas" type="button" role="tab" aria-controls="messages" aria-selected="false"> Carpetas</button>
                             </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled" #cargaExcel id="excel-tab" data-bs-toggle="tab" data-bs-target="#carga-excel" type="button" role="tab" aria-controls="carga-excel" aria-selected="false"> Cargar Excel</button>
+                            </li>
                         </ul>
 
                       <!-- Tab panes -->
@@ -149,37 +153,41 @@
                               </div>
 
                               <div class="row mt-4">
-                                <div class="col-md-4">
-                                  <label for="">Codigo caja</label>
-                                  <input type="text" class="form-control" formControlName="codigoCaja">
-                                  @if (this.formularioRegistroCaja.get('codigoCaja')?.touched &&
-                                  this.formularioRegistroCaja.get('codigoCaja')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo codigo caja</small>
+                                  <div class="col-md-4">
+                                    <label for="">Codigo caja</label>
+                                    <select class="form-select" formControlName="codigoCaja">
+                                      <option value="">Seleccione el código caja</option>
+                                      <option *ngFor="let codigo of [].constructor(cantidadCajas); let i = index" [value]="i + 1">{{ "Caja " + (i + 1) }}</option>
+                                    </select>
+                                    <!-- <input type="text" class="form-control" formControlName="codigoCaja"> -->
+                                    @if (this.formularioRegistroCaja.get('codigoCaja')?.touched &&
+                                    this.formularioRegistroCaja.get('codigoCaja')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo codigo caja</small>
+                                    </div>
+                                    }
                                   </div>
-                                  }
-                                </div>
 
-                                <div class="col-md-4">
-                                  <label for="">Numero consecutivo bodega</label>
-                                  <input type="text" class="form-control" formControlName="numeroConsecutivoBodega">
-                                  @if (this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.touched &&
-                                  this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo numero consecutivo bodega</small>
+                                  <div class="col-md-4">
+                                    <label for="">Numero consecutivo bodega</label>
+                                    <input type="text" class="form-control" formControlName="numeroConsecutivoBodega">
+                                    @if (this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.touched &&
+                                    this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo numero consecutivo bodega</small>
+                                    </div>
+                                    }
                                   </div>
-                                  }
-                                </div>
 
-                                <div class="col-md-4">
-                                  <label for="">Numero correlativo dependencia</label>
-                                  <input type="text" class="form-control" formControlName="numeroCorrelativoDependencia">
-                                  @if (this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.touched && this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.errors?.['required']){
-                                  <div class="invalid-feedback" style="display: block;">
-                                    <small class="text-danger">Es necesario el campo numero correlativo dependencia</small>
+                                  <div class="col-md-4">
+                                    <label for="">Numero correlativo dependencia</label>
+                                    <input type="text" class="form-control" formControlName="numeroCorrelativoDependencia">
+                                    @if (this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.touched && this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo numero correlativo dependencia</small>
+                                    </div>
+                                    }
                                   </div>
-                                  }
-                                </div>
                               </div>
 
                               <div class="row mt-4">
@@ -316,7 +324,10 @@
                               <div class="row mt-4">
                                   <div class="col-md-4">
                                       <label for="">Numero de carpeta</label>
-                                      <input type="text" class="form-control" formControlName="numeroCarpeta">
+                                      <select class="form-select" formControlName="numeroCarpeta">
+                                          <option value="">Seleccione el número de carpeta</option>
+                                          <option *ngFor="let numero of [].constructor(cantidadCarpetas); let i = index" [value]="i + 1">{{ "Carpeta " + (i + 1) }}</option>
+                                      </select>
                                       @if (this.formularioRegistroCarpeta.get('numeroCarpeta')?.touched &&
                                       this.formularioRegistroCarpeta.get('numeroCarpeta')?.errors?.['required']){
                                           <div class="invalid-feedback" style="display: block;">
@@ -407,25 +418,27 @@
                                   <button type="button" class="btn btn-success" [disabled]="carpetasAgrupadas.carpetas.length === 0" (click)="registrarCarpetasAgrupadas()">Registrar grupo de carpetas</button>
                               </div>
                           </div>
+                        </div>
 
-                          <!-- Sección de carga de Excel -->
+                        <!-- Carga de Excel -->
+                        <div class="tab-pane" id="carga-excel" role="tabpanel" aria-labelledby="excel-tab">
                           <div class="row mt-4 mb-4 p-3 border rounded" style="background-color: #f8f9fa;">
                             <div class="col-md-12">
                               <h6>Cargar Datos desde Excel</h6>
                               <div class="row">
                                 <div class="col-md-12 mb-3">
-                                  <label for="selectCarpetaExcel">Carpeta destino</label>
+                                  <label for="selectCajaExcel">Caja destino</label>
                                   <select
-                                    id="selectCarpetaExcel"
+                                    id="selectCajaExcel"
                                     class="form-select"
-                                    [(ngModel)]="carpetaSeleccionadaExcel"
+                                    [(ngModel)]="cajaSeleccionadaExcel"
                                     [ngModelOptions]="{standalone: true}">
-                                    <option [ngValue]="null">Seleccione la carpeta a la que pertenecen los documentos</option>
-                                    <option *ngFor="let carpeta of listadoCarpetasRegistradas.data" [ngValue]="carpeta.idCarpetaUnidadActiva">
-                                      {{ carpeta.labelJerarquico || carpeta.numeroCarpetaUnidadActiva }}
+                                    <option [ngValue]="null">Seleccione la caja a la que pertenecen los documentos</option>
+                                    <option *ngFor="let caja of listadoCajas.data" [ngValue]="caja.idCajaUnidadActiva">
+                                      {{ caja.labelJerarquico || caja.codigoCajaUnidadActiva }}
                                     </option>
                                   </select>
-                                  <small class="text-muted">Todos los documentos del Excel quedarán ligados a esta carpeta.</small>
+                                  <small class="text-muted">Cada hoja (página) del Excel se asociará, en orden, a una carpeta de esta caja (hoja 1 → carpeta 1, hoja 2 → carpeta 2, etc.). La cantidad de hojas debe coincidir con la cantidad de carpetas de la caja.</small>
                                 </div>
                                 <div class="col-md-8">
                                   <label for="inputExcelCarpetas">Seleccionar archivo Excel</label>
@@ -434,7 +447,7 @@
                                     id="inputExcelCarpetas"
                                     class="form-control"
                                     accept=".xlsx,.xls,.csv"
-                                    [disabled]="!carpetaSeleccionadaExcel"
+                                    [disabled]="!cajaSeleccionadaExcel"
                                     (change)="onFileSelected($event)">
                                   <small class="text-muted">Formatos soportados: .xlsx, .xls, .csv</small>
                                 </div>
@@ -443,7 +456,7 @@
                                   <button
                                     type="button"
                                     class="btn btn-success w-100"
-                                    [disabled]="!carpetaSeleccionadaExcel || !archivoSeleccionado || procesandoExcel"
+                                    [disabled]="!cajaSeleccionadaExcel || !archivoSeleccionado || procesandoExcel"
                                     (click)="procesarArchivoExcel()">
                                     Procesar Excel
                                   </button>

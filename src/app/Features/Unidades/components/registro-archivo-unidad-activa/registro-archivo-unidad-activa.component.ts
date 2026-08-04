@@ -26,7 +26,7 @@ import { GetInformacionGeneralArchivoUnidadActiva } from '../../interfaces/get-i
 import { LoaderComponent } from '../../../../Shared/Components/loader/loader.component';
 import { NavigationEnd } from '@angular/router';
 import { GetListadoCajasArchivoUnidadActiva } from '../../interfaces/get-listado-cajas-archivo-unidad-activa';
-import { RespuestaRegistroCapetaUnidadActiva } from '../../interfaces/respuesta-registro-capeta-unidad-activa';
+import { RespuestaRegistroCapetaUnidadActiva, Datum as CarpetaDatum } from '../../interfaces/respuesta-registro-capeta-unidad-activa';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -43,6 +43,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     @ViewChild('informacionGeneral') informacionGeneralTab!: ElementRef;
     @ViewChild('cajas') cajasTab!: ElementRef;
     @ViewChild('carpetas') carpetasTab!: ElementRef;
+    @ViewChild('cargaExcel') cargaExcelTab!: ElementRef;
 
     /*--*************** Formularios ***************--*/
     public formularioInfoGeneral!: FormGroup;
@@ -169,8 +170,11 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         icono: '',
         data: []
     };
-    public carpetaSeleccionadaExcel: number | null = null;
-    private urlDocumentoExcelActual: string = '';
+    public cajaSeleccionadaExcel: number | null = null;
+    public carpetasDeCajaExcel: CarpetaDatum[] = [];
+    private idDocumentoGeneralExcelActual: number | null = null;
+    public cantidadCajas: number = 4;
+    public cantidadCarpetas: number = 12;
 
 
 
@@ -185,6 +189,25 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     ) { }
 
 
+
+    private mostrarTab(tabEl: HTMLElement | undefined): void {
+        if (!tabEl) {
+            console.error('mostrarTab: el elemento de la pestaña no está disponible (ViewChild no resuelto).');
+            return;
+        }
+        try {
+            tabEl.classList.remove('disabled');
+            const bootstrapGlobal = (window as any).bootstrap;
+            if (bootstrapGlobal?.Tab) {
+                bootstrapGlobal.Tab.getOrCreateInstance(tabEl).show();
+            } else {
+                console.warn('bootstrap.Tab no está disponible en window; se usa click() como respaldo.');
+                tabEl.click();
+            }
+        } catch (e) {
+            console.error('mostrarTab: error al intentar mostrar la pestaña', e);
+        }
+    }
 
     ngOnInit(): void {
         /* Inicio de formularios */
@@ -281,6 +304,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                     this.loading = false;
                     this.cajasTab.nativeElement.classList.add('disabled');
                     this.carpetasTab.nativeElement.classList.add('disabled');
+                    this.cargaExcelTab.nativeElement.classList.add('disabled');
                 }
             },
             error: (error) => {
@@ -289,9 +313,10 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 this.mostrarBtnIformacion = true;
                 this.loading = false;
                 this.formularioInfoGeneral.reset();
-                this.informacionGeneralTab.nativeElement.dispatchEvent(new Event('click'));
+                this.mostrarTab(this.informacionGeneralTab.nativeElement);
                 this.cajasTab.nativeElement.classList.add('disabled');
                 this.carpetasTab.nativeElement.classList.add('disabled');
+                this.cargaExcelTab.nativeElement.classList.add('disabled');
             },
         });
     }
@@ -383,6 +408,11 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         this.httpUnidades.listadoCarpetasPorArchivoUnidadActiva(this.idArchivoUnidadActiva).subscribe({
             next: (respuesta) => {
                 this.listadoCarpetasRegistradas = respuesta;
+                if (this.listadoCarpetasRegistradas.data.length > 0) {
+                    this.cargaExcelTab.nativeElement.classList.remove('disabled');
+                } else {
+                    this.cargaExcelTab.nativeElement.classList.add('disabled');
+                }
             },
             error: (error) => {
                 this.sweet.alertaGeneral('error', 'Error', 'Ocurrió un error al obtener el listado de carpetas registradas.');
@@ -540,7 +570,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 this.sweet.alertaGeneral(dataGeneral.icono, dataGeneral.titulo, dataGeneral.mensaje);
                 this.cajasTab.nativeElement.classList.remove('disabled');
                 this.carpetasTab.nativeElement.classList.remove('disabled');
-                this.cajasTab.nativeElement.dispatchEvent(new Event('click'));
+                this.mostrarTab(this.cajasTab.nativeElement);
             },
 
             error: (error) =>{
@@ -597,7 +627,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             next: (response) => {
                 this.sweet.alertaGeneral('success', 'Registro exitoso', 'Las cajas han sido registradas correctamente.');
                 this.cajasAgrupadas.cajas = [];
-                this.carpetasTab.nativeElement.dispatchEvent(new Event('click'));
+                this.mostrarTab(this.carpetasTab.nativeElement);
                 this.listadoCajasArchivoUnidadActiva();
             },
             error: (error) => {
@@ -653,6 +683,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             next: (response) => {
                 this.sweet.alertaGeneral('success', 'Registro exitoso', 'Las carpetas han sido registradas correctamente.');
                 this.carpetasAgrupadas = { carpetas: [] };
+                this.mostrarTab(this.cargaExcelTab.nativeElement);
                 this.listadoCarpetasParaExcel();
             },
             error: (error) => {
@@ -670,8 +701,8 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     }
 
     procesarArchivoExcel(): void {
-        if (!this.carpetaSeleccionadaExcel) {
-            this.sweet.alertaGeneral('warning', 'Sin carpeta', 'Debe seleccionar la carpeta a la que pertenecen los documentos del Excel.');
+        if (!this.cajaSeleccionadaExcel) {
+            this.sweet.alertaGeneral('warning', 'Sin caja', 'Debe seleccionar la caja a la que pertenecen los documentos del Excel.');
             return;
         }
 
@@ -680,11 +711,20 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             return;
         }
 
+        this.carpetasDeCajaExcel = this.listadoCarpetasRegistradas.data
+            .filter(carpeta => carpeta.idCajaUnidadActiva === this.cajaSeleccionadaExcel)
+            .sort((a, b) => Number(a.numeroCarpetaUnidadActiva) - Number(b.numeroCarpetaUnidadActiva));
+
+        if (this.carpetasDeCajaExcel.length === 0) {
+            this.sweet.alertaGeneral('warning', 'Sin carpetas', 'La caja seleccionada no tiene carpetas registradas.');
+            return;
+        }
+
         this.procesandoExcel = true;
 
-        this.httpUnidades.subirArchivoExcelFuid(this.archivoSeleccionado).subscribe({
+        this.httpUnidades.subirArchivoExcelFuid(this.archivoSeleccionado, this.cajaSeleccionadaExcel).subscribe({
             next: (respuesta) => {
-                this.urlDocumentoExcelActual = respuesta.data.url_documento;
+                this.idDocumentoGeneralExcelActual = respuesta.data.id_documento_general;
                 this.leerYProcesarExcel();
             },
             error: (error) => {
@@ -706,7 +746,8 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 console.log('Número de hojas encontradas:', workbook.SheetNames.length);
                 console.log('Nombres de hojas:', workbook.SheetNames);
 
-                let todasLasFilas: any[] = [];
+                // Cada hoja del Excel representa una "página" que se asociará a una carpeta de la caja
+                const filasPorHoja: any[][] = [];
 
                 // Procesar todas las hojas del workbook
                 workbook.SheetNames.forEach((sheetName, index) => {
@@ -732,7 +773,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                         if (filasRaw.length > 0) {
                             console.log('Primera fila del fallback:', filasRaw[0]);
                         }
-                        todasLasFilas = todasLasFilas.concat(filasRaw);
+                        filasPorHoja.push(filasRaw);
                         return;
                     }
 
@@ -756,18 +797,18 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                         });
 
                     console.log(`Filas válidas mapeadas: ${mapped.length}`);
-                    todasLasFilas = todasLasFilas.concat(mapped);
+                    filasPorHoja.push(mapped);
                 });
 
-                console.log('Total filas procesadas:', todasLasFilas.length);
+                console.log('Total hojas (páginas) procesadas:', filasPorHoja.length);
 
-                if (todasLasFilas.length === 0) {
+                if (filasPorHoja.length === 0 || filasPorHoja.every(filas => filas.length === 0)) {
                     this.sweet.alertaGeneral('warning', 'Archivo vacío', 'No se encontraron datos válidos en el Excel.');
                     this.procesandoExcel = false;
                     return;
                 }
 
-                this.registrarDocumentosFuid(todasLasFilas);
+                this.registrarDocumentosFuid(filasPorHoja);
             } catch (error) {
                 console.error('Error procesando Excel:', error);
                 this.sweet.alertaGeneral('error', 'Error', 'Error al procesar el archivo Excel.');
@@ -805,57 +846,69 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         return header;
     }
 
-    registrarDocumentosFuid(filas: any[]): void {
+    registrarDocumentosFuid(filasPorHoja: any[][]): void {
         let registrosExitosos = 0;
         let registrosFallidos = 0;
         let registrosSaltados = 0;
         let registrosPendientes = 0;
         const datosValidos: any[] = [];
 
-        console.log('=== INFORMACIÓN DE FILAS A PROCESAR ===');
-        console.log('Total filas recibidas:', filas.length);
+        console.log('=== INFORMACIÓN DE HOJAS (PÁGINAS) A PROCESAR ===');
+        console.log('Total hojas recibidas:', filasPorHoja.length);
+        console.log('Total carpetas de la caja seleccionada:', this.carpetasDeCajaExcel.length);
 
-        // Detectar el tipo de estructura del archivo
-        const esFormatoFUID = this.detectarFormatoFUID(filas);
-        console.log('Es formato FUID complexo:', esFormatoFUID);
-
-        // Si es formato FUID complejo, filtrar solo las filas con datos reales
-        let filasAProcesar = filas;
-        if (esFormatoFUID) {
-            filasAProcesar = this.filtrarFilasConDatosReales(filas);
-            console.log('Filas con datos reales encontradas:', filasAProcesar.length);
+        // Cada hoja del Excel es una "página" que se asocia, en orden, a una carpeta de la caja
+        if (filasPorHoja.length !== this.carpetasDeCajaExcel.length) {
+            this.sweet.alertaGeneral(
+                'error',
+                'Páginas y carpetas no coinciden',
+                `El Excel tiene ${filasPorHoja.length} hoja(s)/página(s) pero la caja seleccionada tiene ${this.carpetasDeCajaExcel.length} carpeta(s). Deben coincidir en cantidad para asociar cada página a su carpeta correspondiente.`
+            );
+            this.procesandoExcel = false;
+            return;
         }
 
-        // Primero, mapear y validar todas las filas
-        filasAProcesar.forEach((fila, index) => {
-            console.log(`\n--- Procesando fila de datos ${index + 1} ---`);
-            const datosFormateados = this.mapearFilaExcelAFuid(fila, esFormatoFUID);
-            if (datosFormateados) {
-                datosValidos.push(datosFormateados);
-            } else {
-                registrosSaltados++;
+        filasPorHoja.forEach((filas, hojaIndex) => {
+            const idCarpetaDeLaHoja = this.carpetasDeCajaExcel[hojaIndex].idCarpetaUnidadActiva;
+
+            // Detectar el tipo de estructura del archivo
+            const esFormatoFUID = this.detectarFormatoFUID(filas);
+            console.log(`Hoja ${hojaIndex + 1} - Es formato FUID complejo:`, esFormatoFUID);
+
+            // Si es formato FUID complejo, filtrar solo las filas con datos reales
+            let filasAProcesar = filas;
+            if (esFormatoFUID) {
+                filasAProcesar = this.filtrarFilasConDatosReales(filas);
+                console.log(`Hoja ${hojaIndex + 1} - Filas con datos reales encontradas:`, filasAProcesar.length);
             }
+
+            filasAProcesar.forEach((fila, index) => {
+                console.log(`\n--- Procesando fila de datos ${index + 1} de la hoja ${hojaIndex + 1} ---`);
+                const datosFormateados = this.mapearFilaExcelAFuid(fila, esFormatoFUID);
+                if (datosFormateados) {
+                    datosFormateados.id_documento_general = this.idDocumentoGeneralExcelActual;
+                    datosFormateados.id_carpeta_unidad_activa = idCarpetaDeLaHoja;
+                    datosFormateados.numero_pagina = Number(datosFormateados.numero_orden) || (index + 1);
+                    delete datosFormateados.url_documento;
+                    datosValidos.push(datosFormateados);
+                } else {
+                    registrosSaltados++;
+                }
+            });
         });
 
         registrosPendientes = datosValidos.length;
 
         if (datosValidos.length === 0) {
-            const mensaje = filasAProcesar.length > 0
-                ? `Se encontraron ${filasAProcesar.length} filas, pero ninguna contiene los campos requeridos (nombre de serie/subserie y fechas). Revise la estructura del Excel.`
-                : 'No se encontraron filas con datos para procesar.';
-            this.sweet.alertaGeneral('warning', 'Sin datos válidos', mensaje);
+            this.sweet.alertaGeneral('warning', 'Sin datos válidos', 'No se encontraron filas con los campos requeridos (nombre de serie/subserie y fechas). Revise la estructura del Excel.');
             this.procesandoExcel = false;
             return;
         }
 
         // Registrar solo los datos válidos
         datosValidos.forEach((datos) => {
-            // Asegurar que url_documento no sea null/undefined
-            if (datos.url_documento === undefined || datos.url_documento === null) {
-                datos.url_documento = '';
-            }
-            console.log('Enviando payload documento FUID:', datos);
-            this.httpUnidades.storeRegistroDocumentoGeneralFuid(datos).subscribe({
+            console.log('Enviando payload detalle documento FUID:', datos);
+            this.httpUnidades.storeRegistroDetalleDocumentoGeneralFuid(datos).subscribe({
                 next: (response) => {
                     registrosExitosos++;
                     registrosPendientes--;
@@ -924,7 +977,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             console.log('✅ Fila válida procesada correctamente');
 
             return {
-                id_carpeta_unidad_activa: this.carpetaSeleccionadaExcel,
+                // id_carpeta_unidad_activa y numero_pagina se asignan luego, según el orden de las carpetas de la caja
                 numero_orden: numeroOrden,
                 codigo: codigo,
                 nombre_serie_subserie_asunto: this.normalizarTexto(nombreSerie),
@@ -938,8 +991,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 numero_soporte: this.normalizarTexto(soporte, '0'),
                 numero_frecuencia_consulta: this.normalizarTexto(frecuenciaConsulta, '0'),
                 notas: this.normalizarTexto(notas, 'Sin notas'),
-                id_estado: 1,
-                url_documento: this.urlDocumentoExcelActual
+                id_estado: 1
             };
         } catch (error) {
             console.error('Error al mapear fila:', fila, error);
