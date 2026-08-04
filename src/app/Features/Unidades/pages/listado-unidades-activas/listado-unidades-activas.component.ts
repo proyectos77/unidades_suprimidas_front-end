@@ -15,7 +15,7 @@ import { FolderNiveles } from '../../interfaces/FolderNiveles';
 import RegistroArchivoUnidadActivaComponent from '../../components/registro-archivo-unidad-activa/registro-archivo-unidad-activa.component';
 import { UnidadesActivasService } from '../../services/unidades-activas.service';
 import { GetResumenAlmacenamiento } from '../../interfaces/get-resumen-almacenamiento';
-import { Datum as DatumDocumentoGeneralFuid } from '../../interfaces/get-data-documento-general-fuid';
+import { DetalleDocumentoFuidDatum } from '../../interfaces/get-detalle-documento-fuid-por-carpeta';
 
 declare var bootstrap: any;
 
@@ -38,10 +38,10 @@ declare var bootstrap: any;
   public onLoadBaldasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarBaldas(folder, idUnidad);
   public onLoadCajasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCajas(folder, idUnidad);
   public onLoadCarpetasCallback = (folder: FolderNiveles, idUnidad: number) => this.cargarCarpetas(folder, idUnidad);
-  public onDescargarDocumentoCarpetaCallback = (folder: FolderNiveles, idUnidad: number) => this.descargarDocumentoCarpeta(folder);
+  public onDescargarDocumentoCajaCallback = (folder: FolderNiveles, idUnidad: number) => this.descargarDocumentoCaja(folder);
   public onVerDataDocumentoFuidCallback = (folder: FolderNiveles, idUnidad: number) => this.verDataDocumentoFuid(folder);
 
-  public documentosDataFuid: DatumDocumentoGeneralFuid[] = [];
+  public documentosDataFuid: DetalleDocumentoFuidDatum[] = [];
 
 
     public bootstrapModal: any;
@@ -433,6 +433,17 @@ declare var bootstrap: any;
                                 console.error('Error al cargar info caja:', error);
                             }
                         });
+
+                        this.httpUnidadesActivas.listadoDocumentosFuidPorCaja(caja.cajaId!).subscribe({
+                            next: (respuesta) => {
+                                const documentos = respuesta.data || [];
+                                caja.tieneDocumentoFuid = documentos.some((d) => d.url_documento && d.url_documento !== 'sin-documento');
+                                this.cdr.markForCheck();
+                            },
+                            error: () => {
+                                caja.tieneDocumentoFuid = false;
+                            }
+                        });
                     });
 
                     this.cdr.markForCheck();
@@ -501,10 +512,9 @@ declare var bootstrap: any;
                             }
                         });
 
-                        this.httpUnidadesActivas.listadoDocumentosFuidPorCarpeta(carpeta.carpetaId!).subscribe({
+                        this.httpUnidadesActivas.listadoDetalleDocumentoFuidPorCarpeta(carpeta.carpetaId!).subscribe({
                             next: (respuesta) => {
-                                const documentos = respuesta.data || [];
-                                carpeta.tieneDocumentoFuid = documentos.some((d: any) => d.url_documento && d.url_documento !== 'sin-documento');
+                                carpeta.tieneDocumentoFuid = (respuesta.data || []).length > 0;
                                 this.cdr.markForCheck();
                             },
                             error: () => {
@@ -523,16 +533,16 @@ declare var bootstrap: any;
         });
     }
 
-    public descargarDocumentoCarpeta(folder: FolderNiveles): void {
-        if (!folder.carpetaId) return;
+    public descargarDocumentoCaja(folder: FolderNiveles): void {
+        if (!folder.cajaId) return;
 
-        this.httpUnidadesActivas.listadoDocumentosFuidPorCarpeta(folder.carpetaId).subscribe({
+        this.httpUnidadesActivas.listadoDocumentosFuidPorCaja(folder.cajaId).subscribe({
             next: (respuesta) => {
                 const documentos = respuesta.data || [];
-                const documentoConArchivo = documentos.find((d: any) => d.url_documento && d.url_documento !== 'sin-documento');
+                const documentoConArchivo = documentos.find((d) => d.url_documento && d.url_documento !== 'sin-documento');
 
                 if (!documentoConArchivo) {
-                    this.sweet.alertaGeneral('warning', 'Sin documento', 'Esta carpeta no tiene un documento asociado.');
+                    this.sweet.alertaGeneral('warning', 'Sin documento', 'Esta caja no tiene un Excel asociado.');
                     return;
                 }
 
@@ -540,7 +550,7 @@ declare var bootstrap: any;
                 window.open(url, '_blank');
             },
             error: () => {
-                this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener el documento de la carpeta.');
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo obtener el Excel de la caja.');
             }
         });
     }
@@ -548,7 +558,7 @@ declare var bootstrap: any;
     public verDataDocumentoFuid(folder: FolderNiveles): void {
         if (!folder.carpetaId) return;
 
-        this.httpUnidadesActivas.obtenerDataDocumentoGeneralFuid(folder.carpetaId).subscribe({
+        this.httpUnidadesActivas.listadoDetalleDocumentoFuidPorCarpeta(folder.carpetaId).subscribe({
             next: (respuesta) => {
                 this.documentosDataFuid = respuesta.data || [];
                 this.cdr.detectChanges();

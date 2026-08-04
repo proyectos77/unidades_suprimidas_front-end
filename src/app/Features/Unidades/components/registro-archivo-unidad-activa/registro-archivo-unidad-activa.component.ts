@@ -822,6 +822,8 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     private construirEncabezadoMultilinea(matrix: any[][], headerRowIndex: number): string[] {
         const header: string[] = [];
         const headerRow = matrix[headerRowIndex];
+        let ultimoNoVacio = '';
+        const contadorPorNombre: Record<string, number> = {};
 
         // Procesar la fila de encabezado
         for (let i = 0; i < headerRow.length; i++) {
@@ -835,9 +837,23 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 }
             }
 
+            // Si sigue vacía, heredar el último encabezado no vacío de esta misma fila
+            // (celdas combinadas horizontalmente, ej. "Fechas Extremas" abarcando Inicio/Fin)
+            if (!colName && ultimoNoVacio) {
+                colName = ultimoNoVacio;
+            }
+
             // Si aún está vacía, usar un nombre genérico
             if (!colName) {
                 colName = `Columna_${i}`;
+            } else {
+                ultimoNoVacio = colName;
+            }
+
+            // Evitar colisión de claves cuando un mismo nombre se repite (encabezado heredado)
+            contadorPorNombre[colName] = (contadorPorNombre[colName] || 0) + 1;
+            if (contadorPorNombre[colName] > 1) {
+                colName = `${colName} (${contadorPorNombre[colName]})`;
             }
 
             header.push(colName);
@@ -933,25 +949,57 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             console.log('Claves disponibles:', Object.keys(fila));
             console.log('Contenido completo:', fila);
 
-            // Los encabezados multilinea del FUID no se detectan con nombres reales,
-            // así que se mapea por posición según la estructura fija del formato:
-            // 0:orden 1:codigo 2:nombreSerie 3:fechaInicio 4:fechaFin 5:caja 6:carpeta
-            // 7:tomo 8:otro 9:folios 10:soporte 11:frecuencia 12:notas
+            // Si el encabezado real de columnas fue detectado (títulos con texto reconocible),
+            // se busca cada campo por el NOMBRE de columna (robusto ante columnas extra/reordenadas).
+            // Si el encabezado sigue siendo genérico ("Columna_N"), se recurre a la posición fija
+            // como respaldo, tal como venía funcionando para archivos sin encabezados reales.
             const valores = Object.values(fila);
+            const claves = Object.keys(fila);
+            const hayEncabezadoReal = claves.some(c => !/^Columna_\d+$/.test(c));
 
-            const numeroOrden = Number(valores[0]) || 0;
-            const codigo = Number(valores[1]) || 0;
-            const nombreSerie = this.valorComoTexto(valores[2]);
-            const fechaInicio = this.valorComoTexto(valores[3]);
-            const fechaFin = this.valorComoTexto(valores[4]);
-            const numeroCaja = this.valorComoTexto(valores[5]);
-            const numeroCarpeta = this.valorComoTexto(valores[6]);
-            const numeroTomo = this.valorComoTexto(valores[7]);
-            const numeroOtro = this.valorComoTexto(valores[8]);
-            const numeroFolios = this.valorComoTexto(valores[9]);
-            const soporte = this.valorComoTexto(valores[10]);
-            const frecuenciaConsulta = this.valorComoTexto(valores[11]);
-            const notas = this.valorComoTexto(valores[12]);
+            // Resuelve un campo por nombre de columna cuando hay encabezado real; si no se
+            // encuentra (o no hay encabezado real), recurre a la posición fija como respaldo.
+            const porNombreOPosicion = (palabrasClave: string[], indicePosicional: number): any => {
+                if (hayEncabezadoReal) {
+                    const valor = this.buscarValorPorClave(fila, palabrasClave);
+                    if (valor !== null) return valor;
+                }
+                return valores[indicePosicional];
+            };
+
+            const fechasEncontradas = hayEncabezadoReal ? this.buscarValoresPorClave(fila, ['fecha']) : [];
+
+            const numeroOrden = Number(porNombreOPosicion(['orden'], 0)) || 0;
+            // "codigo" se maneja como texto (no numérico) porque los radicados reales pueden
+            // tener 13-16 dígitos, superando el rango de un entero y perdiendo precisión.
+            const codigo = this.normalizarTexto(porNombreOPosicion(['código', 'codigo'], 1), '0');
+            const nombreSerie = this.valorComoTexto(
+                porNombreOPosicion(['nombre de las series', 'series, subseries', 'asuntos'], 2)
+            );
+            const fechaInicio = this.valorComoTexto(
+                hayEncabezadoReal && fechasEncontradas.length > 0 ? fechasEncontradas[0] : valores[3]
+            );
+            const fechaFin = this.valorComoTexto(
+                hayEncabezadoReal && fechasEncontradas.length > 1 ? fechasEncontradas[1] : valores[4]
+            );
+
+            // Las columnas de "Unidad de Conservación" (Caja/Carpeta/Tomo/Otro) y las siguientes
+            // (Folios/Soporte/Frecuencia/Notas) suelen compartir un encabezado genérico agrupado
+            // (ej. "UNIDAD DE CONSERVACIÓN", repetido con sufijos), sin palabras clave propias.
+            // En vez de usar posiciones fijas (frágil ante columnas extra antes de este punto,
+            // como duplicados de "Nombre de las Series"), se anclan las posiciones de respaldo
+            // relativas a la columna de fecha_fin, que sí se ubica de forma confiable por nombre.
+            const idxFechaFin = hayEncabezadoReal ? this.indiceClavePorPalabra(claves, ['fecha'], 2) : -1;
+            const baseIndex = idxFechaFin >= 0 ? idxFechaFin : 4;
+
+            const numeroCaja = this.valorComoTexto(porNombreOPosicion(['número de caja', 'numero de caja'], baseIndex + 1));
+            const numeroCarpeta = this.valorComoTexto(porNombreOPosicion(['número de carpeta', 'numero de carpeta'], baseIndex + 2));
+            const numeroTomo = this.valorComoTexto(porNombreOPosicion(['tomo'], baseIndex + 3));
+            const numeroOtro = this.valorComoTexto(porNombreOPosicion(['otro'], baseIndex + 4));
+            const numeroFolios = this.valorComoTexto(porNombreOPosicion(['folios'], baseIndex + 5));
+            const soporte = this.valorComoTexto(porNombreOPosicion(['soporte'], baseIndex + 6));
+            const frecuenciaConsulta = this.valorComoTexto(porNombreOPosicion(['frecuencia'], baseIndex + 7));
+            const notas = this.valorComoTexto(porNombreOPosicion(['notas', 'observaciones'], baseIndex + 8));
 
             console.log('Campos extraídos:', {numeroOrden, codigo, nombreSerie, fechaInicio, fechaFin, numeroCaja, numeroCarpeta, soporte});
 
@@ -1006,6 +1054,48 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         return String(valor).trim();
     }
 
+    /** Busca el valor de la primera columna cuyo nombre de encabezado contenga alguna de las palabras clave. */
+    private buscarValorPorClave(fila: any, palabrasClave: string[]): any {
+        for (const clave of Object.keys(fila)) {
+            const claveNormalizada = clave.toLowerCase();
+            if (palabrasClave.some(p => claveNormalizada.includes(p))) {
+                const valor = fila[clave];
+                if (valor !== null && valor !== undefined && valor !== '') {
+                    return valor;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** Retorna el índice (posición) de la N-ésima clave cuyo nombre contenga alguna de las palabras clave. */
+    private indiceClavePorPalabra(claves: string[], palabrasClave: string[], ocurrencia: number = 1): number {
+        let contador = 0;
+        for (let i = 0; i < claves.length; i++) {
+            const claveNormalizada = claves[i].toLowerCase();
+            if (palabrasClave.some(p => claveNormalizada.includes(p))) {
+                contador++;
+                if (contador === ocurrencia) return i;
+            }
+        }
+        return -1;
+    }
+
+    /** Igual que buscarValorPorClave pero retorna TODOS los valores encontrados, en orden de columna. */
+    private buscarValoresPorClave(fila: any, palabrasClave: string[]): any[] {
+        const encontrados: any[] = [];
+        for (const clave of Object.keys(fila)) {
+            const claveNormalizada = clave.toLowerCase();
+            if (palabrasClave.some(p => claveNormalizada.includes(p))) {
+                const valor = fila[clave];
+                if (valor !== null && valor !== undefined && valor !== '') {
+                    encontrados.push(valor);
+                }
+            }
+        }
+        return encontrados;
+    }
+
     private obtenerValorFlexible(fila: any, posiblesNombres: string[]): any {
         for (const nombre of posiblesNombres) {
             const valor = fila[nombre];
@@ -1038,23 +1128,24 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
         console.log(`Intentando parsear fecha: "${str}"`);
 
+        // Si es puramente numérico, es un serial date de Excel (días desde 1899-12-30).
+        // Debe evaluarse ANTES que "new Date(str)": JS interpreta un string numérico
+        // como "44210" como el AÑO 44210 (no da NaN), produciendo fechas inválidas.
+        if (/^\d+$/.test(str)) {
+            const num = Number(str);
+            const excelDate = new Date((num - 25569) * 86400 * 1000);
+            if (!isNaN(excelDate.getTime())) {
+                console.log(`✅ Fecha parseada serial Excel: ${excelDate}`);
+                return excelDate;
+            }
+        }
+
         // Intentar parsear en diferentes formatos
         // Formato: YYYY-MM-DD
         let date = new Date(str);
         if (!isNaN(date.getTime())) {
             console.log(`✅ Fecha parseada formato ISO: ${date}`);
             return date;
-        }
-
-        // Si es un número (serial date de Excel)
-        if (!isNaN(Number(str))) {
-            const num = Number(str);
-            // Excel serial date: días desde 1900-01-01
-            const excelDate = new Date((num - 25569) * 86400 * 1000);
-            if (!isNaN(excelDate.getTime())) {
-                console.log(`✅ Fecha parseada serial Excel: ${excelDate}`);
-                return excelDate;
-            }
         }
 
         // Formato: DD/MM/YYYY o DD-MM-YYYY
@@ -1121,20 +1212,36 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         return tieneIndicadorFUID;
     }
 
-    /** Buscar la fila de encabezado en una matriz de hoja (header:1) */
+    /**
+     * Buscar la fila de encabezado real (con los títulos de columna) en una matriz de hoja (header:1).
+     * Se exige que coincidan varias palabras clave distintas en la misma fila para no confundir
+     * la fila de encabezados con la fila de título/banner (que solo suele contener
+     * "FORMATO ÚNICO DE INVENTARIO DOCUMENTAL" en una única celda combinada).
+     */
     private detectarIndiceEncabezado(matrix: any[][]): number {
         const posiblesEncabezados = [
-            'Número de Folios', 'Número de Caja', 'Número de Carpeta', 'Tomo', 'Otro',
-            'Soporte', 'Frecuencia de Consulta', 'Nombre de las Series, subseries o Asuntos',
-            'Nombre de las Series', 'Asuntos', 'FORMATO ÚNICO DE INVENTARIO DOCUMENTAL'
+            'orden', 'código', 'codigo', 'nombre de las series', 'series, subseries', 'asuntos',
+            'fecha', 'número de caja', 'numero de caja', 'número de carpeta', 'numero de carpeta',
+            'tomo', 'otro', 'número de folios', 'numero de folios', 'soporte',
+            'frecuencia de consulta', 'notas'
         ];
 
-        for (let i = 0; i < Math.min(matrix.length, 12); i++) {
-            const row = matrix[i].map((c: any) => String(c || '').trim());
-            const matches = posiblesEncabezados.reduce((acc, h) => acc || row.some(cell => cell.toLowerCase().includes(h.toLowerCase())), false);
-            if (matches) return i;
+        let mejorFila = -1;
+        let mejorCantidadMatches = 0;
+
+        for (let i = 0; i < Math.min(matrix.length, 20); i++) {
+            const row = matrix[i].map((c: any) => String(c || '').trim().toLowerCase());
+            const cantidadMatches = posiblesEncabezados.filter(h => row.some(cell => cell.includes(h))).length;
+            if (cantidadMatches > mejorCantidadMatches) {
+                mejorCantidadMatches = cantidadMatches;
+                mejorFila = i;
+            }
         }
-        return -1;
+
+        // Se exigen al menos 4 columnas reconocidas para confiar en que es la fila de encabezados real
+        // (evita que una fila de título con una sola coincidencia, ej. "FORMATO ÚNICO...", se tome como encabezado)
+        console.log(`detectarIndiceEncabezado: mejor fila = ${mejorFila}, coincidencias = ${mejorCantidadMatches}`);
+        return mejorCantidadMatches >= 4 ? mejorFila : -1;
     }
 
     private filtrarFilasConDatosReales(filas: any[]): any[] {

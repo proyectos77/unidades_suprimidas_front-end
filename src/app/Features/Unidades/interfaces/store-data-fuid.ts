@@ -3,7 +3,7 @@ export interface StoreDataFuid {
   id_carpeta_unidad_activa:     number;
   numero_pagina?:               number;
   numero_orden:                 number;
-  codigo:                       number;
+  codigo:                       string;
   nombre_serie_subserie_asunto: string;
   fecha_extrema_inicio:         Date;
   fecha_extrema_fin:            Date;

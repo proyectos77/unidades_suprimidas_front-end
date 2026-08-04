@@ -64,6 +64,14 @@
                       <span class="info-value">{{ folder.cajas ?? 0 }}</span>
                     </div>
                   </div>
+
+                  @if (folder.tieneDocumentoFuid) {
+                    <div class="col-12 mt-2">
+                      <button type="button" class="btn btn-primary" (click)="descargarExcel($event, folder)">
+                        Descargar Excel
+                      </button>
+                    </div>
+                  }
                 </div>
               </div>
             }
@@ -113,11 +121,8 @@
 
                   @if (folder.tieneDocumentoFuid) {
                     <div class="col-12 mt-4">
-                      <button type="button" class="btn btn-primary" (click)="descargarDocumento($event, folder)">
-                        Descargar Fuid General
-                      </button>
-                      <button type="button" class="btn btn-primary ms-2" (click)="verDataDocumento($event, folder)">
-                        Ver Fuid General
+                      <button type="button" class="btn btn-primary" (click)="verDataDocumento($event, folder)">
+                        Ver detalle
                       </button>
                     </div>
                   }
@@ -135,7 +140,7 @@
                 [onLoadBaldas]="onLoadBaldas"
                 [onLoadCajas]="onLoadCajas"
                 [onLoadCarpetas]="onLoadCarpetas"
-                [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpeta"
+                [onDescargarDocumentoCaja]="onDescargarDocumentoCaja"
                 [onVerDataDocumentoFuid]="onVerDataDocumentoFuid">
               </app-archivo-unidad-activa>
             }

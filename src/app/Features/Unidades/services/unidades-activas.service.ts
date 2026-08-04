@@ -24,7 +24,8 @@ import { GetCarpeta } from '../interfaces/get-carpeta';
 import { GetInfoCarpeta } from '../interfaces/get-info-carpeta';
 import { StoreDataFuid } from '../interfaces/store-data-fuid';
 import { RespuestaRegistroFuidGeneral } from '../interfaces/respuesta-registro-fuid-general';
-import { GetDataDocumentoGeneralFuid } from '../interfaces/get-data-documento-general-fuid';
+import { GetDetalleDocumentoFuidPorCarpeta } from '../interfaces/get-detalle-documento-fuid-por-carpeta';
+import { GetDocumentosFuidPorCaja } from '../interfaces/get-documentos-fuid-por-caja';
 
 @Injectable({
   providedIn: 'root'
@@ -144,9 +145,14 @@ export class UnidadesActivasService {
         return this.httpUnidades.post<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: { id_documento_general: number; url_documento: string } }>(urlFinal, formData);
     }
 
-    listadoDocumentosFuidPorCarpeta(idCarpeta: number): Observable<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: any[] }> {
-        let urlFinal = this.url + '/documentosFuidPorCarpeta/' + idCarpeta;
-        return this.httpUnidades.get<{ statusCode: number; titulo: string; mensaje: string; icono: string; data: any[] }>(urlFinal);
+    listadoDocumentosFuidPorCaja(idCaja: number): Observable<GetDocumentosFuidPorCaja> {
+        let urlFinal = this.url + '/documentosFuidPorCaja/' + idCaja;
+        return this.httpUnidades.get<GetDocumentosFuidPorCaja>(urlFinal);
+    }
+
+    listadoDetalleDocumentoFuidPorCarpeta(idCarpeta: number): Observable<GetDetalleDocumentoFuidPorCarpeta> {
+        let urlFinal = this.url + '/detalleDocumentoFuidPorCarpeta/' + idCarpeta;
+        return this.httpUnidades.get<GetDetalleDocumentoFuidPorCarpeta>(urlFinal);
     }
 
     descargarDocumentoFuid(idDocumento: number): Observable<Blob> {
@@ -157,10 +163,5 @@ export class UnidadesActivasService {
     obtenerUrlDescargaDocumentoFuid(idDocumento: number): string {
         return this.url + '/documentoGeneralFuid/' + idDocumento + '/descargar';
     }
-
-  obtenerDataDocumentoGeneralFuid(idCarpeta: number): Observable<GetDataDocumentoGeneralFuid>{
-      let urlFinal = this.url + '/documentoGeneralFuid/' + idCarpeta;
-      return this.httpUnidades.get<GetDataDocumentoGeneralFuid>(urlFinal);
-  }
 
 }

@@ -188,7 +188,7 @@
                           [onLoadBaldas]="onLoadBaldasCallback"
                           [onLoadCajas]="onLoadCajasCallback"
                           [onLoadCarpetas]="onLoadCarpetasCallback"
-                          [onDescargarDocumentoCarpeta]="onDescargarDocumentoCarpetaCallback"
+                          [onDescargarDocumentoCaja]="onDescargarDocumentoCajaCallback"
                           [onVerDataDocumentoFuid]="onVerDataDocumentoFuidCallback">
                         </app-archivo-unidad-activa>
                     </div>
@@ -226,7 +226,7 @@
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalDataDocumentoFuidLabel">Información Fuid General</h5>
+        <h5 class="modal-title" id="modalDataDocumentoFuidLabel">Detalle del documento FUID de la carpeta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -234,6 +234,7 @@
           <table class="table table-hover table-bordered">
             <thead class="text-center table-dark">
               <tr>
+                <th>N° Página</th>
                 <th>N° Orden</th>
                 <th>Código</th>
                 <th>Serie / Subserie / Asunto</th>
@@ -251,6 +252,7 @@
             </thead>
             <tbody class="text-center">
               <tr *ngFor="let documento of documentosDataFuid">
+                <td>{{ documento.numero_pagina }}</td>
                 <td>{{ documento.numero_orden }}</td>
                 <td>{{ documento.codigo }}</td>
                 <td>{{ documento.nombre_serie_subserie_asunto }}</td>
@@ -266,7 +268,7 @@
                 <td>{{ documento.notas }}</td>
               </tr>
               <tr *ngIf="documentosDataFuid.length === 0">
-                <td colspan="13">No hay información disponible.</td>
+                <td colspan="14">No hay información disponible.</td>
               </tr>
             </tbody>
           </table>
