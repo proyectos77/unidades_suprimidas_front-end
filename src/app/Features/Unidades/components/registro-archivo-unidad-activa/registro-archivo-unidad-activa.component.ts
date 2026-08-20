@@ -1257,20 +1257,14 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
     finalizarProcesamiento(exitosos: number, fallidos: number, saltados: number = 0): void {
         this.procesandoExcel = false;
-        const total = exitosos + fallidos;
-        let mensaje = `Se registraron ${exitosos} de ${total} documentos correctamente.`;
-
-        if (saltados > 0) {
-            mensaje += ` ${saltados} filas fueron saltadas por datos incompletos.`;
-        }
 
         if (fallidos > 0) {
-            mensaje += ` ${fallidos} registros fallaron en la validación del servidor.`;
+            this.sweet.alertaGeneral('warning', 'Procesamiento completado', `Se registraron ${exitosos} documentos correctamente. ${fallidos} registros fallaron en la validación del servidor.`);
+        } else if (exitosos === 0) {
+            this.sweet.alertaGeneral('warning', 'Procesamiento completado', 'No se registró ningún documento.');
+        } else {
+            this.sweet.alertaGeneral('success', 'Procesamiento completado', `Se registraron ${exitosos} documentos correctamente.`);
         }
-
-        const tipo = fallidos > 0 || exitosos === 0 ? 'warning' : 'success';
-
-        this.sweet.alertaGeneral(tipo, 'Procesamiento completado', mensaje);
 
         // Limpiar el archivo seleccionado
         this.archivoSeleccionado = null;

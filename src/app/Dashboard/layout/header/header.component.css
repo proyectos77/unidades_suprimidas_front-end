@@ -1,6 +1,6 @@
 .header{
-    background-image: url(../../../../../public/imagenes/pagina/baner-superior-2@2x.png);
-    background-size: 100% 100%;
+    background-image: url(../../../../../public/imagenes/pagina/SUPERIOR_1.png);
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
@@ -14,7 +14,16 @@
 .header__toggle {
     display: flex;
     align-items: center;
+    gap: 3rem;
     flex-shrink: 0;
+}
+
+.header__logo {
+    height: clamp(3rem, 7vw, 5rem);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    flex-shrink: 1;
 }
 
 .btn-toggle {
