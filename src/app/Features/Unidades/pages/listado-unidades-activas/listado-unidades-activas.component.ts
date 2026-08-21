@@ -16,6 +16,7 @@ import RegistroArchivoUnidadActivaComponent from '../../components/registro-arch
 import { UnidadesActivasService } from '../../services/unidades-activas.service';
 import { GetResumenAlmacenamiento } from '../../interfaces/get-resumen-almacenamiento';
 import { DetalleDocumentoFuidDatum } from '../../interfaces/get-detalle-documento-fuid-por-carpeta';
+import { BuscarDetalleDocumentoFuidDatum, UbicacionDocumentoFuid } from '../../interfaces/buscar-detalle-documento-fuid';
 
 declare var bootstrap: any;
 
@@ -72,10 +73,20 @@ declare var bootstrap: any;
     private dependencia: number = 0;
 
     public padresUnidad: Array<{ opciones: any[]; seleccion: any }> = [];
-    public observacion: string = '';
+
+    public filtroBusquedaDocumento = {
+        nombre_serie_subserie_asunto: '',
+        notas: '',
+        codigo: '',
+        numero_orden: '',
+        fecha_extrema_inicio: '',
+        fecha_extrema_fin: ''
+    };
+    public resultadosBusquedaDocumento: BuscarDetalleDocumentoFuidDatum[] = [];
+    public busquedaDocumentoRealizada: boolean = false;
 
     private modalInstance: Modal | null = null;
-    private modalActualizar = viewChild<ElementRef>('buscarObservacion');
+    private modalActualizar = viewChild<ElementRef>('buscarDocumento');
     private modalDataFuidRef = viewChild<ElementRef>('dataFuidModal');
     private modalInstanceDataFuid: Modal | null = null;
 
@@ -130,7 +141,16 @@ declare var bootstrap: any;
     }
 
     abrirModalBuscarObservacion():void {
-        this.observacion = '';
+        this.filtroBusquedaDocumento = {
+            nombre_serie_subserie_asunto: '',
+            notas: '',
+            codigo: '',
+            numero_orden: '',
+            fecha_extrema_inicio: '',
+            fecha_extrema_fin: ''
+        };
+        this.resultadosBusquedaDocumento = [];
+        this.busquedaDocumentoRealizada = false;
         const modal = this.modalActualizar();
         if (modal) {
             this.modalInstance = new Modal(modal.nativeElement);
@@ -159,21 +179,78 @@ declare var bootstrap: any;
         this.bootstrapModalRegistroArchivo.show();
     }
 
-    buscarPorObservacion(): void {
-        if (this.observacion.trim() === '') {
-            this.sweet.alertaGeneral('warning', 'Campo vacío', 'Por favor ingrese una observación para buscar.');
+    buscarDocumentos(): void {
+        const filtros: Record<string, string> = {};
+        const campo = this.filtroBusquedaDocumento;
+
+        if (campo.nombre_serie_subserie_asunto.trim()) filtros['nombre_serie_subserie_asunto'] = campo.nombre_serie_subserie_asunto.trim();
+        if (campo.notas.trim()) filtros['notas'] = campo.notas.trim();
+        if (campo.codigo.trim()) filtros['codigo'] = campo.codigo.trim();
+        if (campo.numero_orden.trim()) filtros['numero_orden'] = campo.numero_orden.trim();
+        if (campo.fecha_extrema_inicio) filtros['fecha_extrema_inicio'] = campo.fecha_extrema_inicio;
+        if (campo.fecha_extrema_fin) filtros['fecha_extrema_fin'] = campo.fecha_extrema_fin;
+
+        if (Object.keys(filtros).length === 0) {
+            this.sweet.alertaGeneral('warning', 'Sin criterios', 'Ingrese al menos un criterio de búsqueda.');
             return;
         }
 
-        this.httpUnidades.buscarPorObservacionUnidadActiva(this.observacion).subscribe(unidades => {
-            console.log(unidades);
-
-            if (unidades.statusCode == 200) {
-               this.listaUnidades = unidades;
+        this.httpUnidadesActivas.buscarDetalleDocumentoFuid(filtros).subscribe({
+            next: (respuesta) => {
+                this.resultadosBusquedaDocumento = respuesta.data || [];
+                this.busquedaDocumentoRealizada = true;
+            },
+            error: () => {
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo realizar la búsqueda.');
             }
+        });
+    }
 
-            this.closeModal();
+    irADocumentoEncontrado(resultado: BuscarDetalleDocumentoFuidDatum): void {
+        const ubicacion = resultado.ubicacion;
 
+        if (!ubicacion || !ubicacion.idUnidad || !ubicacion.idCuerpo || !ubicacion.idEstante || !ubicacion.idBalda || !ubicacion.idCaja || !ubicacion.idCarpeta) {
+            this.sweet.alertaGeneral('warning', 'Ubicación incompleta', 'No se pudo determinar la ubicación completa de este documento en el árbol.');
+            return;
+        }
+
+        this.closeModal();
+        this.desgloseUnidad(ubicacion.idUnidad, () => this.navegarAUbicacion(ubicacion));
+    }
+
+    private navegarAUbicacion(ubicacion: UbicacionDocumentoFuid): void {
+        const idUnidad = ubicacion.idUnidad!;
+        const cuerpoFolder = this.folders.find(f => f.cuerpoId === ubicacion.idCuerpo);
+        if (!cuerpoFolder) {
+            this.sweet.alertaGeneral('warning', 'No encontrado', 'No se pudo ubicar el cuerpo del documento en el árbol.');
+            return;
+        }
+
+        cuerpoFolder.expanded = true;
+        this.cargarEstantes(cuerpoFolder, idUnidad, () => {
+            const estanteFolder = cuerpoFolder.children.find(f => f.estanteId === ubicacion.idEstante);
+            if (!estanteFolder) return;
+
+            estanteFolder.expanded = true;
+            this.cargarBaldas(estanteFolder, idUnidad, () => {
+                const baldaFolder = estanteFolder.children.find(f => f.baldaId === ubicacion.idBalda);
+                if (!baldaFolder) return;
+
+                baldaFolder.expanded = true;
+                this.cargarCajas(baldaFolder, idUnidad, () => {
+                    const cajaFolder = baldaFolder.children.find(f => f.cajaId === ubicacion.idCaja);
+                    if (!cajaFolder) return;
+
+                    cajaFolder.expanded = true;
+                    this.cargarCarpetas(cajaFolder, idUnidad, () => {
+                        const carpetaFolder = cajaFolder.children.find(f => f.carpetaId === ubicacion.idCarpeta);
+                        if (carpetaFolder) {
+                            carpetaFolder.expanded = true;
+                        }
+                        this.cdr.detectChanges();
+                    });
+                });
+            });
         });
     }
 
@@ -213,7 +290,7 @@ declare var bootstrap: any;
         });
     }
 
-    desgloseUnidad(unidad: number): void {
+    desgloseUnidad(unidad: number, onFoldersLoaded?: () => void): void {
         this.unidadDesglose = unidad;
         this.archivoNoRegistrado = false;
         this.httpUnidadesActivas.getResumenAlmacenamiento(unidad).subscribe({
@@ -253,6 +330,7 @@ declare var bootstrap: any;
                                 }));
                                 this.archivoNoRegistrado = false;
                                 this.mostrarDesglose = true;
+                                onFoldersLoaded?.();
                             } else {
                                 // No hay estructura de archivo
                                 this.archivoNoRegistrado = true;
@@ -277,10 +355,11 @@ declare var bootstrap: any;
         });
     }
 
-    public cargarEstantes(folder: FolderNiveles, idUnidad: number): void {
+    public cargarEstantes(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
         console.log('cargarEstantes called with cuerpoId:', folder.cuerpoId, 'idUnidad:', idUnidad);
         if (folder.childrenLoaded || !folder.cuerpoId) {
             console.log('Returning early - childrenLoaded:', folder.childrenLoaded);
+            onComplete?.();
             return;
         }
 
@@ -311,6 +390,7 @@ declare var bootstrap: any;
                     folder.childrenLoaded = true;
                     this.cdr.markForCheck();
                 }
+                onComplete?.();
             },
             error: (error) => {
                 console.error('Error al cargar estantes:', error);
@@ -319,9 +399,12 @@ declare var bootstrap: any;
         });
     }
 
-    public cargarBaldas(folder: FolderNiveles, idUnidad: number): void {
+    public cargarBaldas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
         console.log('cargarBaldas called with estanteId:', folder.estanteId);
-        if (folder.childrenLoaded || !folder.estanteId) return;
+        if (folder.childrenLoaded || !folder.estanteId) {
+            onComplete?.();
+            return;
+        }
 
         this.httpUnidadesActivas.getBaldas(idUnidad, folder.estanteId).subscribe({
             next: (respuesta) => {
@@ -346,6 +429,7 @@ declare var bootstrap: any;
                     folder.childrenLoaded = true;
                     this.cdr.markForCheck();
                 }
+                onComplete?.();
             },
             error: (error) => {
                 console.error('Error al cargar baldas:', error);
@@ -354,9 +438,12 @@ declare var bootstrap: any;
         });
     }
 
-    public cargarCajas(folder: FolderNiveles, idUnidad: number): void {
+    public cargarCajas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
         console.log('cargarCajas called with baldaId:', folder.baldaId);
-        if (folder.childrenLoaded || !folder.baldaId) return;
+        if (folder.childrenLoaded || !folder.baldaId) {
+            onComplete?.();
+            return;
+        }
 
         this.httpUnidadesActivas.getCajasPorBaldas(idUnidad, folder.baldaId).subscribe({
             next: (respuesta) => {
@@ -448,6 +535,7 @@ declare var bootstrap: any;
 
                     this.cdr.markForCheck();
                 }
+                onComplete?.();
             },
             error: (error) => {
                 console.error('Error al cargar cajas:', error);
@@ -456,9 +544,12 @@ declare var bootstrap: any;
         });
     }
 
-    public cargarCarpetas(folder: FolderNiveles, idUnidad: number): void {
+    public cargarCarpetas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
         console.log('cargarCarpetas called with cajaId:', folder.cajaId);
-        if (folder.childrenLoaded || !folder.cajaId) return;
+        if (folder.childrenLoaded || !folder.cajaId) {
+            onComplete?.();
+            return;
+        }
 
         this.httpUnidadesActivas.GetCarpetasPorCaja(idUnidad, folder.cajaId).subscribe({
             next: (respuesta) => {
@@ -525,6 +616,7 @@ declare var bootstrap: any;
 
                     this.cdr.markForCheck();
                 }
+                onComplete?.();
             },
             error: (error) => {
                 console.error('Error al cargar carpetas:', error);

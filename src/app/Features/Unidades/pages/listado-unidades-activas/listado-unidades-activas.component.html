@@ -21,7 +21,7 @@
 
                 <div class="col-12 col-md-4">
                     <button type="button" class="btn btn-primary" style="margin-right: 2rem;" (click)="limpiarFiltros()">Limpiar filtro</button>
-                    <button type="button" class="btn btn-primary" (click)="abrirModalBuscarObservacion()">Buscar Observación</button>
+                    <button type="button" class="btn btn-primary" (click)="abrirModalBuscarObservacion()">Buscar Documento</button>
                 </div>
             </div>
       <div *ngIf="!mostrarDesglose" class="table-usuarios table-responsive content-list mt-5">
@@ -201,20 +201,73 @@
 
 
 <!-- Modal -->
-<div class="modal fade" #buscarObservacion  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" #buscarDocumento  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Buscar por Observacion</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Búsqueda de documento</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
-          <label for="" class="form-label">Observacion</label>
-          <textarea name="" id="" class="form-control" rows="3" [(ngModel)]="observacion"></textarea>
+          <div class="row g-3">
+              <div class="col-md-6">
+                  <label class="form-label">Asunto</label>
+                  <input type="text" class="form-control" [(ngModel)]="filtroBusquedaDocumento.nombre_serie_subserie_asunto">
+              </div>
+              <div class="col-md-6">
+                  <label class="form-label">Notas</label>
+                  <input type="text" class="form-control" [(ngModel)]="filtroBusquedaDocumento.notas">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label">Código</label>
+                  <input type="text" class="form-control" [(ngModel)]="filtroBusquedaDocumento.codigo">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label">N° Orden</label>
+                  <input type="text" class="form-control" [(ngModel)]="filtroBusquedaDocumento.numero_orden">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label">Fecha desde</label>
+                  <input type="date" class="form-control" [(ngModel)]="filtroBusquedaDocumento.fecha_extrema_inicio">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label">Fecha hasta</label>
+                  <input type="date" class="form-control" [(ngModel)]="filtroBusquedaDocumento.fecha_extrema_fin">
+              </div>
+          </div>
+
+          <div class="table-responsive mt-4" *ngIf="resultadosBusquedaDocumento.length > 0">
+              <table class="table table-hover table-bordered table-sm">
+                  <thead class="text-center table-dark">
+                      <tr>
+                          <th>Asunto</th>
+                          <th>N° Carpeta</th>
+                          <th>Fecha inicio</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let resultado of resultadosBusquedaDocumento">
+                          <td>{{ resultado.nombre_serie_subserie_asunto }}</td>
+                          <td class="text-center">{{ resultado.numero_carpeta }}</td>
+                          <td class="text-center">{{ resultado.fecha_extrema_inicio | date:'dd/MM/yyyy' }}</td>
+                          <td class="text-center">
+                              <button type="button" class="btn btn-success btn-sm" [disabled]="!resultado.ubicacion?.idUnidad" (click)="irADocumentoEncontrado(resultado)">Ir a la carpeta</button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+
+          <div class="alert alert-warning mt-3" *ngIf="busquedaDocumentoRealizada && resultadosBusquedaDocumento.length === 0">
+              No se encontraron documentos con esos criterios.
+          </div>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="buscarPorObservacion()">Buscar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="buscarDocumentos()">Buscar</button>
       </div>
     </div>
   </div>

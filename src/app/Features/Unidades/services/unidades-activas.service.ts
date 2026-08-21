@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environment/environment.staging';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ListadoCuerposUnidadesActivas } from '../interfaces/listado-cuerpos-unidades-activas';
 import { Observable } from 'rxjs';
 import { StoreInformacionGeneralArchivoUnidadACtva } from '../interfaces/store-informacion-general-archivo-unidad-actva';
@@ -26,6 +26,7 @@ import { StoreDataFuid } from '../interfaces/store-data-fuid';
 import { RespuestaRegistroFuidGeneral } from '../interfaces/respuesta-registro-fuid-general';
 import { GetDetalleDocumentoFuidPorCarpeta } from '../interfaces/get-detalle-documento-fuid-por-carpeta';
 import { GetDocumentosFuidPorCaja } from '../interfaces/get-documentos-fuid-por-caja';
+import { GetBuscarDetalleDocumentoFuid } from '../interfaces/buscar-detalle-documento-fuid';
 
 @Injectable({
   providedIn: 'root'
@@ -162,6 +163,17 @@ export class UnidadesActivasService {
 
     obtenerUrlDescargaDocumentoFuid(idDocumento: number): string {
         return this.url + '/documentoGeneralFuid/' + idDocumento + '/descargar';
+    }
+
+    buscarDetalleDocumentoFuid(filtros: Record<string, string>): Observable<GetBuscarDetalleDocumentoFuid> {
+        let params = new HttpParams();
+        Object.keys(filtros).forEach(clave => {
+            if (filtros[clave] !== null && filtros[clave] !== undefined && filtros[clave] !== '') {
+                params = params.set(clave, filtros[clave]);
+            }
+        });
+        let urlFinal = this.url + '/detalleDocumentoFuidBuscar';
+        return this.httpUnidades.get<GetBuscarDetalleDocumentoFuid>(urlFinal, { params });
     }
 
 }
