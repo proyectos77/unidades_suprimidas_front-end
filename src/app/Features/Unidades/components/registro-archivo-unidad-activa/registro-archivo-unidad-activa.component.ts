@@ -742,36 +742,26 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 const datos = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(datos, { type: 'array' });
 
-                console.log('=== INFORMACIÓN DEL ARCHIVO EXCEL ===');
-                console.log('Número de hojas encontradas:', workbook.SheetNames.length);
-                console.log('Nombres de hojas:', workbook.SheetNames);
 
                 // Cada hoja del Excel representa una "página" que se asociará a una carpeta de la caja
                 const filasPorHoja: any[][] = [];
 
                 // Procesar todas las hojas del workbook
                 workbook.SheetNames.forEach((sheetName, index) => {
-                    console.log(`\n--- Procesando hoja ${index + 1}: ${sheetName} ---`);
                     const worksheet = workbook.Sheets[sheetName];
 
                     // Obtener la hoja como matriz para ver toda la estructura
                     const sheetAsMatrix: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                    console.log(`Total filas en matriz: ${sheetAsMatrix.length}`);
-                    console.log('Primeras 5 filas de la matriz:');
                     sheetAsMatrix.slice(0, 5).forEach((row, idx) => {
-                        console.log(`Fila ${idx}:`, row);
                     });
 
                     // Buscar la fila de encabezado
                     const headerRowIndex = this.detectarIndiceEncabezado(sheetAsMatrix);
-                    console.log('Índice de encabezado detectado:', headerRowIndex);
 
                     if (headerRowIndex === -1) {
                         console.warn(`No se encontró encabezado, intentando fallback...`);
                         const filasRaw = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
-                        console.log('Filas obtenidas del fallback:', filasRaw.length);
                         if (filasRaw.length > 0) {
-                            console.log('Primera fila del fallback:', filasRaw[0]);
                         }
                         filasPorHoja.push(filasRaw);
                         return;
@@ -779,11 +769,9 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
                     // Construir encabezado desde la fila detectada y posiblemente las filas anteriores
                     const header = this.construirEncabezadoMultilinea(sheetAsMatrix, headerRowIndex);
-                    console.log('Encabezado construido:', header);
 
                     // Filas de datos después del encabezado
                     const dataRows = sheetAsMatrix.slice(headerRowIndex + 1);
-                    console.log(`Filas de datos encontradas: ${dataRows.length}`);
 
                     // Mapear filas a objetos
                     const mapped = dataRows
@@ -796,11 +784,9 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                             return obj;
                         });
 
-                    console.log(`Filas válidas mapeadas: ${mapped.length}`);
                     filasPorHoja.push(mapped);
                 });
 
-                console.log('Total hojas (páginas) procesadas:', filasPorHoja.length);
 
                 if (filasPorHoja.length === 0 || filasPorHoja.every(filas => filas.length === 0)) {
                     this.sweet.alertaGeneral('warning', 'Archivo vacío', 'No se encontraron datos válidos en el Excel.');
@@ -869,9 +855,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         let registrosPendientes = 0;
         const datosValidos: any[] = [];
 
-        console.log('=== INFORMACIÓN DE HOJAS (PÁGINAS) A PROCESAR ===');
-        console.log('Total hojas recibidas:', filasPorHoja.length);
-        console.log('Total carpetas de la caja seleccionada:', this.carpetasDeCajaExcel.length);
 
         // Cada hoja del Excel es una "página" que se asocia, en orden, a una carpeta de la caja
         if (filasPorHoja.length !== this.carpetasDeCajaExcel.length) {
@@ -889,17 +872,14 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
             // Detectar el tipo de estructura del archivo
             const esFormatoFUID = this.detectarFormatoFUID(filas);
-            console.log(`Hoja ${hojaIndex + 1} - Es formato FUID complejo:`, esFormatoFUID);
 
             // Si es formato FUID complejo, filtrar solo las filas con datos reales
             let filasAProcesar = filas;
             if (esFormatoFUID) {
                 filasAProcesar = this.filtrarFilasConDatosReales(filas);
-                console.log(`Hoja ${hojaIndex + 1} - Filas con datos reales encontradas:`, filasAProcesar.length);
             }
 
             filasAProcesar.forEach((fila, index) => {
-                console.log(`\n--- Procesando fila de datos ${index + 1} de la hoja ${hojaIndex + 1} ---`);
                 const datosFormateados = this.mapearFilaExcelAFuid(fila, esFormatoFUID);
                 if (datosFormateados) {
                     datosFormateados.id_documento_general = this.idDocumentoGeneralExcelActual;
@@ -923,7 +903,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
         // Registrar solo los datos válidos
         datosValidos.forEach((datos) => {
-            console.log('Enviando payload detalle documento FUID:', datos);
             this.httpUnidades.storeRegistroDetalleDocumentoGeneralFuid(datos).subscribe({
                 next: (response) => {
                     registrosExitosos++;
@@ -945,9 +924,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
     mapearFilaExcelAFuid(fila: any, esFormatoFUID: boolean = false): any {
         try {
-            console.log('=== Procesando fila ===');
-            console.log('Claves disponibles:', Object.keys(fila));
-            console.log('Contenido completo:', fila);
 
             // Si el encabezado real de columnas fue detectado (títulos con texto reconocible),
             // se busca cada campo por el NOMBRE de columna (robusto ante columnas extra/reordenadas).
@@ -1001,7 +977,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             const frecuenciaConsulta = this.valorComoTexto(porNombreOPosicion(['frecuencia'], baseIndex + 7));
             const notas = this.valorComoTexto(porNombreOPosicion(['notas', 'observaciones'], baseIndex + 8));
 
-            console.log('Campos extraídos:', {numeroOrden, codigo, nombreSerie, fechaInicio, fechaFin, numeroCaja, numeroCarpeta, soporte});
 
             // Validación
             if (!nombreSerie) {
@@ -1022,7 +997,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
                 return null;
             }
 
-            console.log('✅ Fila válida procesada correctamente');
 
             return {
                 // id_carpeta_unidad_activa y numero_pagina se asignan luego, según el orden de las carpetas de la caja
@@ -1126,7 +1100,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         // Convertir a string si no lo es
         const str = String(fechaStr).trim();
 
-        console.log(`Intentando parsear fecha: "${str}"`);
 
         // Si es puramente numérico, es un serial date de Excel (días desde 1899-12-30).
         // Debe evaluarse ANTES que "new Date(str)": JS interpreta un string numérico
@@ -1135,7 +1108,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             const num = Number(str);
             const excelDate = new Date((num - 25569) * 86400 * 1000);
             if (!isNaN(excelDate.getTime())) {
-                console.log(`✅ Fecha parseada serial Excel: ${excelDate}`);
                 return excelDate;
             }
         }
@@ -1144,7 +1116,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         // Formato: YYYY-MM-DD
         let date = new Date(str);
         if (!isNaN(date.getTime())) {
-            console.log(`✅ Fecha parseada formato ISO: ${date}`);
             return date;
         }
 
@@ -1157,7 +1128,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             const year = parseInt(matchDDMMYYYY[3], 10);
             date = new Date(year, month - 1, day);
             if (!isNaN(date.getTime())) {
-                console.log(`✅ Fecha parseada formato DD/MM/YYYY: ${date}`);
                 return date;
             }
         }
@@ -1171,7 +1141,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             const day = parseInt(matchYYYYMMDD[3], 10);
             date = new Date(year, month - 1, day);
             if (!isNaN(date.getTime())) {
-                console.log(`✅ Fecha parseada formato YYYY/MM/DD: ${date}`);
                 return date;
             }
         }
@@ -1240,7 +1209,6 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
         // Se exigen al menos 4 columnas reconocidas para confiar en que es la fila de encabezados real
         // (evita que una fila de título con una sola coincidencia, ej. "FORMATO ÚNICO...", se tome como encabezado)
-        console.log(`detectarIndiceEncabezado: mejor fila = ${mejorFila}, coincidencias = ${mejorCantidadMatches}`);
         return mejorCantidadMatches >= 4 ? mejorFila : -1;
     }
 

@@ -279,7 +279,6 @@ declare var bootstrap: any;
         this.padresUnidad[nivelIndex].seleccion = idPadre;
         this.padresUnidad = this.padresUnidad.slice(0, nivelIndex + 1);
         this.httpUnidades.getListadoPadresHijasActivas(idPadre).subscribe(hijos => {
-          console.log(hijos);
 
           if (hijos.data && hijos.data.length > 0) {
               this.padresUnidad.push({ opciones: hijos.data, seleccion: null });
@@ -356,26 +355,20 @@ declare var bootstrap: any;
     }
 
     public cargarEstantes(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
-        console.log('cargarEstantes called with cuerpoId:', folder.cuerpoId, 'idUnidad:', idUnidad);
         if (folder.childrenLoaded || !folder.cuerpoId) {
-            console.log('Returning early - childrenLoaded:', folder.childrenLoaded);
             onComplete?.();
             return;
         }
 
         this.httpUnidadesActivas.getEstantes(idUnidad, folder.cuerpoId).subscribe({
             next: (respuesta) => {
-                console.log('Estantes response:', respuesta);
-                console.log('Estantes data items:', respuesta.data);
                 if (respuesta.data && respuesta.data.length > 0) {
                     respuesta.data.forEach((item: any, idx: number) => {
-                        console.log(`Item ${idx}:`, item, 'Keys:', Object.keys(item));
                     });
                     folder.children = respuesta.data.map((item: any) => {
                         // Manejar variaciones de case en los nombres de campos
                         const estanteId = item.idEstante || item.idestante || item.id || item.ID;
                         const estanteName = item.estante || item.nombre || 'Estante';
-                        console.log('Estante mapping:', { original: item, estanteId, estanteName });
 
                         return {
                             name: `${estanteName}`,
@@ -400,7 +393,6 @@ declare var bootstrap: any;
     }
 
     public cargarBaldas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
-        console.log('cargarBaldas called with estanteId:', folder.estanteId);
         if (folder.childrenLoaded || !folder.estanteId) {
             onComplete?.();
             return;
@@ -408,13 +400,11 @@ declare var bootstrap: any;
 
         this.httpUnidadesActivas.getBaldas(idUnidad, folder.estanteId).subscribe({
             next: (respuesta) => {
-                console.log('Baldas response:', respuesta);
                 if (respuesta.data && respuesta.data.length > 0) {
                     folder.children = respuesta.data.map((item: any) => {
                         // Manejar variaciones de case en los nombres de campos
                         const baldaId = item.idBalda || item.idbalda || item.id || item.ID;
                         const baldaName = item.balda || item.nombre || 'Balda';
-                        console.log('Balda mapping:', { original: item, baldaId, baldaName });
 
                         return {
                             name: `${baldaName}`,
@@ -439,7 +429,6 @@ declare var bootstrap: any;
     }
 
     public cargarCajas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
-        console.log('cargarCajas called with baldaId:', folder.baldaId);
         if (folder.childrenLoaded || !folder.baldaId) {
             onComplete?.();
             return;
@@ -447,13 +436,11 @@ declare var bootstrap: any;
 
         this.httpUnidadesActivas.getCajasPorBaldas(idUnidad, folder.baldaId).subscribe({
             next: (respuesta) => {
-                console.log('Cajas response:', respuesta);
                 if (respuesta.data && respuesta.data.length > 0) {
                     folder.children = respuesta.data.map((item: any) => {
                         // Manejar variaciones de case en los nombres de campos
                         const cajaId = item.id || item.ID || item.idCaja || item.idcaja;
                         const cajaName = item.nombre || item.nombre || item.codigo || item.codigoCaja || 'Caja';
-                        console.log('Caja mapping:', { original: item, cajaId, cajaName });
 
                         return {
                             name: `Caja ${cajaName}`,
@@ -471,7 +458,6 @@ declare var bootstrap: any;
                     folder.children.forEach(caja => {
                         this.httpUnidadesActivas.infoCaja(idUnidad, caja.cajaId!).subscribe({
                             next: (infoCaja) => {
-                                console.log('Info caja completa:', infoCaja);
                                 if (infoCaja && infoCaja.data) {
                                     const datos: any = infoCaja.data;
 
@@ -488,9 +474,6 @@ declare var bootstrap: any;
                                     const nombreEstante = datos.nombreEstante || datos.nombreestante || null;
                                     const nombreCuerpo = datos.nombreCuerpo || datos.nombrecuerpo || null;
 
-                                    console.log('Datos completos de infoCaja:', datos);
-                                    console.log('Nombres obtenidos:', { nombreBalda, nombreEstante, nombreCuerpo });
-                                    console.log('Parent references:', { parent: caja.parent?.name, parentParent: caja.parent?.parent?.name, parentParentParent: caja.parent?.parent?.parent?.name });
 
                                     caja.name = `Caja ${codigoCaja}`;
                                     caja.cajas = parseInt(cantidadLibros as string) || 0;
@@ -510,7 +493,6 @@ declare var bootstrap: any;
                                         caja.parent.parent.parent.name = `${nombreCuerpo}`;
                                     }
 
-                                    console.log('Caja actualizada:', caja);
                                     this.cdr.markForCheck();
                                 } else {
                                     console.warn('No hay datos en la respuesta de infoCaja');
@@ -545,7 +527,6 @@ declare var bootstrap: any;
     }
 
     public cargarCarpetas(folder: FolderNiveles, idUnidad: number, onComplete?: () => void): void {
-        console.log('cargarCarpetas called with cajaId:', folder.cajaId);
         if (folder.childrenLoaded || !folder.cajaId) {
             onComplete?.();
             return;
@@ -553,13 +534,11 @@ declare var bootstrap: any;
 
         this.httpUnidadesActivas.GetCarpetasPorCaja(idUnidad, folder.cajaId).subscribe({
             next: (respuesta) => {
-                console.log('Carpetas response:', respuesta);
                 if (respuesta.data && respuesta.data.length > 0) {
                     folder.children = respuesta.data.map((item: any) => {
                         // Manejar variaciones de case en los nombres de campos
                         const carpetaId = item.carpeta || item.id || item.ID || item.idCarpeta || item.idcarpeta;
                         const carpetaName = item.carpeta || item.numero || item.numeroCarpeta || item.codigo || 'Carpeta';
-                        console.log('Carpeta mapping:', { original: item, carpetaId, carpetaName });
 
                         return {
                             name: `Carpeta ${carpetaName}`,
@@ -575,7 +554,6 @@ declare var bootstrap: any;
                     folder.children.forEach((carpeta) => {
                         this.httpUnidadesActivas.getInformacionCarpeta(idUnidad, carpeta.carpetaId!).subscribe({
                             next: (infoCarpeta) => {
-                                console.log('Info carpeta:', infoCarpeta);
                                 if (infoCarpeta && infoCarpeta.data) {
                                     const datos: any = infoCarpeta.data;
 
