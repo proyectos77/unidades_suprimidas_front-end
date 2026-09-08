@@ -27,16 +27,16 @@
           </li>
 
           <li class="menu__item" *ngIf="tienePermiso(3)" [class.expanded]="isMenuExpanded('estadisticas')" (click)="toggleMenu('estadisticas')">
-              <a class="menu__link">Estadisticas</a>
+              <a class="menu__link">Estadísticas</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('estadisticas')">
                   <li class="submenu__item" [routerLink]="['/main/estadisticas/estadisticasReportes']" routerLinkActive="active" (click)="$event.stopPropagation()">Reportes</li>
               </ul>
           </li>
 
           <!-- <li class="menu__item" *ngIf="rolUser != '4'" [class.expanded]="isMenuExpanded('organigrama')">
-              <a (click)="toggleMenu('organigrama')" class="menu__link">Organigrama ejercito</a>
+              <a (click)="toggleMenu('organigrama')" class="menu__link">Organigrama Ejército</a>
               <ul class="submenu" [class.submenu--open]="isMenuExpanded('organigrama')">
-                  <li class="submenu__item" [routerLink]="['/main/organigrama/organigramaEjercito']" routerLinkActive="active">Organigrama ejercito</li>
+                  <li class="submenu__item" [routerLink]="['/main/organigrama/organigramaEjercito']" routerLinkActive="active">Organigrama Ejército</li>
               </ul>
           </li> -->
       </ul>

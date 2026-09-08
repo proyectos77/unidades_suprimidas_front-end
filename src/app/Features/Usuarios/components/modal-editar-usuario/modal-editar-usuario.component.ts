@@ -134,7 +134,7 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
 
     validarFormulario():void{
         if (this.formularioEdit.invalid) {
-            this.sweet.alertaGeneral('error', 'Error', 'Porfavor llenar los campos obligatorios');
+            this.sweet.alertaGeneral('error', 'Error', 'Por favor llenar los campos obligatorios');
             return Object.values(this.formularioEdit.controls).forEach(controls => {
                 controls.markAllAsTouched();
             });

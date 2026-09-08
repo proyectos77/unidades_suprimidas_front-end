@@ -145,7 +145,7 @@ export default class RegistroUsuariosComponent implements OnInit{
 
     validarFormulario():void{
         if (this.formulario.invalid) {
-            this.sweet.alertaGeneral('error', 'Error', 'Porfavor llenar los campos obligatorios');
+            this.sweet.alertaGeneral('error', 'Error', 'Por favor llenar los campos obligatorios');
 
             return Object.values(this.formulario.controls).forEach(controls => {
                 controls.markAllAsTouched();

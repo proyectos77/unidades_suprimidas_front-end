@@ -44,21 +44,21 @@
                               <form action="" [formGroup]="formularioInfoGeneral">
                                   <div class="row">
                                     <div class="col-md-4">
-                                        <label for="">Ubicacion (Coordenadas)</label>
+                                        <label for="">Ubicación (Coordenadas)</label>
                                         <input type="text" class="form-control" formControlName="ubicacion">
                                         @if (this.formularioInfoGeneral.get('ubicacion')?.touched && formularioInfoGeneral.get('ubicacion')?.errors?.['required']){
                                             <div class="invalid-feedback" style="display: block;">
-                                                <small class="text-danger">Es necesario el campo ubicacion</small>
+                                                <small class="text-danger">Es necesario el campo ubicación</small>
                                             </div>
                                         }
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="">Direccion</label>
+                                        <label for="">Dirección</label>
                                         <input type="text" class="form-control" formControlName="direccion">
                                         @if (this.formularioInfoGeneral.get('direccion')?.touched && this.formularioInfoGeneral.get('direccion')?.errors?.['required']){
                                             <div class="invalid-feedback" style="display: block;">
-                                                <small class="text-danger">Es necesario el campo direccion</small>
+                                                <small class="text-danger">Es necesario el campo dirección</small>
                                             </div>
                                         }
                                     </div>
@@ -154,7 +154,7 @@
 
                               <div class="row mt-4">
                                   <div class="col-md-4">
-                                    <label for="">Codigo caja</label>
+                                    <label for="">Código caja</label>
                                     <select class="form-select" formControlName="codigoCaja">
                                       <option value="">Seleccione el código caja</option>
                                       <option *ngFor="let codigo of [].constructor(cantidadCajas); let i = index" [value]="i + 1">{{ "Caja " + (i + 1) }}</option>
@@ -163,28 +163,28 @@
                                     @if (this.formularioRegistroCaja.get('codigoCaja')?.touched &&
                                     this.formularioRegistroCaja.get('codigoCaja')?.errors?.['required']){
                                     <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario el campo codigo caja</small>
+                                      <small class="text-danger">Es necesario el campo código caja</small>
                                     </div>
                                     }
                                   </div>
 
                                   <div class="col-md-4">
-                                    <label for="">Numero consecutivo bodega</label>
+                                    <label for="">Número consecutivo bodega</label>
                                     <input type="text" class="form-control" formControlName="numeroConsecutivoBodega">
                                     @if (this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.touched &&
                                     this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.errors?.['required']){
                                     <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario el campo numero consecutivo bodega</small>
+                                      <small class="text-danger">Es necesario el campo número consecutivo bodega</small>
                                     </div>
                                     }
                                   </div>
 
                                   <div class="col-md-4">
-                                    <label for="">Numero correlativo dependencia</label>
+                                    <label for="">Número correlativo dependencia</label>
                                     <input type="text" class="form-control" formControlName="numeroCorrelativoDependencia">
                                     @if (this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.touched && this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.errors?.['required']){
                                     <div class="invalid-feedback" style="display: block;">
-                                      <small class="text-danger">Es necesario el campo numero correlativo dependencia</small>
+                                      <small class="text-danger">Es necesario el campo número correlativo dependencia</small>
                                     </div>
                                     }
                                   </div>
@@ -323,7 +323,7 @@
 
                               <div class="row mt-4">
                                   <div class="col-md-4">
-                                      <label for="">Numero de carpeta</label>
+                                      <label for="">Número de carpeta</label>
                                       <select class="form-select" formControlName="numeroCarpeta">
                                           <option value="">Seleccione el número de carpeta</option>
                                           <option *ngFor="let numero of [].constructor(cantidadCarpetas); let i = index" [value]="i + 1">{{ "Carpeta " + (i + 1) }}</option>
@@ -331,7 +331,7 @@
                                       @if (this.formularioRegistroCarpeta.get('numeroCarpeta')?.touched &&
                                       this.formularioRegistroCarpeta.get('numeroCarpeta')?.errors?.['required']){
                                           <div class="invalid-feedback" style="display: block;">
-                                              <small class="text-danger">Es necesario el campo numero de carpeta</small>
+                                              <small class="text-danger">Es necesario el campo número de carpeta</small>
                                           </div>
                                       }
                                   </div>

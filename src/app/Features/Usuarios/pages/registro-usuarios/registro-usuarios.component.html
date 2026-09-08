@@ -32,7 +32,7 @@
               </div>
 
               <div>
-                  <input type="text" class="form-control" formControlName="identificacion" placeholder="Identificacion *">
+                  <input type="text" class="form-control" formControlName="identificacion" placeholder="Identificación *">
 
                   @if ((this.formulario.get('identificacion')?.touched || this.formulario.get('identificacion')?.dirty)&& this.formulario.get('identificacion')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
@@ -43,7 +43,7 @@
 
                   @if ((this.formulario.get('identificacion')?.touched || this.formulario.get('identificacion')?.dirty)&& this.formulario.get('identificacion')?.errors?.['validarSoloNumeros']){
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">El campos Identificación solo acepta números </small>
+                          <small class="text-danger">El campo Identificación solo acepta números</small>
                       </div>
                   }
 

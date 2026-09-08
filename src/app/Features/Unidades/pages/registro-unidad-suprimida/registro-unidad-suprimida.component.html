@@ -105,7 +105,7 @@
                 <div class="col-md-6 form-group">
                   <label for="" class="form-label">* Departamentos</label>
                   <select class="form-select" name="" id="" formControlName="departamentos">
-                    <option value="">Seleeccionar</option>
+                    <option value="">Seleccionar</option>
                     <option *ngFor="let departamento of departamentos.data" [value]="departamento.id">
                       {{ departamento.nombre }}
                     </option>
@@ -181,7 +181,7 @@
                     </div>
 
                     <div class="col-md-4 form-group">
-                      <label for="" class="form-label">* Acto administrativo de creacion</label>
+                      <label for="" class="form-label">* Acto administrativo de creación</label>
                       <input class="form-control" type="text" formControlName="actoAdministrativoCreacion">
                       @if (formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoCreacion')?.touched && formularioUnidadSuprimida.get('detalleUnidad.actoAdministrativoCreacion')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">
@@ -191,7 +191,7 @@
                     </div>
 
                     <div class="col-md-4 form-group">
-                      <label for="" class="form-label">* Fecha creacion unidad</label>
+                      <label for="" class="form-label">* Fecha creación unidad</label>
                       <input type="date" class="form-control" formControlName="fechaCreacionUnidad">
                       @if (formularioUnidadSuprimida.get('detalleUnidad.fechaCreacionUnidad')?.touched && formularioUnidadSuprimida.get('detalleUnidad.fechaCreacionUnidad')?.errors?.['required']){
                       <div class="invalid-feedback" style="display: block;">

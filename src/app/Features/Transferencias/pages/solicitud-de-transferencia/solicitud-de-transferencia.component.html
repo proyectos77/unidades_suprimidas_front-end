@@ -87,11 +87,11 @@
 
 
 
-                  <!-- SECCION PARA AJUNTAR EL ARCHIVO -->
+                  <!-- SECCIÓN PARA ADJUNTAR EL ARCHIVO -->
                   <div class="row mt-5" *ngIf="mostrarForm">
 
                       <div class="col-md-4">
-                          <label for="" class="form-label">* Seccion <span style="color: rgba(158, 158, 158, 0.934);">(Segun la TOE)</span></label>
+                          <label for="" class="form-label">* Sección <span style="color: rgba(158, 158, 158, 0.934);">(Según la TOE)</span></label>
                           <input type="text" class="form-control" name="" id="" formControlName="seccion">
 
                           @if (this.formTransferencia.get('seccion')?.touched && formTransferencia.get('seccion')?.errors?.['required']){
@@ -141,7 +141,7 @@
 
                           @if (this.formTransferencia.get('cantidad_cajas')?.touched && formTransferencia.get('cantidad_cajas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
-                                  <small class="text-danger">Es necesario la cantidad de carpetas</small>
+                                  <small class="text-danger">Es necesaria la cantidad de cajas</small>
                               </div>
                           }
                       </div>
@@ -152,7 +152,7 @@
 
                           @if (this.formTransferencia.get('cantidad_carpetas')?.touched && formTransferencia.get('cantidad_carpetas')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
-                                  <small class="text-danger">Es necesario la cantidad de folios</small>
+                                  <small class="text-danger">Es necesaria la cantidad de carpetas</small>
                               </div>
                           }
                       </div>
@@ -176,7 +176,7 @@
 
                           @if (this.formTransferencia.get('cantidad_folios')?.touched && formTransferencia.get('cantidad_folios')?.errors?.['required']){
                               <div class="invalid-feedback" style="display: block;">
-                                  <small class="text-danger">Es necesario la cantidad de cajas</small>
+                                  <small class="text-danger">Es necesaria la cantidad de folios</small>
                               </div>
                           }
                       </div>
@@ -216,13 +216,13 @@
 
             @if (this.formTransferencia.get('documentos')?.touched && formTransferencia.get('documentos')?.errors?.['required']){
                 <div class="invalid-feedback" style="display: block;">
-                    <small class="text-danger">Es necesario la cantidad de cajas</small>
+                    <small class="text-danger">Es necesario adjuntar los documentos</small>
                 </div>
             }
         </div>
 
         <div class="col-md-6 content-from__btn d-flex align-items-end">
-            <button type="submit" class="btn btn-primary" style="height: 3.5rem;" (click)="enviarSoliciutudes()">Solitar aprobación</button>
+            <button type="submit" class="btn btn-primary" style="height: 3.5rem;" (click)="enviarSoliciutudes()">Solicitar aprobación</button>
             <button type="button" class="btn btn-secondary" style="height: 3.5rem;" (click)="limpiarForm()">Limpiar</button>
         </div>
       </div>

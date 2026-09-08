@@ -19,24 +19,24 @@
 
                                 @if (this.formularioEdit.get('nombre')?.touched && this.formularioEdit.get('nombre')?.errors?.['required']) {
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el cmapo Nombre</small>
+                                        <small class="text-danger">Es necesario el campo Nombre</small>
                                     </div>
                                 }
 
                                 @if (this.formularioEdit.get('nombre')?.touched && this.formularioEdit.get('nombre')?.errors?.['validarSoloLetras']){
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">El campos Nombre solo acepta letras</small>
+                                        <small class="text-danger">El campo Nombre solo acepta letras</small>
                                     </div>
                                 }
                             </div>
 
                             <div class="form-group">
-                                <label for="identificacion" class="form-label">* Identificacion</label>
+                                <label for="identificacion" class="form-label">* Identificación</label>
                                 <input type="text" class="form-control" formControlName="identificacion" >
 
                                 @if ((this.formularioEdit.get('identificacion')?.touched || this.formularioEdit.get('identificacion')?.dirty)&& this.formularioEdit.get('identificacion')?.errors?.['validarSoloNumeros']){
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">El campos Identificacion solo acepta numeros </small>
+                                        <small class="text-danger">El campo Identificación solo acepta números</small>
                                     </div>
                                 }
                             </div>
@@ -47,7 +47,7 @@
 
                                 @if ((this.formularioEdit.get('user')?.touched || this.formularioEdit.get('user')?.dirty)&& this.formularioEdit.get('user')?.errors?.['required']) {
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el cmapo Usuario</small>
+                                        <small class="text-danger">Es necesario el campo Usuario</small>
                                     </div>
                                 }
                             </div>
@@ -58,7 +58,7 @@
 
                                 @if ((this.formularioEdit.get('emailUsuario')?.touched || this.formularioEdit.get('emailUsuario')?.dirty)&& this.formularioEdit.get('emailUsuario')?.errors?.['required']) {
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el cmapo Email</small>
+                                        <small class="text-danger">Es necesario el campo Email</small>
                                     </div>
                                 }
 
@@ -81,20 +81,20 @@
 
                                 @if (this.formularioEdit.get('cargo')?.touched && this.formularioEdit.get('cargo')?.errors?.['required']) {
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el cmapo cargo</small>
+                                        <small class="text-danger">Es necesario el campo cargo</small>
                                     </div>
                                 }
                             </div>
 
                             <div class="form-group">
-                                <label for="" class="form-label">* Cargo</label>
+                                <label for="" class="form-label">* Tipo Usuario</label>
                                 <select class="form-select" formControlName="tipoUsuario">
                                     <option *ngFor="let tipo of tipoUsuarios.data" value="{{ tipo.id }}">{{ tipo.nombre }}</option>
                                 </select>
 
                                 @if (this.formularioEdit.get('tipoUsuario')?.touched && this.formularioEdit.get('tipoUsuario')?.errors?.['required']) {
                                     <div class="invalid-feedback" style="display: block;">
-                                        <small class="text-danger">Es necesario el cmapo Tipo usuario</small>
+                                        <small class="text-danger">Es necesario el campo Tipo usuario</small>
                                     </div>
                                 }
                             </div>

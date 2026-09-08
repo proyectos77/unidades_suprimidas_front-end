@@ -128,3 +128,15 @@
 .codigo{
     font-size: 2.5rem !important;
 }
+
+.copyRight{
+    position: relative;
+}
+
+.textCopy{
+    position: absolute;
+    bottom: 6.5rem;
+    width: 100%;
+    text-align: center;
+    color: var(--blanco);
+}

@@ -56,7 +56,7 @@
                       <td [width]="115">
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: .5rem; font-size: .8rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)"> <i class="fas fa-pen fa-lg fa-fw"></i> </button><!-- (click)="abrirModal(unidad)" -->
                           <button type="button" title="Activar/Inactivar" class="btn btn-danger" style="font-size: .8rem;" *ngIf="rolUser == 1" (click)="editarEstado(unidad.idEstado, unidad.id_unidad)"> <i [ngClass]="unidad.idEstado === 1 ? 'fas fa-minus-circle' : 'fas fa-check-circle'" class="fa-lg fa-fw"></i> </button>
-                          <button type="button" title="Ver informacion completa" class="btn btn-warning" style="margin-left: .5rem; font-size: .8rem; color: white;" (click)="desgloseUnidad(unidad.id_unidad)"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
+                          <button type="button" title="Ver información completa" class="btn btn-warning" style="margin-left: .5rem; font-size: .8rem; color: white;" (click)="desgloseUnidad(unidad.id_unidad)"> <i class="fa-solid fa-magnifying-glass-plus"></i> </button>
                       </td>
                   </tr>
               </tbody>
@@ -99,14 +99,14 @@
 
                                 <div class="col-6 col-md-3">
                                     <div class="info-item vertical">
-                                      <span class="info-label">Ubicacion:</span>
+                                      <span class="info-label">Ubicación:</span>
                                       <span class="info-value">{{ resumenAlmacenamiento.data[0].ubicacion }}</span>
                                     </div>
                                 </div>
 
                                 <div class="col-6 col-md-3">
                                     <div class="info-item vertical">
-                                      <span class="info-label">Direccion:</span>
+                                      <span class="info-label">Dirección:</span>
                                       <span class="info-value">{{ resumenAlmacenamiento.data[0].direccion }}</span>
                                     </div>
                                 </div>
