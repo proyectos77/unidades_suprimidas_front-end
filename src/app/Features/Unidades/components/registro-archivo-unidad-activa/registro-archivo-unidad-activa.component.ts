@@ -8,8 +8,8 @@ import { SeriesSubseriesService } from '../../../../Core/services/series-subseri
 import { ListadoSeries } from '../../../Transferencias/interfaces/listado-series';
 import { ListadoSubseries } from '../../../Transferencias/interfaces/listado-subseries';
 import { GetListadoAnios } from '../../interfaces/get-listado-anios';
-import { Subject, forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subject, forkJoin, of, from } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 import { TransferenciasService } from '../../../Transferencias/services/transferencias.service';
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { SetRegistroArchivoUnidadActiva } from '../../interfaces/set-registro-archivo-unidad-activa';
@@ -712,7 +712,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         }
 
         this.carpetasDeCajaExcel = this.listadoCarpetasRegistradas.data
-            .filter(carpeta => carpeta.idCajaUnidadActiva === this.cajaSeleccionadaExcel)
+            .filter(carpeta => Number(carpeta.idCajaUnidadActiva) === Number(this.cajaSeleccionadaExcel))
             .sort((a, b) => Number(a.numeroCarpetaUnidadActiva) - Number(b.numeroCarpetaUnidadActiva));
 
         if (this.carpetasDeCajaExcel.length === 0) {
@@ -901,24 +901,29 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             return;
         }
 
-        // Registrar solo los datos válidos
-        datosValidos.forEach((datos) => {
-            this.httpUnidades.storeRegistroDetalleDocumentoGeneralFuid(datos).subscribe({
-                next: (response) => {
-                    registrosExitosos++;
-                    registrosPendientes--;
-                    if (registrosPendientes === 0) {
-                        this.finalizarProcesamiento(registrosExitosos, registrosFallidos, registrosSaltados);
-                    }
-                },
-                error: (error) => {
+        // Registrar los datos válidos con concurrencia limitada para no saturar el servidor
+        // (en producción el throttle de la API devuelve "Too Many Attempts" si se disparan
+        // todas las peticiones al mismo tiempo, y esos registros se pierden silenciosamente).
+        const CONCURRENCIA_MAXIMA = 3;
+        from(datosValidos).pipe(
+            mergeMap((datos) =>
+                this.httpUnidades.storeRegistroDetalleDocumentoGeneralFuid(datos).pipe(
+                    catchError((error) => of({ __error: true, error }))
+                ),
+                CONCURRENCIA_MAXIMA
+            )
+        ).subscribe({
+            next: (response: any) => {
+                if (response && response.__error) {
                     registrosFallidos++;
-                    registrosPendientes--;
-                    if (registrosPendientes === 0) {
-                        this.finalizarProcesamiento(registrosExitosos, registrosFallidos, registrosSaltados);
-                    }
+                } else {
+                    registrosExitosos++;
                 }
-            });
+                registrosPendientes--;
+                if (registrosPendientes === 0) {
+                    this.finalizarProcesamiento(registrosExitosos, registrosFallidos, registrosSaltados);
+                }
+            }
         });
     }
 

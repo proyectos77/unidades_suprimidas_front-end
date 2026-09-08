@@ -220,7 +220,9 @@ declare var bootstrap: any;
 
     private navegarAUbicacion(ubicacion: UbicacionDocumentoFuid): void {
         const idUnidad = ubicacion.idUnidad!;
-        const cuerpoFolder = this.folders.find(f => f.cuerpoId === ubicacion.idCuerpo);
+        const coincideId = (valor: any, objetivo: any) => valor != null && objetivo != null && String(valor) === String(objetivo);
+
+        const cuerpoFolder = this.folders.find(f => coincideId(f.cuerpoId, ubicacion.idCuerpo));
         if (!cuerpoFolder) {
             this.sweet.alertaGeneral('warning', 'No encontrado', 'No se pudo ubicar el cuerpo del documento en el árbol.');
             return;
@@ -228,22 +230,22 @@ declare var bootstrap: any;
 
         cuerpoFolder.expanded = true;
         this.cargarEstantes(cuerpoFolder, idUnidad, () => {
-            const estanteFolder = cuerpoFolder.children.find(f => f.estanteId === ubicacion.idEstante);
+            const estanteFolder = cuerpoFolder.children.find(f => coincideId(f.estanteId, ubicacion.idEstante));
             if (!estanteFolder) return;
 
             estanteFolder.expanded = true;
             this.cargarBaldas(estanteFolder, idUnidad, () => {
-                const baldaFolder = estanteFolder.children.find(f => f.baldaId === ubicacion.idBalda);
+                const baldaFolder = estanteFolder.children.find(f => coincideId(f.baldaId, ubicacion.idBalda));
                 if (!baldaFolder) return;
 
                 baldaFolder.expanded = true;
                 this.cargarCajas(baldaFolder, idUnidad, () => {
-                    const cajaFolder = baldaFolder.children.find(f => f.cajaId === ubicacion.idCaja);
+                    const cajaFolder = baldaFolder.children.find(f => coincideId(f.cajaId, ubicacion.idCaja));
                     if (!cajaFolder) return;
 
                     cajaFolder.expanded = true;
                     this.cargarCarpetas(cajaFolder, idUnidad, () => {
-                        const carpetaFolder = cajaFolder.children.find(f => f.carpetaId === ubicacion.idCarpeta);
+                        const carpetaFolder = cajaFolder.children.find(f => coincideId(f.carpetaId, ubicacion.idCarpeta));
                         if (carpetaFolder) {
                             carpetaFolder.expanded = true;
                         }
@@ -630,7 +632,8 @@ declare var bootstrap: any;
 
         this.httpUnidadesActivas.listadoDetalleDocumentoFuidPorCarpeta(folder.carpetaId).subscribe({
             next: (respuesta) => {
-                this.documentosDataFuid = respuesta.data || [];
+                this.documentosDataFuid = (respuesta.data || [])
+                    .sort((a, b) => Number(a.numero_orden) - Number(b.numero_orden));
                 this.cdr.detectChanges();
 
                 const modal = this.modalDataFuidRef();
