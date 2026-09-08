@@ -12,11 +12,12 @@ import { UsuariosServicesService } from '../../services/usuarios-services.servic
 import { DependenciaServiceService } from '../../services/dependencia-service.service';
 import { PermisosService } from '../../services/permisos.service';
 import { ListadoPermisos } from '../../interfaces/listado-permisos';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @Component({
   selector: 'app-registro-usuarios',
-  imports: [NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule, NgSelectModule],
   templateUrl: './registro-usuarios.component.html',
   styleUrl: './registro-usuarios.component.css'
 })
@@ -84,7 +85,7 @@ export default class RegistroUsuariosComponent implements OnInit{
             user: ['', [Validators.required]],
             emailUsuario: ['', [Validators.required, Validators.email]],
             tipoUsuario: ['', [Validators.required]],
-            permiso: ['', [Validators.required]],
+            permiso: [[], [Validators.required]],
             cargo: ['', [Validators.required]]
         });
     }

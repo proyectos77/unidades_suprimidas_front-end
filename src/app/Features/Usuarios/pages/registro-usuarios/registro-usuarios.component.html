@@ -91,14 +91,20 @@
               </div>
 
               <div>
-                  <select class="form-control" formControlName="permiso">
-                      <option value="" selected disabled>Permiso *</option>
-                      <option *ngFor="let permisos of listadoPermisosData.data" value="{{ permisos.id_permiso }}">{{ permisos.nombre_permiso }}</option>
-                  </select>
+                  <ng-select
+                      formControlName="permiso"
+                      [items]="listadoPermisosData.data"
+                      bindLabel="nombre_permiso"
+                      bindValue="id_permiso"
+                      [multiple]="true"
+                      [closeOnSelect]="false"
+                      placeholder="Seleccione Permisos *"
+                      (blur)="formulario.get('permiso')?.markAsTouched()">
+                  </ng-select>
 
-                  @if (this.formulario.get('permiso')?.touched && this.formulario.get('permiso')?.errors?.['required']) {
+                  @if (formulario.get('permiso')?.touched && formulario.get('permiso')?.errors?.['required']) {
                       <div class="invalid-feedback" style="display: block;">
-                          <small class="text-danger">Es necesario el campo permiso</small>
+                          <small class="text-danger">Es necesario seleccionar al menos un permiso</small>
                       </div>
                   }
               </div>

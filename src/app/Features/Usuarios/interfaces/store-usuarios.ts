@@ -6,6 +6,6 @@ export interface StoreUsuarios {
     tipoUsuario:    number;
     cargo:          number;
     dependencia:   number;
-    permiso:       number;
+    permiso:       [];
 }
 

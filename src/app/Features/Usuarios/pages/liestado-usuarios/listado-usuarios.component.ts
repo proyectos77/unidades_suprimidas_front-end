@@ -49,7 +49,8 @@ export default class LiestadoUsuariosComponent implements OnInit{
         'cargo': '',
         'idCargo': 0,
         'estado': '',
-        'idTipoUsuario': 0
+        'idTipoUsuario': 0,
+        'permisos': []
     }
 
     public pagina:number = 1;

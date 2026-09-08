@@ -12,12 +12,15 @@ import { ValidadoresPersonalizados } from '../../../../Shared/Validators/cunstom
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
 import { StoreUsuarios } from '../../interfaces/store-usuarios';
 import { UsuariosServicesService } from '../../services/usuarios-services.service';
+import { PermisosService } from '../../services/permisos.service';
+import { ListadoPermisos } from '../../interfaces/listado-permisos';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
 @Component({
   selector: 'app-modal-editar-usuario',
-  imports: [NgFor, ReactiveFormsModule],
+  imports: [NgFor, ReactiveFormsModule, NgSelectModule],
   templateUrl: './modal-editar-usuario.component.html',
   styleUrl: './modal-editar-usuario.component.css',
 
@@ -45,6 +48,14 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         'data': []
     }
 
+    public listadoPermisosData: ListadoPermisos = {
+        'statusCode': 0,
+        'titulo': '',
+        'mensaje': '',
+        'icono': '',
+        'data': []
+    }
+
     public formularioEdit!: FormGroup;
 
     constructor(
@@ -53,12 +64,14 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         private form: FormBuilder,
         private sweet: SweetAlertService,
         private httUsuario: UsuariosServicesService,
+        private httpPermisos: PermisosService,
 
     ){}
 
     ngOnInit(): void {
         this.listadoCargos();
         this.listaTipoUsuario();
+        this.listadoPermisos();
         this.formularioEdit = this.formularioEditUsaurio();
 
         this.formularioEdit.get('nombre')?.valueChanges.subscribe(valor => {
@@ -81,6 +94,14 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
         });
     }
 
+    listadoPermisos():void{
+        this.httpPermisos.listadoPermisos().subscribe(permisos => {
+            if (permisos.statusCode == 200) {
+                this.listadoPermisosData = permisos;
+            }
+        });
+    }
+
     formularioEditUsaurio():FormGroup{
         return this.form.group({
             'nombre': ['', [Validators.required, ValidadoresPersonalizados.validarSoloLetras]],
@@ -88,7 +109,8 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
             'user': ['', [Validators.required]],
             'emailUsuario': ['', [Validators.required, Validators.email]],
             'cargo': ['', [Validators.required]],
-            'tipoUsuario': ['', [Validators.required]]
+            'tipoUsuario': ['', [Validators.required]],
+            'permiso': [[], [Validators.required]]
         });
     }
 
@@ -105,7 +127,8 @@ export class ModalEditarUsuarioComponent implements OnInit {  // Implementar OnC
           'user': usuario.usuario,
           'emailUsuario': usuario.email,
           'cargo': usuario.idCargo ,
-          'tipoUsuario': usuario.idTipoUsuario
+          'tipoUsuario': usuario.idTipoUsuario,
+          'permiso': (usuario.permisos ?? []).map(permiso => permiso.id)
         });
     }
 

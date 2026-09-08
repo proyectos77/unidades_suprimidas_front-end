@@ -98,6 +98,26 @@
                                     </div>
                                 }
                             </div>
+
+                            <div class="form-group">
+                                <label for="permiso" class="form-label">* Permisos</label>
+                                <ng-select
+                                    formControlName="permiso"
+                                    [items]="listadoPermisosData.data"
+                                    bindLabel="nombre_permiso"
+                                    bindValue="id_permiso"
+                                    [multiple]="true"
+                                    [closeOnSelect]="false"
+                                    placeholder="Seleccione permisos *"
+                                    (blur)="formularioEdit.get('permiso')?.markAsTouched()">
+                                </ng-select>
+
+                                @if (this.formularioEdit.get('permiso')?.touched && this.formularioEdit.get('permiso')?.errors?.['required']) {
+                                    <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario seleccionar al menos un permiso</small>
+                                    </div>
+                                }
+                            </div>
                         </div>
 
                         <div class="modal-footer mt-5">

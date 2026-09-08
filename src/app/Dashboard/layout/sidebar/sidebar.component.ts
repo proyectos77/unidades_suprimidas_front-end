@@ -3,6 +3,9 @@ import { RouterLink, RouterModule, Router, NavigationEnd } from '@angular/router
 import { LoginService } from '../../../Auth/services/login.service';
 import { NgIf } from '@angular/common';
 import { filter } from 'rxjs/operators';
+import { Permiso } from '../../../Auth/interfaces/get-login';
+
+const PERMISO_TODOS = 4;
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +16,7 @@ import { filter } from 'rxjs/operators';
 export default class SidebarComponent implements OnInit {
 
     public rolUser: string = '';
-    public Permiso: number = 0;
+    public permisos: number[] = [];
     public expandedMenu: string | null = null;
 
     constructor(private httpLogin: LoginService, private router: Router) {
@@ -21,10 +24,9 @@ export default class SidebarComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.httpLogin.datosSesion());
-        this.rolUser = this.httpLogin.datosSesion().idTipoUsuario;
-        this.Permiso = this.httpLogin.datosSesion().permiso_id;
-        console.log(this.Permiso);
+        const sesion = this.httpLogin.datosSesion();
+        this.rolUser = sesion.idTipoUsuario;
+        this.permisos = (sesion.permisos ?? []).map((permiso: Permiso) => permiso.id);
 
         this.expandActivateMenu();
 
@@ -33,6 +35,10 @@ export default class SidebarComponent implements OnInit {
         ).subscribe(() => {
             this.expandActivateMenu();
         });
+    }
+
+    tienePermiso(idPermiso: number): boolean {
+        return this.permisos.includes(idPermiso) || this.permisos.includes(PERMISO_TODOS);
     }
 
     toggleMenu(menuName: string): void {

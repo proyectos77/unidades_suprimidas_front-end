@@ -18,6 +18,12 @@ export interface DatumUsuario {
   idCargo:        number;
   tipoUsuario:    string;
   idTipoUsuario:  number;
+  permisos:       PermisoUsuario[];
+}
+
+export interface PermisoUsuario {
+  id:     number;
+  nombre: string;
 }
 
 export interface InfoPagination {
