@@ -18,4 +18,6 @@ export interface Datum {
   fechaCreacionCarpetaUnidadActiva:      null;
   fechaActualizacionCarpetaUnidadActiva: null;
   idEstado:                              null;
+  serie?:                                { id_serie: number; nombre_serie: string } | null;
+  subserie?:                             { id_subserie: number; nombre_subserie: string } | null;
 }

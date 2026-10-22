@@ -281,7 +281,7 @@
                                     <label for="">Caja</label>
                                     <select class="form-select" formControlName="caja">
                                       <option value="">{{ cargandoCajas ? 'Cargando cajas...' : 'Seleccione la caja' }}</option>
-                                      <option *ngFor="let caja of listadoCajas.data" [value]="caja.idCajaUnidadActiva">{{ caja.labelJerarquico || caja.codigoCajaUnidadActiva }}</option>
+                                      <option *ngFor="let caja of listadoCajas.data" [value]="caja.idCajaUnidadActiva" [disabled]="caja.cajaCompleta">{{ labelCajaCarpetas(caja) }}</option>
                                     </select>
                                     @if (this.formularioRegistroCarpeta.get('caja')?.touched &&
                                     this.formularioRegistroCarpeta.get('caja')?.errors?.['required']){
@@ -326,8 +326,11 @@
                                       <label for="">Número de carpeta</label>
                                       <select class="form-select" formControlName="numeroCarpeta">
                                           <option value="">Seleccione el número de carpeta</option>
-                                          <option *ngFor="let numero of [].constructor(cantidadCarpetas); let i = index" [value]="i + 1">{{ "Carpeta " + (i + 1) }}</option>
+                                          <option *ngFor="let numero of numerosCarpetaDisponibles" [value]="numero">{{ "Carpeta " + numero }}</option>
                                       </select>
+                                      @if (cajaSeleccionadaCarpeta && numerosCarpetaDisponibles.length === 0) {
+                                          <small class="text-muted">No quedan carpetas por registrar en esta caja.</small>
+                                      }
                                       @if (this.formularioRegistroCarpeta.get('numeroCarpeta')?.touched &&
                                       this.formularioRegistroCarpeta.get('numeroCarpeta')?.errors?.['required']){
                                           <div class="invalid-feedback" style="display: block;">
@@ -376,10 +379,42 @@
 
                               <div class="row mt-4">
                                   <div class="col-md-12 d-flex justify-content-end">
-                                      <button type="button" class="btn btn-warning" (click)="agregarCarpetaAgrupada()">Agregar carpeta</button>
+                                      <button type="button" class="btn btn-warning" [disabled]="cajaSeleccionadaCarpeta && numerosCarpetaDisponibles.length === 0" (click)="agregarCarpetaAgrupada()">Agregar carpeta</button>
                                   </div>
                               </div>
                           </form>
+
+                          <!-- Carpetas ya registradas de la caja seleccionada -->
+                          <div class="row mt-4" *ngIf="cajaSeleccionadaCarpeta && carpetasRegistradasCaja.length > 0">
+                              <div class="col-md-12">
+                                  <h6>
+                                      Carpetas registradas en la caja {{ cajaSeleccionadaCarpeta.codigoCajaUnidadActiva }}
+                                      ({{ carpetasRegistradasCaja.length }}/{{ cajaSeleccionadaCarpeta.cantidadCarpetasUnidadActiva }})
+                                  </h6>
+                                  <table class="table table-bordered table-sm">
+                                      <thead>
+                                          <tr>
+                                              <th>N° Carpeta</th>
+                                              <th>Serie</th>
+                                              <th>Subserie</th>
+                                              <th>Fecha Inicio</th>
+                                              <th>Fecha Fin</th>
+                                              <th>Folios</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor="let carpeta of carpetasRegistradasCaja">
+                                              <td>{{ carpeta.numeroCarpetaUnidadActiva }}</td>
+                                              <td>{{ carpeta.serie?.nombre_serie || '-' }}</td>
+                                              <td>{{ carpeta.subserie?.nombre_subserie || '-' }}</td>
+                                              <td>{{ carpeta.fechaExtremaInicio }}</td>
+                                              <td>{{ carpeta.fechaExtremaFin }}</td>
+                                              <td>{{ carpeta.cantidadFolios }}</td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
 
                           <!-- Tabla de carpetas agrupadas -->
                           <div class="row mt-4" *ngIf="carpetasAgrupadas.carpetas.length > 0">
@@ -434,10 +469,11 @@
                                     [(ngModel)]="cajaSeleccionadaExcel"
                                     [ngModelOptions]="{standalone: true}">
                                     <option [ngValue]="null">Seleccione la caja a la que pertenecen los documentos</option>
-                                    <option *ngFor="let caja of listadoCajas.data" [ngValue]="caja.idCajaUnidadActiva">
-                                      {{ caja.labelJerarquico || caja.codigoCajaUnidadActiva }}
+                                    <option *ngFor="let caja of listadoCajas.data" [ngValue]="caja.idCajaUnidadActiva" [disabled]="!caja.cajaCompleta">
+                                      {{ labelCajaCarpetas(caja) }}
                                     </option>
                                   </select>
+                                  <small class="d-block text-muted">Solo se habilitan las cajas que ya tienen todas sus carpetas registradas.</small>
                                   <small class="text-muted">Cada hoja (página) del Excel se asociará, en orden, a una carpeta de esta caja (hoja 1 → carpeta 1, hoja 2 → carpeta 2, etc.). La cantidad de hojas debe coincidir con la cantidad de carpetas de la caja.</small>
                                 </div>
                                 <div class="col-md-8">

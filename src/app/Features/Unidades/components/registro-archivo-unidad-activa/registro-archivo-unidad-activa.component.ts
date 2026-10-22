@@ -25,7 +25,7 @@ import { StoreCapetaUnidadActiva } from '../../interfaces/store-capeta-unidad-ac
 import { GetInformacionGeneralArchivoUnidadActiva } from '../../interfaces/get-informacion-general-archivo-unidad-activa';
 import { LoaderComponent } from '../../../../Shared/Components/loader/loader.component';
 import { NavigationEnd } from '@angular/router';
-import { GetListadoCajasArchivoUnidadActiva } from '../../interfaces/get-listado-cajas-archivo-unidad-activa';
+import { GetListadoCajasArchivoUnidadActiva, Datum as CajaDatum } from '../../interfaces/get-listado-cajas-archivo-unidad-activa';
 import { RespuestaRegistroCapetaUnidadActiva, Datum as CarpetaDatum } from '../../interfaces/respuesta-registro-capeta-unidad-activa';
 import * as XLSX from 'xlsx';
 
@@ -174,7 +174,11 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     public carpetasDeCajaExcel: CarpetaDatum[] = [];
     private idDocumentoGeneralExcelActual: number | null = null;
     public cantidadCajas: number = 4;
-    public cantidadCarpetas: number = 12;
+
+    /*--*************** Variables carpetas por caja ***************--*/
+    public cajaSeleccionadaCarpeta: CajaDatum | null = null;
+    public carpetasRegistradasCaja: CarpetaDatum[] = [];
+    public numerosCarpetaDisponibles: number[] = [];
 
 
 
@@ -395,6 +399,11 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         this.httpUnidades.listadoCajas(this.idArchivoUnidadActiva).subscribe({
             next: (respuesta) => {
                 this.listadoCajas = respuesta;
+                if (this.cajaSeleccionadaCarpeta) {
+                    const idSeleccionada = this.cajaSeleccionadaCarpeta.idCajaUnidadActiva;
+                    this.cajaSeleccionadaCarpeta = this.listadoCajas.data.find(c => c.idCajaUnidadActiva === idSeleccionada) ?? null;
+                    this.actualizarCarpetasDeCajaSeleccionada();
+                }
                 // Enriquecer cada caja con información jerárquica
                 this.enriquecerCajasConInformacionJerarquica();
             },
@@ -408,6 +417,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
         this.httpUnidades.listadoCarpetasPorArchivoUnidadActiva(this.idArchivoUnidadActiva).subscribe({
             next: (respuesta) => {
                 this.listadoCarpetasRegistradas = respuesta;
+                this.actualizarCarpetasDeCajaSeleccionada();
                 if (this.listadoCarpetasRegistradas.data.length > 0) {
                     this.cargaExcelTab.nativeElement.classList.remove('disabled');
                 } else {
@@ -487,17 +497,49 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
     escucharCambiosCaja():void{
         this.formularioRegistroCarpeta.get('caja')?.valueChanges.subscribe((idCaja) => {
-            if(idCaja){
-                this.listadoCajas.data.forEach(caja => {
-                    if(caja.idCajaUnidadActiva === Number(idCaja)){
-                        this.anioCaja = caja.anioCajaUnidadActiva;
-                        this.formularioRegistroCarpeta.get('serie')?.enable();
-                        this.listadoSeries(this.anioCaja);
-                        return;
-                    }
-                });
+            const caja = idCaja ? this.listadoCajas.data.find(c => c.idCajaUnidadActiva === Number(idCaja)) : undefined;
+            this.cajaSeleccionadaCarpeta = caja ?? null;
+            this.actualizarCarpetasDeCajaSeleccionada();
+
+            if (caja) {
+                this.anioCaja = caja.anioCajaUnidadActiva;
+                this.formularioRegistroCarpeta.get('serie')?.enable({ emitEvent: false });
+                this.listadoSeries(this.anioCaja);
             }
         });
+    }
+
+    /** Carpetas ya registradas de la caja seleccionada y números de carpeta que aún quedan libres. */
+    actualizarCarpetasDeCajaSeleccionada(): void {
+        const caja = this.cajaSeleccionadaCarpeta;
+        if (!caja) {
+            this.carpetasRegistradasCaja = [];
+            this.numerosCarpetaDisponibles = [];
+            return;
+        }
+
+        this.carpetasRegistradasCaja = this.listadoCarpetasRegistradas.data
+            .filter(carpeta => Number(carpeta.idCajaUnidadActiva) === caja.idCajaUnidadActiva)
+            .sort((a, b) => Number(a.numeroCarpetaUnidadActiva) - Number(b.numeroCarpetaUnidadActiva));
+
+        const ocupados = new Set<number>([
+            ...this.carpetasRegistradasCaja.map(c => Number(c.numeroCarpetaUnidadActiva)),
+            ...this.carpetasAgrupadas.carpetas
+                .filter(c => Number(c.cajaUnidadActiva) === caja.idCajaUnidadActiva)
+                .map(c => Number(c.numeroCarpeta)),
+        ]);
+
+        const total = Number(caja.cantidadCarpetasUnidadActiva) || 0;
+        this.numerosCarpetaDisponibles = Array.from({ length: total }, (_, i) => i + 1).filter(n => !ocupados.has(n));
+    }
+
+    /** Texto de la opción del select de cajas con el avance de registro de carpetas. */
+    labelCajaCarpetas(caja: CajaDatum): string {
+        const nombre = caja.labelJerarquico || caja.codigoCajaUnidadActiva;
+        const registradas = caja.cantidadCarpetasRegistradas ?? 0;
+        const total = Number(caja.cantidadCarpetasUnidadActiva) || 0;
+        const estado = caja.cajaCompleta ? 'completa' : `${registradas}/${total} carpetas`;
+        return `${nombre} (${estado})`;
     }
 
     listadoSeries(anio:string):void{
@@ -670,6 +712,7 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
 
     eliminarCarpetaAgrupada(index: number): void {
         this.carpetasAgrupadas.carpetas.splice(index, 1);
+        this.actualizarCarpetasDeCajaSeleccionada();
     }
 
     registrarCarpetasAgrupadas(): void {
@@ -683,11 +726,20 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
             next: (response) => {
                 this.sweet.alertaGeneral('success', 'Registro exitoso', 'Las carpetas han sido registradas correctamente.');
                 this.carpetasAgrupadas = { carpetas: [] };
+                this.formularioRegistroCarpeta.reset({ caja: '', serie: '', subserie: '' });
+                this.formularioRegistroCarpeta.get('serie')?.disable();
+                this.formularioRegistroCarpeta.get('subserie')?.disable();
                 this.mostrarTab(this.cargaExcelTab.nativeElement);
+                this.listadoCajasArchivoUnidadActiva();
                 this.listadoCarpetasParaExcel();
             },
             error: (error) => {
-                this.sweet.alertaGeneral('error', 'Error', 'Ocurrió un error al registrar las carpetas.');
+                const respuesta = error?.error;
+                this.sweet.alertaGeneral(
+                    respuesta?.icono || 'error',
+                    respuesta?.titulo || 'Error',
+                    respuesta?.mensaje || 'Ocurrió un error al registrar las carpetas.'
+                );
             }
         });
     }
@@ -703,6 +755,12 @@ export default class RegistroArchivoUnidadActivaComponent implements OnInit, OnD
     procesarArchivoExcel(): void {
         if (!this.cajaSeleccionadaExcel) {
             this.sweet.alertaGeneral('warning', 'Sin caja', 'Debe seleccionar la caja a la que pertenecen los documentos del Excel.');
+            return;
+        }
+
+        const cajaExcel = this.listadoCajas.data.find(c => c.idCajaUnidadActiva === Number(this.cajaSeleccionadaExcel));
+        if (!cajaExcel?.cajaCompleta) {
+            this.sweet.alertaGeneral('warning', 'Caja incompleta', 'Solo se puede adjuntar el Excel a una caja con todas sus carpetas registradas.');
             return;
         }
 

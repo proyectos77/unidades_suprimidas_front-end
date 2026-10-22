@@ -19,6 +19,8 @@ export interface Datum {
   fechaCreacionArchivoUnidadActiva:         Date;
   fechaActualizacionArchivoUnidadActiva:    Date;
   idEstado:                                 number;
+  cantidadCarpetasRegistradas?:             number;
+  cajaCompleta?:                            boolean;
   nombreCuerpo?:                            string;
   nombreEstante?:                           string;
   nombreBaldà?:                             string;
