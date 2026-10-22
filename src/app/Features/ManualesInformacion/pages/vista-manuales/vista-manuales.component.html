@@ -4,10 +4,13 @@
         <h3>Documentación del sistema</h3>
         <div class="content-btn-regresar">
             <button type="button" class="btn btn-primary" (click)="regresar()">Regresar</button>
+
+            <button type="button" *ngIf="rolUser === 1"  style="margin-left: 1rem;" class="btn btn-secondary" (click)="abrirModalDocumentacion()">Documentacion</button>
         </div>
     </div>
     <div class="card-body card-body-page">
-        <div class="row">
+
+        <div class="row" ngForm="datos of documentacionSistema.data">
             <div class="col-md-4" (click)="dataFilter('documentos')">
                 <div class="card card-filtro">
                     <div class="card-body">
@@ -104,5 +107,7 @@
 </div>
 
 <app-modal-visualizacion *ngIf="modalAbierto === true" [tipoContenido]="tipoContenido" [urlContenido]="urlContenido"></app-modal-visualizacion>
+
+<app-modal-cargar-documentacion *ngIf="modalCargarDocumentacionAbierto === true"></app-modal-cargar-documentacion>
 
 

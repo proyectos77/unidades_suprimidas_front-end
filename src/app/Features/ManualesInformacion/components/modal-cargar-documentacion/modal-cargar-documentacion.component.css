@@ -1,0 +1,6 @@
+/* Centrar texto en el encabezado de la tabla */
+table.table thead th {
+	text-align: center;
+	vertical-align: middle;
+}
+

@@ -1,0 +1,97 @@
+<!-- Modal -->
+<div class="modal fade" id="modalCargarDocumentacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="modalCargarDocumentacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="formularioDocumentacion" (submit)="validarFormulario()">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="documento" class="form-label">Nombre Documento</label>
+                                    <input  type="text" class="form-control" placeholder="Ingrese el nombre del documento" formControlName="nombreDocumento">
+                                    @if (this.formularioDocumentacion.get('nombreDocumento')?.touched && formularioDocumentacion.get('nombreDocumento')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el nombre del documento</small>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="documento" class="form-label">Tipo Documento</label>
+                                    <select class="form-select"  formControlName="tipoDocumento">
+                                        <option value="" disabled selected>Seleccione el tipo de documento</option>
+                                        <option value="1">PDF</option>
+                                        <option value="2">DOC</option>
+                                        <option value="3
+                                        ">DOCX</option>
+                                    </select>
+                                    @if (this.formularioDocumentacion.get('tipoDocumento')?.touched && formularioDocumentacion.get('tipoDocumento')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario seleccionar el tipo de documento</small>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="documento" class="form-label">Seleccionar documento</label>
+                                    <input type="file" class="form-control" accept=".pdf,.doc,.docx, .txt, .pptx, .xls, .xlsx, .mp4" (change)="onArchivoSeleccionado($event)">
+                                    @if (this.formularioDocumentacion.get('archivo')?.touched && formularioDocumentacion.get('archivo')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario seleccionar un archivo</small>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Cargar Documento</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tabla de documentos cargados -->
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <table class="table table-hover table-responsive table-bordered">
+                            <thead class="text-center table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre Documento</th>
+                                    <th>Tipo Documento</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr *ngFor="let documento of documentacionSistema.data">
+                                    <td>{{ documento.id_documentacion_sistema }}</td>
+                                    <td>{{ documento.nombre_documentacion_sistema }}</td>
+                                    <td>{{ documento.descripcion_documentacion_sistema }}</td>
+                                    <td>{{ documento.estado_documentacion_sistema }}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-cloud-arrow-down"></i></button>
+                                        <button class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
