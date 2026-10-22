@@ -148,9 +148,9 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
           return this.form.group({
               nombreUnidad: [{value: '', disabled: true}, Validators.required],
               actoAdministrativoCreacion: [null, Validators.required],
-              actoAdministrativoDesactivacion: [null, Validators.required],
+              actoAdministrativoDesactivacion: [null],
               fechaCreacionUnidad: [null, Validators.required],
-              fechaDesactivacionUnidad: [null, Validators.required],
+              fechaDesactivacionUnidad: [null],
               planReorganizacionDiorg: [null, Validators.required],
               /* puestoMandoAdelantado: [null, Validators.required],
               puestoMandoAtrasado: [null, Validators.required], */
@@ -211,14 +211,12 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
             /* this.seccionEditarDetalle = true;
             this.seccionEditarArchivo = true; */
           }
-
-
       }
 
       consultaDetalleUnidad():void{
         this.httpUnidades.getInformacionUnidad(this.unidad.id_unidad).subscribe({
               next: (informacion) => {
-                  if (informacion.statusCode === 200) {
+                  if (informacion.statusCode === 200 && informacion.data && Object.keys(informacion.data).length > 0) {
                       this.informacionUnidad = informacion;
                       this.unidadConDetalle = true;
                       this.seccionEditarDetalle = true;
@@ -234,6 +232,10 @@ export class ModalEditarUnidadComponent implements OnInit, OnChanges  {  /* Afte
                           'observacion': this.informacionUnidad.data?.detalle_unidad?.observacion_detalle,
                           'planReorganizacionDiorg': this.informacionUnidad.data?.detalle_unidad?.plan_reorganizacion_diorg_detalle
                       });
+                  }else{
+                      this.sweet.alertaGeneral(informacion.icono, informacion.titulo, informacion.mensaje);
+                      this.activasDetalle = true;
+                      this.seccionEditarDetalle = false;
                   }
               },
               error: (error) => {
