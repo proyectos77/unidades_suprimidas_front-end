@@ -19,4 +19,5 @@ export interface UbicacionDocumentoFuid {
   idBalda:    number | null;
   idCaja:     number | null;
   idCarpeta:  number | null;
+  nombreUnidad?: string | null;
 }

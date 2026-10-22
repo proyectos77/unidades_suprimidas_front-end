@@ -9,9 +9,11 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { BuscadorArchivoUnidadPipe } from '../../../../Shared/Pipes/buscador-archivo-unidad.pipe';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { LoginService } from '../../../../Auth/services/login.service';
-import { Modal } from 'bootstrap';
+import { Modal, Tab } from 'bootstrap';
 import { StoreActualizarArchivoRegistrado } from '../../interfaces/store-actualizar-archivo-registrado';
 import { ArchivoDetalleUnidadService } from '../../services/archivo-detalle-unidad.service';
+import { UbicacionArchivoUnidadComponent } from '../../components/ubicacion-archivo-unidad/ubicacion-archivo-unidad.component';
+import { UbicacionDocumentoFuid } from '../../interfaces/buscar-detalle-documento-fuid';
 
 @Component({
   selector: 'app-vista-detalle-unidad',
@@ -27,6 +29,7 @@ import { ArchivoDetalleUnidadService } from '../../services/archivo-detalle-unid
     NgxChartsModule,
     NgIf,
     ReactiveFormsModule,
+    UbicacionArchivoUnidadComponent,
   ],
   templateUrl: './vista-detalle-unidad.component.html',
   styleUrl: './vista-detalle-unidad.component.css',
@@ -144,6 +147,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   public perfilUsuario:number = 0;
   public formularioArchivo!: FormGroup;
   private idArchivoRegistradoParaActualizar: number = 0;
+  public ubicacionInicial: UbicacionDocumentoFuid | null = null;
 
   constructor(
       private httpUnidad: UnidadesService,
@@ -156,6 +160,7 @@ export default class VistaDetalleUnidadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+      this.leerUbicacionInicial();
       this.getInformacionUnidad();
       this.perfilUsuario = this.httpLogin.datosSesion().idTipoUsuario;
       this.formularioArchivo = this.form();
@@ -169,6 +174,9 @@ export default class VistaDetalleUnidadComponent implements OnInit {
           next: (informacion) => {
               if (informacion.statusCode === 200) {
                   this.informacionUnidad = informacion;
+                  if (this.ubicacionInicial) {
+                      setTimeout(() => this.mostrarPestanaUbicacion());
+                  }
                   this.getArchivoUnidad(informacion.data.detalle_unidad?.id_detalle ?? 0, 1);
                   if (informacion.data.id_estado == 6) {
                       this.unidadSuprimida = true;
@@ -183,6 +191,30 @@ export default class VistaDetalleUnidadComponent implements OnInit {
               window.history.back();
           },
       });
+  }
+
+  /** Si se llega desde el buscador de documentos, se abre la pestaña de ubicación en la carpeta encontrada. */
+  leerUbicacionInicial(): void {
+      const params = this.route.snapshot.queryParamMap;
+      if (params.get('tab') !== 'ubicacion') {
+          return;
+      }
+      const numero = (clave: string) => (params.get(clave) ? Number(params.get(clave)) : null);
+      this.ubicacionInicial = {
+          idUnidad: numero('unidad'),
+          idCuerpo: numero('cuerpo'),
+          idEstante: numero('estante'),
+          idBalda: numero('balda'),
+          idCaja: numero('caja'),
+          idCarpeta: numero('carpeta'),
+      };
+  }
+
+  private mostrarPestanaUbicacion(): void {
+      const tab = document.getElementById('ubicacion-tab');
+      if (tab) {
+          Tab.getOrCreateInstance(tab).show();
+      }
   }
 
   getArchivoUnidad(idDetalleUnidad: number, page:number):void{

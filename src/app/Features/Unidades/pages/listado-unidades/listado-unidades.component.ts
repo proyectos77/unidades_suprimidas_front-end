@@ -1,20 +1,24 @@
-import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, inject, viewChild } from '@angular/core';
 import { DependenciaServiceService } from '../../../Usuarios/services/dependencia-service.service';
 import { DatumUnidad, GetAllUnidades } from '../../interfaces/get-all-unidades';
 import { UnidadesService } from '../../services/unidades.service';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ModalEditarUnidadComponent } from "../../components/modal-editar-unidad/modal-editar-unidad.component";
 import { SweetAlertService } from '../../../../Core/services/sweet-alert.service';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../../../Auth/services/login.service';
 import { Modal } from 'bootstrap';
+import { UnidadesActivasService } from '../../services/unidades-activas.service';
+import { BuscarDetalleDocumentoFuidDatum } from '../../interfaces/buscar-detalle-documento-fuid';
 import OrganizacionTransferenciaUnidadInactivaComponent from '../../components/organizacion-transferencia-unidad-inactiva/organizacion-transferencia-unidad-inactiva.component';
 
 declare var bootstrap: any;
+const ESTADO_UNIDAD_SUPRIMIDA = '6';
+
 @Component({
   selector: 'app-listado-unidades',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, FormsModule, OrganizacionTransferenciaUnidadInactivaComponent],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, DatePipe, ModalEditarUnidadComponent, FormsModule, OrganizacionTransferenciaUnidadInactivaComponent],
   templateUrl: './listado-unidades.component.html',
   styleUrl: './listado-unidades.component.css'
 })
@@ -52,6 +56,15 @@ export default class ListadoUnidadesComponent implements OnInit{
 
     private modalInstance: Modal | null = null;
     private modalActualizar = viewChild<ElementRef>('buscarObservacion');
+
+    // Búsqueda de documentos FUID (solo unidades suprimidas)
+    private router = inject(Router);
+    private httpUnidadesActivas = inject(UnidadesActivasService);
+    private modalBuscarDocumentoRef = viewChild<ElementRef>('buscarDocumento');
+    private modalBuscarDocumento: Modal | null = null;
+    public filtroBusquedaDocumento = this.filtroDocumentoVacio();
+    public resultadosBusquedaDocumento: BuscarDetalleDocumentoFuidDatum[] = [];
+    public busquedaDocumentoRealizada: boolean = false;
 
     constructor(
         private httUnidades: UnidadesService,
@@ -139,6 +152,87 @@ export default class ListadoUnidadesComponent implements OnInit{
         const modal = document.getElementById('modalOrganizacionTransferencia');
         this.unidadOrganizacion = idUnidad ?? 0;
         new bootstrap.Modal(modal).show();
+    }
+
+    abrirModalBuscarDocumento(): void {
+        this.filtroBusquedaDocumento = this.filtroDocumentoVacio();
+        this.resultadosBusquedaDocumento = [];
+        this.busquedaDocumentoRealizada = false;
+        const modal = this.modalBuscarDocumentoRef();
+        if (modal) {
+            this.modalBuscarDocumento = new Modal(modal.nativeElement);
+            this.modalBuscarDocumento.show();
+        }
+    }
+
+    buscarDocumentos(): void {
+        const filtros: Record<string, string> = {};
+        const campo = this.filtroBusquedaDocumento;
+
+        if (campo.nombre_serie_subserie_asunto.trim()) filtros['nombre_serie_subserie_asunto'] = campo.nombre_serie_subserie_asunto.trim();
+        if (campo.notas.trim()) filtros['notas'] = campo.notas.trim();
+        if (campo.codigo.trim()) filtros['codigo'] = campo.codigo.trim();
+        if (campo.numero_orden.trim()) filtros['numero_orden'] = campo.numero_orden.trim();
+        if (campo.fecha_extrema_inicio) filtros['fecha_extrema_inicio'] = campo.fecha_extrema_inicio;
+        if (campo.fecha_extrema_fin) filtros['fecha_extrema_fin'] = campo.fecha_extrema_fin;
+
+        if (Object.keys(filtros).length === 0) {
+            this.sweet.alertaGeneral('warning', 'Sin criterios', 'Ingrese al menos un criterio de búsqueda.');
+            return;
+        }
+
+        // Solo documentos de unidades suprimidas
+        filtros['estado_unidad'] = ESTADO_UNIDAD_SUPRIMIDA;
+
+        this.httpUnidadesActivas.buscarDetalleDocumentoFuid(filtros).subscribe({
+            next: (respuesta) => {
+                this.resultadosBusquedaDocumento = respuesta.data || [];
+                this.busquedaDocumentoRealizada = true;
+            },
+            error: () => {
+                this.sweet.alertaGeneral('error', 'Error', 'No se pudo realizar la búsqueda.');
+            }
+        });
+    }
+
+    /** Abre el detalle de la unidad en la pestaña de ubicación, desplegado hasta la carpeta del documento. */
+    irADocumentoEncontrado(resultado: BuscarDetalleDocumentoFuidDatum): void {
+        const ubicacion = resultado.ubicacion;
+        if (!ubicacion || !ubicacion.idUnidad || !ubicacion.idCuerpo || !ubicacion.idEstante || !ubicacion.idBalda || !ubicacion.idCaja || !ubicacion.idCarpeta) {
+            this.sweet.alertaGeneral('warning', 'Ubicación incompleta', 'No se pudo determinar la ubicación completa de este documento.');
+            return;
+        }
+
+        const navegar = () => this.router.navigate(['/main/unidades/informacionUnidad', ubicacion.idUnidad], {
+            queryParams: {
+                tab: 'ubicacion',
+                cuerpo: ubicacion.idCuerpo,
+                estante: ubicacion.idEstante,
+                balda: ubicacion.idBalda,
+                caja: ubicacion.idCaja,
+                carpeta: ubicacion.idCarpeta,
+            }
+        });
+
+        // Se espera a que el modal termine de cerrarse para no dejar el fondo oscuro al cambiar de página
+        const modal = this.modalBuscarDocumentoRef()?.nativeElement;
+        if (modal && this.modalBuscarDocumento) {
+            modal.addEventListener('hidden.bs.modal', navegar, { once: true });
+            this.modalBuscarDocumento.hide();
+        } else {
+            navegar();
+        }
+    }
+
+    private filtroDocumentoVacio() {
+        return {
+            nombre_serie_subserie_asunto: '',
+            notas: '',
+            codigo: '',
+            numero_orden: '',
+            fecha_extrema_inicio: '',
+            fecha_extrema_fin: ''
+        };
     }
 
     limpiarFiltros(): void {
