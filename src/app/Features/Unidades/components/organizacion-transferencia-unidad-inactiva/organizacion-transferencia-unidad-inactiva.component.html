@@ -1,0 +1,561 @@
+<!-- Modal -->
+<div class="modal fade" id="modalOrganizacionTransferencia" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Organización de transferencia unidad inactiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- (click)="limpiarForm()" -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p><strong>Ruta:</strong> <span class="ruta"> {{ rutaUnidad }} </span></p>
+                    </div>
+                </div>
+
+                <!-- Vigencias con transferencias aprobadas -->
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <h6>Vigencias con transferencias aprobadas</h6>
+                        @if (vigencias.length === 0) {
+                            <div class="alert alert-warning mb-0">La unidad no tiene transferencias aprobadas para organizar.</div>
+                        } @else {
+                            <table class="table table-bordered table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Vigencia</th>
+                                        <th>Cajas organizadas / transferidas</th>
+                                        <th>Carpetas organizadas / transferidas</th>
+                                        <th>Folios transferidos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let vigencia of vigencias">
+                                        <td>{{ vigencia.anio }}</td>
+                                        <td>{{ vigencia.cajasOrganizadas }} / {{ vigencia.cajasTransferidas }}</td>
+                                        <td>{{ vigencia.carpetasOrganizadas }} / {{ vigencia.carpetasTransferidas }}</td>
+                                        <td>{{ vigencia.foliosTransferidos }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+
+                      <!-- Cabeceras -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" #informacionGeneral id="home-tab" data-bs-toggle="tab" data-bs-target="#ot-informacion-general" type="button" role="tab" aria-controls="home" aria-selected="true"> Información General</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled"  #cajas id="messages-tab" data-bs-toggle="tab" data-bs-target="#ot-cajas" type="button" role="tab" aria-controls="messages" aria-selected="false">Cajas</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled" #carpetas id="messages-tab" data-bs-toggle="tab" data-bs-target="#ot-carpetas" type="button" role="tab" aria-controls="messages" aria-selected="false"> Carpetas</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link disabled" #cargaExcel id="excel-tab" data-bs-toggle="tab" data-bs-target="#ot-carga-excel" type="button" role="tab" aria-controls="carga-excel" aria-selected="false"> Cargar Excel</button>
+                            </li>
+                        </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                          <!-- Informacion General -->
+                          <div class="tab-pane active" id="ot-informacion-general" role="tabpanel" aria-labelledby="home-tab">
+                              <form action="" [formGroup]="formularioInfoGeneral">
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Ubicación (Coordenadas)</label>
+                                        <input type="text" class="form-control" formControlName="ubicacion">
+                                        @if (this.formularioInfoGeneral.get('ubicacion')?.touched && formularioInfoGeneral.get('ubicacion')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo ubicación</small>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Dirección</label>
+                                        <input type="text" class="form-control" formControlName="direccion">
+                                        @if (this.formularioInfoGeneral.get('direccion')?.touched && this.formularioInfoGeneral.get('direccion')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo dirección</small>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Edificio</label>
+                                        <input type="text" class="form-control" formControlName="edificio">
+                                        @if (this.formularioInfoGeneral.get('edificio')?.touched && this.formularioInfoGeneral.get('edificio')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo edificio</small>
+                                            </div>
+                                        }
+                                    </div>
+                                  </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <label for="">Piso</label>
+                                        <input type="text" class="form-control" formControlName="piso">
+                                        @if (this.formularioInfoGeneral.get('piso')?.touched && this.formularioInfoGeneral.get('piso')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                                <small class="text-danger">Es necesario el campo piso</small>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Bodega</label>
+                                        <input type="text" class="form-control" formControlName="bodega">
+                                        @if (this.formularioInfoGeneral.get('bodega')?.touched && this.formularioInfoGeneral.get('bodega')?.errors?.['required']){
+                                            <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo bodega</small>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row mt-5" *ngIf="mostrarBtnIformacion == true">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary" (click)="validarFormInformacionGeneral()">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Informacion caja -->
+                        <div class="tab-pane" id="ot-cajas" role="tabpanel" aria-labelledby="profile-tab">
+                            <form action="" [formGroup]="formularioRegistroCaja">
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label for="">Cuerpo</label>
+                                  <select class="form-select" formControlName="cuerpo" *ngIf="cuerpos.data.length > 0">
+                                    <option value="">Seleccione el cuerpo</option>
+                                    <option *ngFor="let cuerpo of cuerpos.data" [value]="cuerpo.id_cuerpo">{{ cuerpo.nombre_cuerpo
+                                      }}</option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('cuerpo')?.touched && this.formularioRegistroCaja.get('cuerpo')?.errors?.['required']){
+                                      <div class="invalid-feedback" style="display: block;">
+                                        <small class="text-danger">Es necesario el campo cuerpo</small>
+                                      </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Estante</label>
+                                  <select class="form-select" formControlName="estante">
+                                    <option value="">Seleccione el estante</option>
+                                    <option *ngFor="let estante of estantes.data" [value]="estante.id_estante">{{
+                                      estante.nombre_estante }}</option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('estante')?.touched &&
+                                  this.formularioRegistroCaja.get('estante')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo estante</small>
+                                  </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Balda</label>
+                                  <select class="form-select" formControlName="baldas">
+                                    <option value="">Seleccione la balda</option>
+                                    <option *ngFor="let balda of baldas.data" [value]="balda.id_balda">{{ balda.nombre_balda }}
+                                    </option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('baldas')?.touched &&
+                                  this.formularioRegistroCaja.get('baldas')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo balda</small>
+                                  </div>
+                                  }
+                                </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-4">
+                                    <label for="">Código caja</label>
+                                    <select class="form-select" formControlName="codigoCaja">
+                                      <option value="">Seleccione el código caja</option>
+                                      <option *ngFor="let codigo of [].constructor(cantidadCajas); let i = index" [value]="i + 1">{{ "Caja " + (i + 1) }}</option>
+                                    </select>
+                                    <!-- <input type="text" class="form-control" formControlName="codigoCaja"> -->
+                                    @if (this.formularioRegistroCaja.get('codigoCaja')?.touched &&
+                                    this.formularioRegistroCaja.get('codigoCaja')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo código caja</small>
+                                    </div>
+                                    }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Número consecutivo bodega</label>
+                                    <input type="text" class="form-control" formControlName="numeroConsecutivoBodega">
+                                    @if (this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.touched &&
+                                    this.formularioRegistroCaja.get('numeroConsecutivoBodega')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo número consecutivo bodega</small>
+                                    </div>
+                                    }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Número correlativo dependencia</label>
+                                    <input type="text" class="form-control" formControlName="numeroCorrelativoDependencia">
+                                    @if (this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.touched && this.formularioRegistroCaja.get('numeroCorrelativoDependencia')?.errors?.['required']){
+                                    <div class="invalid-feedback" style="display: block;">
+                                      <small class="text-danger">Es necesario el campo número correlativo dependencia</small>
+                                    </div>
+                                    }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                <div class="col-md-4">
+                                  <label for="">Vigencia (transferencia aprobada)</label>
+                                  <select class="form-select" formControlName="anio">
+                                    <option value="">Seleccione la vigencia</option>
+                                    <option *ngFor="let vigencia of vigencias" [value]="vigencia.anio" [disabled]="cajasDisponiblesVigencia(vigencia.anio) <= 0">{{ labelVigencia(vigencia) }}</option>
+                                  </select>
+                                  @if (this.formularioRegistroCaja.get('anio')?.touched &&
+                                  this.formularioRegistroCaja.get('anio')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo vigencia</small>
+                                  </div>
+                                  }
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Cantidad Libros</label>
+                                  <input type="text" class="form-control" formControlName="libros">
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label for="">Cantidad Carpetas</label>
+                                  <input type="text" class="form-control" formControlName="carpetas">
+                                  @if (this.formularioRegistroCaja.get('carpetas')?.touched &&
+                                  this.formularioRegistroCaja.get('carpetas')?.errors?.['required']){
+                                  <div class="invalid-feedback" style="display: block;">
+                                    <small class="text-danger">Es necesario el campo cantidad carpetas</small>
+                                  </div>
+                                  }
+                                </div>
+                              </div>
+
+
+                              <div class="row mt-4">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-warning" (click)="agregarCajaAgrupada()">Agregar
+                                    caja</button>
+                                </div>
+                              </div>
+
+                              <div class="row mt-4" *ngIf="cajasAgrupadas.cajas.length > 0">
+                                <div class="col-md-12">
+                                  <h6>Cajas agrupadas (máx. 4):</h6>
+                                  <table class="table table-bordered table-sm">
+                                    <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Balda</th>
+                                        <th>Código Caja</th>
+                                        <th>Consec. Bodega</th>
+                                        <th>Correl. Dependencia</th>
+                                        <th>Año</th>
+                                        <th>Libros</th>
+                                        <th>Carpetas</th>
+                                        <th>Acción</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let caja of cajasAgrupadas.cajas; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ caja.baldas }}</td>
+                                        <td>{{ caja.codigoCaja }}</td>
+                                        <td>{{ caja.numeroConsecutivoBodega }}</td>
+                                        <td>{{ caja.numeroCorrelativoDependencia }}</td>
+                                        <td>{{ caja.anio }}</td>
+                                        <td>{{ caja.libros }}</td>
+                                        <td>{{ caja.carpetas }}</td>
+                                        <td><button type="button" class="btn btn-danger btn-sm"
+                                            (click)="eliminarCajaAgrupada(i)">Eliminar</button></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="row mt-4">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success" [disabled]="cajasAgrupadas.cajas.length === 0"
+                                    (click)="registrarCajasAgrupadas()">Registrar grupo de cajas</button>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+
+                        <!-- Informacion carpetas -->
+                        <div class="tab-pane" id="ot-carpetas" role="tabpanel" aria-labelledby="carpeta-tab">
+                          <form [formGroup]="formularioRegistroCarpeta">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                    <label for="">Caja</label>
+                                    <select class="form-select" formControlName="caja">
+                                      <option value="">{{ cargandoCajas ? 'Cargando cajas...' : 'Seleccione la caja' }}</option>
+                                      <option *ngFor="let caja of listadoCajas.data" [value]="caja.idCajaUnidadActiva" [disabled]="caja.cajaCompleta">{{ labelCajaCarpetas(caja) }}</option>
+                                    </select>
+                                    @if (this.formularioRegistroCarpeta.get('caja')?.touched &&
+                                    this.formularioRegistroCarpeta.get('caja')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el campo caja</small>
+                                        </div>
+                                    }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Serie</label>
+                                    <select class="form-select" formControlName="serie">
+                                      <option value="">Seleccione la serie</option>
+                                      <option *ngFor="let serie of series.data" [value]="serie.id_serie">{{ serie.nombre_serie }}</option>
+                                    </select>
+                                    @if (this.formularioRegistroCarpeta.get('serie')?.touched &&
+                                    this.formularioRegistroCarpeta.get('serie')?.errors?.['required']){
+                                        <div class="invalid-feedback" style="display: block;">
+                                            <small class="text-danger">Es necesario el campo serie</small>
+                                        </div>
+                                    }
+
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <label for="">Subserie</label>
+                                      <select class="form-select" formControlName="subserie" >
+                                          <option value="">Seleccione la subserie</option>
+                                          <option *ngFor="let subserie of subseries.data" [value]="subserie.id_subserie">{{ subserie.nombre_subserie }}</option>
+                                      </select>
+                                      @if (this.formularioRegistroCarpeta.get('subserie')?.touched &&
+                                      this.formularioRegistroCarpeta.get('subserie')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo subserie</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-4">
+                                      <label for="">Número de carpeta</label>
+                                      <select class="form-select" formControlName="numeroCarpeta">
+                                          <option value="">Seleccione el número de carpeta</option>
+                                          <option *ngFor="let numero of numerosCarpetaDisponibles" [value]="numero">{{ "Carpeta " + numero }}</option>
+                                      </select>
+                                      @if (cajaSeleccionadaCarpeta && numerosCarpetaDisponibles.length === 0) {
+                                          <small class="text-muted">No quedan carpetas por registrar en esta caja.</small>
+                                      }
+                                      @if (this.formularioRegistroCarpeta.get('numeroCarpeta')?.touched &&
+                                      this.formularioRegistroCarpeta.get('numeroCarpeta')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo número de carpeta</small>
+                                          </div>
+                                      }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <label for="">Fecha extrema inicio</label>
+                                      <input type="date" class="form-control" formControlName="fechaExtremaInicio">
+                                      @if (this.formularioRegistroCarpeta.get('fechaExtremaInicio')?.touched &&
+                                      this.formularioRegistroCarpeta.get('fechaExtremaInicio')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo fecha extrema inicio</small>
+                                          </div>
+                                      }
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label for="">Fecha extrema fin</label>
+                                    <input type="date" class="form-control"
+                                      formControlName="fechaExtremaFin">
+                                      @if (this.formularioRegistroCarpeta.get('fechaExtremaFin')?.touched &&
+                                      this.formularioRegistroCarpeta.get('fechaExtremaFin')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo fecha extrema fin</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-4">
+                                    <label for="">Cantidad de folios</label>
+                                    <input type="number" class="form-control"
+                                      formControlName="cantidadFolios">
+                                      @if (this.formularioRegistroCarpeta.get('cantidadFolios')?.touched &&
+                                      this.formularioRegistroCarpeta.get('cantidadFolios')?.errors?.['required']){
+                                          <div class="invalid-feedback" style="display: block;">
+                                              <small class="text-danger">Es necesario el campo cantidad de folios</small>
+                                          </div>
+                                      }
+                                  </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                  <div class="col-md-12 d-flex justify-content-end">
+                                      <button type="button" class="btn btn-warning" [disabled]="cajaSeleccionadaCarpeta && numerosCarpetaDisponibles.length === 0" (click)="agregarCarpetaAgrupada()">Agregar carpeta</button>
+                                  </div>
+                              </div>
+                          </form>
+
+                          <!-- Carpetas ya registradas de la caja seleccionada -->
+                          <div class="row mt-4" *ngIf="cajaSeleccionadaCarpeta && carpetasRegistradasCaja.length > 0">
+                              <div class="col-md-12">
+                                  <h6>
+                                      Carpetas registradas en la caja {{ cajaSeleccionadaCarpeta.codigoCajaUnidadActiva }}
+                                      ({{ carpetasRegistradasCaja.length }}/{{ cajaSeleccionadaCarpeta.cantidadCarpetasUnidadActiva }})
+                                  </h6>
+                                  <table class="table table-bordered table-sm">
+                                      <thead>
+                                          <tr>
+                                              <th>N° Carpeta</th>
+                                              <th>Serie</th>
+                                              <th>Subserie</th>
+                                              <th>Fecha Inicio</th>
+                                              <th>Fecha Fin</th>
+                                              <th>Folios</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor="let carpeta of carpetasRegistradasCaja">
+                                              <td>{{ carpeta.numeroCarpetaUnidadActiva }}</td>
+                                              <td>{{ carpeta.serie?.nombre_serie || '-' }}</td>
+                                              <td>{{ carpeta.subserie?.nombre_subserie || '-' }}</td>
+                                              <td>{{ carpeta.fechaExtremaInicio }}</td>
+                                              <td>{{ carpeta.fechaExtremaFin }}</td>
+                                              <td>{{ carpeta.cantidadFolios }}</td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+
+                          <!-- Tabla de carpetas agrupadas -->
+                          <div class="row mt-4" *ngIf="carpetasAgrupadas.carpetas.length > 0">
+                              <div class="col-md-12">
+                                  <h6>Carpetas agrupadas:</h6>
+                                  <table class="table table-bordered table-sm">
+                                      <thead>
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Caja</th>
+                                              <th>Subserie</th>
+                                              <th>N° Carpeta</th>
+                                              <th>Fecha Inicio</th>
+                                              <th>Fecha Fin</th>
+                                              <th>Folios</th>
+                                              <th>Acción</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor="let carpeta of carpetasAgrupadas.carpetas; let i = index">
+                                              <td>{{ i + 1 }}</td>
+                                              <td>{{ carpeta.nombreCaja }}</td>
+                                              <td>{{ carpeta.subserie }}</td>
+                                              <td>{{ carpeta.numeroCarpeta }}</td>
+                                              <td>{{ carpeta.fechaExtremaInicio }}</td>
+                                              <td>{{ carpeta.fechaExtremaFin }}</td>
+                                              <td>{{ carpeta.cantidadFolios }}</td>
+                                              <td><button type="button" class="btn btn-danger btn-sm" (click)="eliminarCarpetaAgrupada(i)">Eliminar</button></td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                          <div class="row mt-4">
+                              <div class="col-md-12 d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success" [disabled]="carpetasAgrupadas.carpetas.length === 0" (click)="registrarCarpetasAgrupadas()">Registrar grupo de carpetas</button>
+                              </div>
+                          </div>
+                        </div>
+
+                        <!-- Carga de Excel -->
+                        <div class="tab-pane" id="ot-carga-excel" role="tabpanel" aria-labelledby="excel-tab">
+                          <div class="row mt-4 mb-4 p-3 border rounded" style="background-color: #f8f9fa;">
+                            <div class="col-md-12">
+                              <h6>Cargar Datos desde Excel</h6>
+                              <div class="row">
+                                <div class="col-md-12 mb-3">
+                                  <label for="selectCajaExcel">Caja destino</label>
+                                  <select
+                                    id="selectCajaExcel"
+                                    class="form-select"
+                                    [(ngModel)]="cajaSeleccionadaExcel"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option [ngValue]="null">Seleccione la caja a la que pertenecen los documentos</option>
+                                    <option *ngFor="let caja of listadoCajas.data" [ngValue]="caja.idCajaUnidadActiva" [disabled]="!caja.cajaCompleta">
+                                      {{ labelCajaCarpetas(caja) }}
+                                    </option>
+                                  </select>
+                                  <small class="d-block text-muted">Solo se habilitan las cajas que ya tienen todas sus carpetas registradas.</small>
+                                  <small class="text-muted">Cada hoja (página) del Excel se asociará, en orden, a una carpeta de esta caja (hoja 1 → carpeta 1, hoja 2 → carpeta 2, etc.). La cantidad de hojas debe coincidir con la cantidad de carpetas de la caja.</small>
+                                </div>
+                                <div class="col-md-8">
+                                  <label for="inputExcelCarpetas">Seleccionar archivo Excel</label>
+                                  <input
+                                    type="file"
+                                    id="inputExcelCarpetas"
+                                    class="form-control"
+                                    accept=".xlsx,.xls,.csv"
+                                    [disabled]="!cajaSeleccionadaExcel"
+                                    (change)="onFileSelected($event)">
+                                  <small class="text-muted">Formatos soportados: .xlsx, .xls, .csv</small>
+                                </div>
+                                <div class="col-md-4 d-flex flex-column">
+                                  <label class="d-block invisible">Acción</label>
+                                  <button
+                                    type="button"
+                                    class="btn btn-success w-100"
+                                    [disabled]="!cajaSeleccionadaExcel || !archivoSeleccionado || procesandoExcel"
+                                    (click)="procesarArchivoExcel()">
+                                    Procesar Excel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+              <!--*************** SECCION PARA EL REGISTRO DEL NUEVO ANIO ***************-->
+
+              <!-- <div class="row mt-5" >
+                      <p style="margin-bottom: 1rem;">Registro de Archivo</p>
+
+                  </div> -->
+
+
+
+            </div>
+          <!--  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarForm()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="enviarRegistros()">Registrar</button>
+          </div> -->
+        </div>
+    </div>
+    <app-loader [isLoading]="loading"></app-loader>
+</div>
+

@@ -36,12 +36,13 @@
                       <th>Departamento</th>
                       <th>Municipio</th>
                       <th>Estado</th>
+                      <th>Organización transferencia</th>
                       <th>OP</th>
                   </tr>
               </thead>
               <tbody class="text-center">
                   <tr *ngIf="listaUnidades.data.length === 0">
-                      <td colspan="9">{{ listaUnidades.mensaje || 'No hay registros para mostrar.' }}</td>
+                      <td colspan="10">{{ listaUnidades.mensaje || 'No hay registros para mostrar.' }}</td>
                   </tr>
                   <tr *ngFor="let unidad of listaUnidades.data">
                       <td>{{ unidad.id_unidad }}</td>
@@ -52,6 +53,9 @@
                       <td>{{ unidad.departamento }}</td>
                       <td>{{ unidad.municipio }}</td>
                       <td [ngClass]="{'elementoActivo': unidad.estado === 'Activo', 'elemnetoInactivo': unidad.estado === 'Suprimida' }">{{ unidad.estado }}</td>
+                      <td style="font-size: 1.6rem;">
+                          <i class="fa-solid fa-box-archive text-secondary" role="button" title="Organizar transferencias aprobadas" (click)="abrirModalOrganizacionTransferencia(unidad.id_unidad)"></i>
+                      </td>
                       <td [width]="115">
                           <button type="button" title="Editar unidad" class="btn btn-primary" style="margin-right: .5rem; font-size: .8rem;" *ngIf="rolUser == 1" (click)="abrirModal(unidad)">
                               <i class="fas fa-pen fa-lg fa-fw"></i>
@@ -106,6 +110,8 @@
 
 
 <app-modal-editar-unidad [unidad]="unidad" (unidadEditada)="getAllUnidades(1)"></app-modal-editar-unidad>
+
+<app-organizacion-transferencia-unidad-inactiva [idUnidadActiva]="unidadOrganizacion"></app-organizacion-transferencia-unidad-inactiva>
 
   <!-- <app-modal-editar-usuario [usuario]="usuario"></app-modal-editar-usuario> -->
 

@@ -9,11 +9,12 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../../../Auth/services/login.service';
 import { Modal } from 'bootstrap';
+import OrganizacionTransferenciaUnidadInactivaComponent from '../../components/organizacion-transferencia-unidad-inactiva/organizacion-transferencia-unidad-inactiva.component';
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-listado-unidades',
-  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, FormsModule],
+  imports: [RouterModule, RouterLink, NgFor, NgIf, NgClass, ModalEditarUnidadComponent, FormsModule, OrganizacionTransferenciaUnidadInactivaComponent],
   templateUrl: './listado-unidades.component.html',
   styleUrl: './listado-unidades.component.css'
 })
@@ -47,6 +48,7 @@ export default class ListadoUnidadesComponent implements OnInit{
     // Filtros de dependencias
     public nivelesDependencias: Array<{ opciones: any[]; seleccion: any }> = [];
     public observacion: string = '';
+    public unidadOrganizacion: number = 0;
 
     private modalInstance: Modal | null = null;
     private modalActualizar = viewChild<ElementRef>('buscarObservacion');
@@ -131,6 +133,12 @@ export default class ListadoUnidadesComponent implements OnInit{
             this.sweet.alertaGeneral(updateEstado.icono, updateEstado.titulo, updateEstado.mensaje);
             this.getAllUnidades(1);
         });
+    }
+
+    abrirModalOrganizacionTransferencia(idUnidad: number): void {
+        const modal = document.getElementById('modalOrganizacionTransferencia');
+        this.unidadOrganizacion = idUnidad ?? 0;
+        new bootstrap.Modal(modal).show();
     }
 
     limpiarFiltros(): void {
